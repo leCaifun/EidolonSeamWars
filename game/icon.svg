@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Eidolon: Seam Wars">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c2233"/>
+      <stop offset="1" stop-color="#0c0f18"/>
+    </linearGradient>
+    <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8c27a"/>
+      <stop offset="1" stop-color="#9a6a2f"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="124" height="124" rx="26" fill="url(#bg)" stroke="#2b3550" stroke-width="4"/>
+  <polygon points="64,18 103,40 103,88 64,110 25,88 25,40" fill="none" stroke="url(#brass)" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M64 20 L58 42 L70 55 L56 72 L68 88 L62 108" fill="none" stroke="#7fd4c1" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="64" cy="64" r="9" fill="#0c0f18" stroke="#e8c27a" stroke-width="3"/>
+  <path d="M64 55 v-8 M64 73 v8 M55 64 h-8 M73 64 h8" stroke="#e8c27a" stroke-width="3" stroke-linecap="round"/>
+</svg>

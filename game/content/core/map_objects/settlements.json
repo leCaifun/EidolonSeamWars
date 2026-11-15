@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "core.map_objects.settlements",
+  "objects": [
+    {
+      "id": "core.map_object.settlement_brass",
+      "type": "settlement",
+      "nameKey": "map_object.settlement_brass.name",
+      "descriptionKey": "map_object.settlement_brass.desc",
+      "factionId": "core.faction.brass",
+      "templateId": "core.settlement.brass",
+      "initialLevel": 1,
+      "guarded": true
+    },
+    {
+      "id": "core.map_object.settlement_ash",
+      "type": "settlement",
+      "nameKey": "map_object.settlement_ash.name",
+      "descriptionKey": "map_object.settlement_ash.desc",
+      "factionId": "core.faction.ash",
+      "templateId": "core.settlement.ash",
+      "initialLevel": 1,
+      "guarded": true
+    },
+    {
+      "id": "core.map_object.settlement_root",
+      "type": "settlement",
+      "nameKey": "map_object.settlement_root.name",
+      "descriptionKey": "map_object.settlement_root.desc",
+      "factionId": "core.faction.root",
+      "templateId": "core.settlement.root",
+      "initialLevel": 1,
+      "guarded": true
+    }
+  ]
+}

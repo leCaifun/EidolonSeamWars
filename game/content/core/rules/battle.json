@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "core.rules.battle",
+  "fieldWidth": 13,
+  "fieldHeight": 9,
+  "armySlots": 5,
+  "maxArmySlots": 7,
+  "heroOnBattlefield": false,
+  "defendDefenseBonusPercent": 25,
+  "defendResistBonusPercent": 0,
+  "defendInitiativePenalty": 0,
+  "retaliationPerRound": 1,
+  "retaliationIsAction": false,
+  "waitMovesToEndOfRound": true,
+  "waitAffectsNextRound": true,
+  "attackDefenseModifierPerPoint": 50,
+  "attackDefenseModifierMin": 300,
+  "attackDefenseModifierMax": 4000,
+  "critChanceCapPercent": 75,
+  "critDamageCapPercent": 300,
+  "damageTypes": ["physical", "magical", "poison", "fire", "firearm"]
+}

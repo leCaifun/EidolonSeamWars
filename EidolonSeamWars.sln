@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D63583E4-5BCA-482D-A159-6563CB5FB0E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Core", "src\Game.Core\Game.Core.csproj", "{6E273E5B-1A68-4553-8A59-CF382761BFFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.SimRunner", "src\Game.SimRunner\Game.SimRunner.csproj", "{B20F378C-DF7A-4DC7-BEF6-3E01229ACED7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{00D176D4-B747-4DFE-8FE5-EEAE531110FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Core.Tests", "tests\Game.Core.Tests\Game.Core.Tests.csproj", "{BBB33B0B-DE68-4944-A919-06C6978F4FF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "game", "game", "{6973ED1D-4854-4E0D-8D48-87FDD95BBE7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EidolonSeamWars", "game\EidolonSeamWars.csproj", "{B1C8F671-AE3F-4D2D-97E1-94F6B6853EE8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E273E5B-1A68-4553-8A59-CF382761BFFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E273E5B-1A68-4553-8A59-CF382761BFFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E273E5B-1A68-4553-8A59-CF382761BFFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E273E5B-1A68-4553-8A59-CF382761BFFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B20F378C-DF7A-4DC7-BEF6-3E01229ACED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B20F378C-DF7A-4DC7-BEF6-3E01229ACED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B20F378C-DF7A-4DC7-BEF6-3E01229ACED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B20F378C-DF7A-4DC7-BEF6-3E01229ACED7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBB33B0B-DE68-4944-A919-06C6978F4FF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBB33B0B-DE68-4944-A919-06C6978F4FF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBB33B0B-DE68-4944-A919-06C6978F4FF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBB33B0B-DE68-4944-A919-06C6978F4FF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1C8F671-AE3F-4D2D-97E1-94F6B6853EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1C8F671-AE3F-4D2D-97E1-94F6B6853EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1C8F671-AE3F-4D2D-97E1-94F6B6853EE8}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1C8F671-AE3F-4D2D-97E1-94F6B6853EE8}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6E273E5B-1A68-4553-8A59-CF382761BFFC} = {D63583E4-5BCA-482D-A159-6563CB5FB0E6}
+		{B20F378C-DF7A-4DC7-BEF6-3E01229ACED7} = {D63583E4-5BCA-482D-A159-6563CB5FB0E6}
+		{BBB33B0B-DE68-4944-A919-06C6978F4FF5} = {00D176D4-B747-4DFE-8FE5-EEAE531110FE}
+		{B1C8F671-AE3F-4D2D-97E1-94F6B6853EE8} = {6973ED1D-4854-4E0D-8D48-87FDD95BBE7B}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+ width="32" height="32" viewBox="0 0 32 32" role="img">
+<defs>
+ <linearGradient id="metal" x2="0" y2="1"><stop stop-color="#f3e6c2"/><stop offset=".22" stop-color="#9d927c"/><stop offset=".5" stop-color="#454b50"/><stop offset=".78" stop-color="#20272e"/><stop offset="1" stop-color="#090e14"/></linearGradient>
+ <linearGradient id="gold" x2=".15" y2="1"><stop stop-color="#fff0a5"/><stop offset=".35" stop-color="#d6a846"/><stop offset=".72" stop-color="#81501e"/><stop offset="1" stop-color="#392516"/></linearGradient>
+ <linearGradient id="stone" x2=".15" y2="1"><stop stop-color="#c4c0b2"/><stop offset=".45" stop-color="#777b78"/><stop offset="1" stop-color="#343b3e"/></linearGradient>
+ <linearGradient id="wood" x2="0" y2="1"><stop stop-color="#bd8a50"/><stop offset=".45" stop-color="#76502f"/><stop offset="1" stop-color="#34251d"/></linearGradient>
+ <radialGradient id="orb"><stop stop-color="#fff"/><stop offset=".18" stop-color="#d8f6ff"/><stop offset=".55" stop-color="#62b8d5"/><stop offset="1" stop-color="#24516e"/></radialGradient>
+ <linearGradient id="panel" x2="0" y2="1"><stop stop-color="#29343c"/><stop offset=".5" stop-color="#151e26"/><stop offset="1" stop-color="#0a1017"/></linearGradient>
+ <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur in="SourceAlpha" stdDeviation="2.2"/><feOffset dy="2"/><feComponentTransfer><feFuncA type="linear" slope=".55"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <pattern id="grain" width="17" height="13" patternUnits="userSpaceOnUse"><circle cx="2" cy="3" r=".65" fill="#fff" opacity=".13"/><circle cx="12" cy="9" r=".7" fill="#080d12" opacity=".17"/><path d="M5 12l2-1" stroke="#fff" stroke-width=".5" opacity=".1"/></pattern>
+ 
+</defs>
+<circle cx="16" cy="16" r="15" fill="#101923" stroke="#394956" stroke-width="1.3"/><circle cx="16" cy="16" r="12.8" fill="url(#panel)" stroke="#fff" stroke-opacity=".12"/><g><path d="M10 4L5 28m14-24l5 24" stroke="#c5b99c" stroke-width="5"/><path d="M15 6l1 5m1 5l1 5m1 5l1 2" stroke="#6c6253" stroke-width="1.5"/></g>
+</svg>

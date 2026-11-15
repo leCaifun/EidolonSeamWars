@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "core.test_map.small_8x8",
+  "nameKey": "test_map.small_8x8.name",
+  "width": 8,
+  "height": 8,
+  "offsetType": "odd-r",
+  "legend": {
+    "G": "core.biome.grass",
+    "F": "core.biome.forest",
+    "M": "core.biome.mountain",
+    "S": "core.biome.swamp",
+    "N": "core.biome.snow",
+    "D": "core.biome.desert",
+    "W": "core.biome.water",
+    "V": "core.biome.void",
+    "R": "core.biome.road"
+  },
+  "layout": [
+    "GGGGGGGG",
+    "GGFFFGGG",
+    "GGFMMMGG",
+    "GGFMVMGG",
+    "GGFMMMGG",
+    "GGGFFGGG",
+    "WWWGGGFG",
+    "GGGGGGGG"
+  ],
+  "objects": [
+    { "col": 6, "row": 0, "objectId": "core.map_object.mine_gold" },
+    { "col": 7, "row": 5, "objectId": "core.map_object.echo_cache" },
+    { "col": 5, "row": 7, "objectId": "core.map_object.patrol_ash" },
+    { "col": 0, "row": 7, "objectId": "core.map_object.dwelling_brass" }
+  ],
+  "startPositions": {
+    "player": { "col": 1, "row": 5, "factionId": "core.faction.brass", "heroId": "core.hero.brass.idra_veyn" },
+    "enemy": { "col": 6, "row": 7, "factionId": "core.faction.ash", "heroId": "core.hero.ash.selha" }
+  },
+  "testCases": [
+    { "id": "MS-01", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 2, "row": 5 }, "expectedCost": 1 },
+    { "id": "MS-02", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 4, "row": 5 }, "expectedCost": 5 },
+    { "id": "MS-03", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 4, "row": 1 }, "expectedCost": 9 },
+    { "id": "MS-03b", "type": "unreachable", "from": { "col": 1, "row": 5 }, "to": { "col": 4, "row": 3 } },
+    { "id": "MS-04", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 0, "row": 7 }, "expectedCost": 5 },
+    { "id": "MS-05", "type": "collision", "from": { "col": 1, "row": 5 }, "to": { "col": 5, "row": 7 }, "expectedCost": 5, "blockingObjectId": "core.map_object.patrol_ash" }
+  ]
+}

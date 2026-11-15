@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "core.rules.economy",
+  "baseSettlementIncomePerDay": { "gold": 250 },
+  "growthCapDays": 14,
+  "growthPerDayMilliByTier": {
+    "1": 1000,
+    "2": 600,
+    "3": 400,
+    "4": 250,
+    "5": 150
+  },
+  "captureDeletesBuildings": true,
+  "captureResetsLevel": 1,
+  "captureSwitchesTemplateToCaptor": true,
+  "dailyTickOrder": [
+    "income",
+    "growth",
+    "housingRegen",
+    "contractRefresh",
+    "timedEffects",
+    "aiStep",
+    "autosave"
+  ]
+}

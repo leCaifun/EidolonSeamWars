@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "core.settlement.ash",
+  "factionId": "core.faction.ash",
+  "nameKey": "settlement.ash.name",
+  "descriptionKey": "settlement.ash.desc",
+  "maxLevel": 4,
+  "levels": [
+    { "level": 1, "buildSlots": 4 },
+    { "level": 2, "buildSlots": 6 },
+    { "level": 3, "buildSlots": 8 },
+    { "level": 4, "buildSlots": 10 }
+  ],
+  "defaultBuildings": ["core.building.ash.bone_throne"],
+  "upgrades": [
+    {
+      "fromLevel": 1,
+      "toLevel": 2,
+      "cost": { "gold": 3000, "ore": 20, "wood": 10 },
+      "days": 2
+    },
+    {
+      "fromLevel": 2,
+      "toLevel": 3,
+      "cost": { "gold": 8000, "ore": 40, "crystal": 20 },
+      "days": 4
+    },
+    {
+      "fromLevel": 3,
+      "toLevel": 4,
+      "cost": { "gold": 15000, "ore": 60, "crystal": 40, "essence": 20 },
+      "days": 7
+    }
+  ]
+}

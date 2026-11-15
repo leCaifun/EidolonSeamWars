@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "core.map_objects.mines",
+  "objects": [
+    {
+      "id": "core.map_object.mine_gold",
+      "type": "mine",
+      "nameKey": "map_object.mine_gold.name",
+      "descriptionKey": "map_object.mine_gold.desc",
+      "guarded": true,
+      "incomePerDay": { "gold": 100 }
+    },
+    {
+      "id": "core.map_object.mine_wood",
+      "type": "mine",
+      "nameKey": "map_object.mine_wood.name",
+      "descriptionKey": "map_object.mine_wood.desc",
+      "guarded": true,
+      "incomePerDay": { "wood": 2 }
+    },
+    {
+      "id": "core.map_object.mine_ore",
+      "type": "mine",
+      "nameKey": "map_object.mine_ore.name",
+      "descriptionKey": "map_object.mine_ore.desc",
+      "guarded": true,
+      "incomePerDay": { "ore": 2 }
+    },
+    {
+      "id": "core.map_object.mine_crystal",
+      "type": "mine",
+      "nameKey": "map_object.mine_crystal.name",
+      "descriptionKey": "map_object.mine_crystal.desc",
+      "guarded": true,
+      "incomePerDay": { "crystal": 1 }
+    },
+    {
+      "id": "core.map_object.mine_sulfur",
+      "type": "mine",
+      "nameKey": "map_object.mine_sulfur.name",
+      "descriptionKey": "map_object.mine_sulfur.desc",
+      "guarded": true,
+      "incomePerDay": { "sulfur": 1 }
+    },
+    {
+      "id": "core.map_object.mine_mercury",
+      "type": "mine",
+      "nameKey": "map_object.mine_mercury.name",
+      "descriptionKey": "map_object.mine_mercury.desc",
+      "guarded": true,
+      "incomePerDay": { "mercury": 1 }
+    },
+    {
+      "id": "core.map_object.mine_essence",
+      "type": "mine",
+      "nameKey": "map_object.mine_essence.name",
+      "descriptionKey": "map_object.mine_essence.desc",
+      "guarded": true,
+      "incomePerDay": { "essence": 1 }
+    }
+  ]
+}

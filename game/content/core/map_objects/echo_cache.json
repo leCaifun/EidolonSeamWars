@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "core.map_objects.echo_cache",
+  "objects": [
+    {
+      "id": "core.map_object.echo_cache",
+      "type": "echoCache",
+      "nameKey": "map_object.echo_cache.name",
+      "descriptionKey": "map_object.echo_cache.desc",
+      "guarded": false,
+      "options": [
+        {
+          "id": "open",
+          "nameKey": "map_object.echo_cache.open.name",
+          "descriptionKey": "map_object.echo_cache.open.desc",
+          "requiresBattle": true,
+          "reward": { "gold": 800, "essence": 3 }
+        },
+        {
+          "id": "bargain",
+          "nameKey": "map_object.echo_cache.bargain.name",
+          "descriptionKey": "map_object.echo_cache.bargain.desc",
+          "cost": { "crystal": 2 },
+          "reward": { "gold": 500, "mercury": 2 }
+        },
+        {
+          "id": "seal",
+          "nameKey": "map_object.echo_cache.seal.name",
+          "descriptionKey": "map_object.echo_cache.seal.desc",
+          "reward": { "reputation": 1 },
+          "delayedRewardDays": 5,
+          "delayedReward": { "gold": 1200, "essence": 5 }
+        }
+      ]
+    }
+  ]
+}

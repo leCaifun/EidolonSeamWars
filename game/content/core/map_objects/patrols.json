@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "core.map_objects.patrols",
+  "objects": [
+    {
+      "id": "core.map_object.patrol_brass",
+      "type": "patrol",
+      "nameKey": "map_object.patrol_brass.name",
+      "descriptionKey": "map_object.patrol_brass.desc",
+      "factionId": "core.faction.brass",
+      "heroId": null,
+      "army": [
+        { "unitId": "core.unit.brass.militia", "count": 8 },
+        { "unitId": "core.unit.brass.arquebusier", "count": 4 }
+      ]
+    },
+    {
+      "id": "core.map_object.patrol_ash",
+      "type": "patrol",
+      "nameKey": "map_object.patrol_ash.name",
+      "descriptionKey": "map_object.patrol_ash.desc",
+      "factionId": "core.faction.ash",
+      "heroId": null,
+      "army": [
+        { "unitId": "core.unit.ash.bone_servant", "count": 8 },
+        { "unitId": "core.unit.ash.corpse_whisperer", "count": 4 }
+      ]
+    },
+    {
+      "id": "core.map_object.patrol_root",
+      "type": "patrol",
+      "nameKey": "map_object.patrol_root.name",
+      "descriptionKey": "map_object.patrol_root.desc",
+      "factionId": "core.faction.root",
+      "heroId": null,
+      "army": [
+        { "unitId": "core.unit.root.pathfinder", "count": 8 },
+        { "unitId": "core.unit.root.wolfdog", "count": 4 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "core.rules.morale",
+  "minLevel": -4,
+  "maxLevel": 4,
+  "extraActionChanceCapPercent": 35,
+  "statModifierCapPercent": 16,
+  "maxExtraActionsPerUnitPerRound": 1,
+  "immuneTags": ["undead", "construct"],
+  "levels": [
+    { "level": -4, "nameKey": "morale.level.minus4", "chancePercent": 32, "statModifierPercent": -16 },
+    { "level": -3, "nameKey": "morale.level.minus3", "chancePercent": 16, "statModifierPercent": -8 },
+    { "level": -2, "nameKey": "morale.level.minus2", "chancePercent": 8, "statModifierPercent": -4 },
+    { "level": -1, "nameKey": "morale.level.minus1", "chancePercent": 4, "statModifierPercent": -2 },
+    { "level": 0, "nameKey": "morale.level.zero", "chancePercent": 0, "statModifierPercent": 0 },
+    { "level": 1, "nameKey": "morale.level.plus1", "chancePercent": 4, "statModifierPercent": 2 },
+    { "level": 2, "nameKey": "morale.level.plus2", "chancePercent": 8, "statModifierPercent": 4 },
+    { "level": 3, "nameKey": "morale.level.plus3", "chancePercent": 16, "statModifierPercent": 8 },
+    { "level": 4, "nameKey": "morale.level.plus4", "chancePercent": 32, "statModifierPercent": 16 }
+  ],
+  "sources": {
+    "sameFaction": 1,
+    "perExtraFaction": -1,
+    "undeadAmongLiving": -2,
+    "marshalAura": 1,
+    "defendingSettlement": 1,
+    "allyStackDeath": -1,
+    "allyStackDeathDurationRounds": 1
+  }
+}

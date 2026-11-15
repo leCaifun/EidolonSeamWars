@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "core.localization.languages",
+  "defaultLanguage": "ru",
+  "fallbackLanguage": "en",
+  "requiredLanguages": ["ru", "en"],
+  "languages": [
+    { "code": "ru", "nameKey": "language.ru.name", "script": "Cyrl", "status": "complete", "visibleInSettings": true, "fallback": null, "requiresFontReview": false },
+    { "code": "en", "nameKey": "language.en.name", "script": "Latn", "status": "complete", "visibleInSettings": true, "fallback": null, "requiresFontReview": false },
+
+    { "code": "es", "nameKey": "language.es.name", "script": "Latn", "status": "complete", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "de", "nameKey": "language.de.name", "script": "Latn", "status": "complete", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "pt", "nameKey": "language.pt.name", "script": "Latn", "status": "complete", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "it", "nameKey": "language.it.name", "script": "Latn", "status": "complete", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "fr", "nameKey": "language.fr.name", "script": "Latn", "status": "complete", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "la", "nameKey": "language.la.name", "script": "Latn", "status": "complete", "visibleInSettings": true, "fallback": "en", "requiresFontReview": true },   
+
+    { "code": "uk", "nameKey": "language.uk.name", "script": "Cyrl", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "be", "nameKey": "language.be.name", "script": "Cyrl", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "rue", "nameKey": "language.rue.name", "script": "Cyrl", "status": "experimental", "visibleInSettings": false, "fallback": "en", "requiresFontReview": true },
+    { "code": "cu", "nameKey": "language.cu.name", "script": "Cyrl", "status": "experimental", "visibleInSettings": false, "fallback": "en", "requiresFontReview": true },
+
+    { "code": "pl", "nameKey": "language.pl.name", "script": "Latn", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "cs", "nameKey": "language.cs.name", "script": "Latn", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "sk", "nameKey": "language.sk.name", "script": "Latn", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "szl", "nameKey": "language.szl.name", "script": "Latn", "status": "experimental", "visibleInSettings": false, "fallback": "en", "requiresFontReview": true },
+    { "code": "csb", "nameKey": "language.csb.name", "script": "Latn", "status": "experimental", "visibleInSettings": false, "fallback": "en", "requiresFontReview": true },
+    { "code": "hsb", "nameKey": "language.hsb.name", "script": "Latn", "status": "experimental", "visibleInSettings": false, "fallback": "en", "requiresFontReview": true },
+    { "code": "dsb", "nameKey": "language.dsb.name", "script": "Latn", "status": "experimental", "visibleInSettings": false, "fallback": "en", "requiresFontReview": true },
+
+    { "code": "sl", "nameKey": "language.sl.name", "script": "Latn", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "bg", "nameKey": "language.bg.name", "script": "Cyrl", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "mk", "nameKey": "language.mk.name", "script": "Cyrl", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "sr", "nameKey": "language.sr.name", "script": "Cyrl", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+
+    { "code": "hr", "nameKey": "language.hr.name", "script": "Latn", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "bs", "nameKey": "language.bs.name", "script": "Latn", "status": "draft", "visibleInSettings": false, "fallback": "en", "requiresFontReview": false },
+    { "code": "cnr", "nameKey": "language.cnr.name", "script": "Latn", "status": "experimental", "visibleInSettings": false, "fallback": "en", "requiresFontReview": true }
+  ]
+}

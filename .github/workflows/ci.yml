@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: restore → build → test → validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore EidolonSeamWars.sln
+
+      - name: Build
+        run: dotnet build EidolonSeamWars.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test EidolonSeamWars.sln -c Release --no-build --logger 'console;verbosity=normal'
+
+      - name: Validate content
+        run: bash tools/scripts/validate.sh
+
+# Godot-слой входит в корневой solution и собирается через Godot.NET.Sdk 4.7.2
+# из NuGet. Установленный редактор Godot для CI не требуется (ADR-023).
+# Headless-запуск сцены проверяется локально: tools/scripts/run-headless.*

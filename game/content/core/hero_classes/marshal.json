@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "core.hero_class.brass.marshal",
+  "factionId": "core.faction.brass",
+  "nameKey": "hero_class.brass.marshal.name",
+  "descriptionKey": "hero_class.brass.marshal.desc",
+  "startingStats": {
+    "attack": 3,
+    "defense": 3,
+    "spellpower": 1,
+    "knowledge": 1,
+    "leadership": 70,
+    "logistics": 2
+  },
+  "statWeights": {
+    "attack": 25,
+    "defense": 25,
+    "spellpower": 5,
+    "knowledge": 5,
+    "leadership": 30,
+    "logistics": 10
+  },
+  "passiveAbilityId": "core.ability.class.discipline",
+  "commandAbilityId": "core.ability.hero.iron_order",
+  "spellId": "core.spell.brass.blessing"
+}

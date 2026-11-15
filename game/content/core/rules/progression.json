@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "id": "core.rules.progression",
+  "unlimitedLevel": true,
+  "xpToNextFormula": {
+    "type": "quadratic",
+    "coefficient": 50,
+    "expression": "50 * level * (level + 1)"
+  },
+  "skillPointsPerLevel": 1,
+  "scenarioSoftCap": 10
+}

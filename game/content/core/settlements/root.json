@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "core.settlement.root",
+  "factionId": "core.faction.root",
+  "nameKey": "settlement.root.name",
+  "descriptionKey": "settlement.root.desc",
+  "maxLevel": 2,
+  "levels": [
+    { "level": 1, "buildSlots": 4 },
+    { "level": 2, "buildSlots": 6 }
+  ],
+  "defaultBuildings": ["core.building.root.heart_tree"],
+  "upgrades": [
+    {
+      "fromLevel": 1,
+      "toLevel": 2,
+      "cost": { "gold": 1500, "ore": 10, "wood": 5 },
+      "days": 1
+    }
+  ]
+}

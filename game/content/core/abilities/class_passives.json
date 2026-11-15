@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "core.abilities.class_passives",
+  "abilities": [
+    {
+      "id": "core.ability.class.discipline",
+      "nameKey": "ability.class.discipline.name",
+      "descriptionKey": "ability.class.discipline.desc",
+      "kind": "passive",
+      "trigger": "onCalculateMorale",
+      "effects": [
+        { "type": "moraleBonus", "value": 1 },
+        { "type": "defenseBonusIfAdjacentAlly", "value": 2 }
+      ]
+    },
+    {
+      "id": "core.ability.class.attrition_accounting",
+      "nameKey": "ability.class.attrition_accounting.name",
+      "descriptionKey": "ability.class.attrition_accounting.desc",
+      "kind": "passive",
+      "trigger": "onBattleEnd",
+      "effects": [
+        { "type": "raiseUndeadPerDefeatedEnemyStack", "unitId": "core.unit.ash.bone_servant", "maxCountPerStack": 3 }
+      ]
+    },
+    {
+      "id": "core.ability.class.trails",
+      "nameKey": "ability.class.trails.name",
+      "descriptionKey": "ability.class.trails.desc",
+      "kind": "passive",
+      "trigger": "onCalculateMovement",
+      "effects": [
+        { "type": "ignoreTerrainPenalty", "terrain": "forest" },
+        { "type": "initiativeBonusIfTierAtMost", "value": 1, "maxTier": 2 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "core.rules.veterancy",
+  "countsDefeatedStacks": true,
+  "thresholds": [0, 2, 5, 10, 18],
+  "rankNameKeys": [
+    "veterancy.rank.recruit",
+    "veterancy.rank.blooded",
+    "veterancy.rank.veteran",
+    "veterancy.rank.hardened",
+    "veterancy.rank.legend"
+  ],
+  "perRankAboveFirst": {
+    "attack": 2,
+    "defense": 2,
+    "critChancePercent": 1,
+    "critDamagePercent": 1
+  }
+}

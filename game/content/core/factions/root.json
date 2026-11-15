@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "core.faction.root",
+  "nameKey": "faction.root.name",
+  "descriptionKey": "faction.root.desc",
+  "colors": {
+    "primary": "#2E8B57",
+    "secondary": "#8B5A2B",
+    "accent": "#D4A017",
+    "background": "#1E2B22",
+    "frame": "#2E8B57"
+  },
+  "maxSettlementLevel": 2,
+  "heroClassId": "core.hero_class.root.pathfinder",
+  "tags": ["living", "nature"]
+}

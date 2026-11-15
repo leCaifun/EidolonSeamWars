@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bd1uubighd27o"]
+
+[node name="AdventureMap" type="Node2D" unique_id=1032371981]
+
+[node name="FogOfWarVisual" type="Node2D" parent="." unique_id=535464683]
+
+[node name="HexGridVisual" type="Node2D" parent="." unique_id=1535255675]
+
+[node name="MapObjectTokens" type="Node2D" parent="." unique_id=1767440902]
+
+[node name="PartyTokens" type="Node2D" parent="." unique_id=1350268490]
+
+[node name="Camera" type="Camera2D" parent="." unique_id=2003531618]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=820413803]
+
+[node name="ResourcePanel" type="PanelContainer" parent="UI" unique_id=1812895537]
+offset_right = 40.0
+offset_bottom = 40.0
+offset_transform_enabled = true
+
+[node name="ResourceList" type="HBoxContainer" parent="UI/ResourcePanel" unique_id=536901385]
+layout_mode = 2
+
+[node name="DayCounter" type="Label" parent="UI" unique_id=955586254]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -55.0
+offset_bottom = 23.0
+grow_horizontal = 0
+offset_transform_enabled = true
+text = "День 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="EndDayButton" type="Button" parent="UI" unique_id=1766513544]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -143.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Завершить день"

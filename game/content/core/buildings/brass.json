@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "core.buildings.brass",
+  "buildings": [
+    {
+      "id": "core.building.brass.brass_townhall",
+      "factionId": "core.faction.brass",
+      "nameKey": "building.brass.brass_townhall.name",
+      "descriptionKey": "building.brass.brass_townhall.desc",
+      "requiredLevel": 1,
+      "cost": { "gold": 0 },
+      "dailyIncome": { "gold": 250 }
+    },
+    {
+      "id": "core.building.brass.muster_ground",
+      "factionId": "core.faction.brass",
+      "nameKey": "building.brass.muster_ground.name",
+      "descriptionKey": "building.brass.muster_ground.desc",
+      "requiredLevel": 1,
+      "cost": { "gold": 500, "wood": 5 },
+      "recruitment": { "unitId": "core.unit.brass.militia", "growthPerDayMilli": 1000, "stockCap": 14 }
+    },
+    {
+      "id": "core.building.brass.third_guard_barracks",
+      "factionId": "core.faction.brass",
+      "nameKey": "building.brass.third_guard_barracks.name",
+      "descriptionKey": "building.brass.third_guard_barracks.desc",
+      "requiredLevel": 1,
+      "cost": { "gold": 1000, "wood": 5, "ore": 5 },
+      "recruitment": { "unitId": "core.unit.brass.arquebusier", "growthPerDayMilli": 600, "stockCap": 9 }
+    },
+    {
+      "id": "core.building.brass.powder_yard",
+      "factionId": "core.faction.brass",
+      "nameKey": "building.brass.powder_yard.name",
+      "descriptionKey": "building.brass.powder_yard.desc",
+      "requiredLevel": 2,
+      "cost": { "gold": 2000, "wood": 10, "ore": 10 },
+      "recruitment": { "unitId": "core.unit.brass.reitar", "growthPerDayMilli": 400, "stockCap": 6 }
+    },
+    {
+      "id": "core.building.brass.banner_hall",
+      "factionId": "core.faction.brass",
+      "nameKey": "building.brass.banner_hall.name",
+      "descriptionKey": "building.brass.banner_hall.desc",
+      "requiredLevel": 2,
+      "cost": { "gold": 3500, "wood": 15, "ore": 15, "crystal": 5 },
+      "recruitment": { "unitId": "core.unit.brass.standard_bearer", "growthPerDayMilli": 250, "stockCap": 4 }
+    },
+    {
+      "id": "core.building.brass.border_forge",
+      "factionId": "core.faction.brass",
+      "nameKey": "building.brass.border_forge.name",
+      "descriptionKey": "building.brass.border_forge.desc",
+      "requiredLevel": 3,
+      "cost": { "gold": 6000, "wood": 20, "ore": 20, "crystal": 10 },
+      "recruitment": { "unitId": "core.unit.brass.brass_golem", "growthPerDayMilli": 150, "stockCap": 3 }
+    }
+  ]
+}

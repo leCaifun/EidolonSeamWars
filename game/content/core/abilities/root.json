@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "id": "core.abilities.root",
+  "abilities": [
+    {
+      "id": "core.ability.root.marksmanship",
+      "nameKey": "ability.root.marksmanship.name",
+      "descriptionKey": "ability.root.marksmanship.desc",
+      "kind": "passive",
+      "trigger": "onCalculateCritChance",
+      "effects": [
+        { "type": "critChanceBonusIfTargetWounded", "value": 10 }
+      ]
+    },
+    {
+      "id": "core.ability.root.pack",
+      "nameKey": "ability.root.pack.name",
+      "descriptionKey": "ability.root.pack.desc",
+      "kind": "passive",
+      "trigger": "onCalculateAttack",
+      "effects": [
+        { "type": "attackBonusPerAdjacentSameUnit", "value": 2 }
+      ]
+    },
+    {
+      "id": "core.ability.root.regeneration",
+      "nameKey": "ability.root.regeneration.name",
+      "descriptionKey": "ability.root.regeneration.desc",
+      "kind": "active",
+      "trigger": "onAction",
+      "target": "allyStack",
+      "range": 5,
+      "cooldownRounds": 3,
+      "durationRounds": 3,
+      "effects": [
+        { "type": "heal", "value": 8 },
+        { "type": "regeneration", "value": 3 }
+      ]
+    },
+    {
+      "id": "core.ability.root.bark",
+      "nameKey": "ability.root.bark.name",
+      "descriptionKey": "ability.root.bark.desc",
+      "kind": "passive",
+      "trigger": "onCalculateDamageTaken",
+      "effects": [
+        { "type": "damageTypeResistance", "damageType": "physical", "value": 20 },
+        { "type": "immunePush" }
+      ]
+    },
+    {
+      "id": "core.ability.root.roar",
+      "nameKey": "ability.root.roar.name",
+      "descriptionKey": "ability.root.roar.desc",
+      "kind": "active",
+      "trigger": "onAction",
+      "target": "enemyArea",
+      "radius": 3,
+      "cooldownRounds": 4,
+      "durationRounds": 2,
+      "effects": [
+        { "type": "initiativeModifier", "value": -2 }
+      ]
+    }
+  ]
+}

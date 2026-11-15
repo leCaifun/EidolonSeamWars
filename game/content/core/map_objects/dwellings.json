@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "core.map_objects.dwellings",
+  "objects": [
+    {
+      "id": "core.map_object.dwelling_brass",
+      "type": "dwelling",
+      "nameKey": "map_object.dwelling_brass.name",
+      "descriptionKey": "map_object.dwelling_brass.desc",
+      "factionId": "core.faction.brass",
+      "guarded": true,
+      "recruitment": { "unitId": "core.unit.brass.militia", "growthPerDayMilli": 1000, "stockCap": 14 }
+    },
+    {
+      "id": "core.map_object.dwelling_ash",
+      "type": "dwelling",
+      "nameKey": "map_object.dwelling_ash.name",
+      "descriptionKey": "map_object.dwelling_ash.desc",
+      "factionId": "core.faction.ash",
+      "guarded": true,
+      "recruitment": { "unitId": "core.unit.ash.bone_servant", "growthPerDayMilli": 1000, "stockCap": 14 }
+    },
+    {
+      "id": "core.map_object.dwelling_root",
+      "type": "dwelling",
+      "nameKey": "map_object.dwelling_root.name",
+      "descriptionKey": "map_object.dwelling_root.desc",
+      "factionId": "core.faction.root",
+      "guarded": true,
+      "recruitment": { "unitId": "core.unit.root.pathfinder", "growthPerDayMilli": 1000, "stockCap": 14 }
+    }
+  ]
+}

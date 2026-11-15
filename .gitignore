@@ -1,0 +1,33 @@
+# Godot
+.godot/
+.mono/
+*.translation
+export_credentials.cfg
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.idea/
+TestResults/
+coverage/
+*.trx
+*.coverage
+
+# Runtime
+logs/*
+!logs/.gitkeep
+saves/*
+!saves/.gitkeep
+builds/*
+!builds/.gitkeep
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# OpenCode local
+.opencode/local/

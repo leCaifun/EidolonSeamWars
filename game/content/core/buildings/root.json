@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "core.buildings.root",
+  "buildings": [
+    {
+      "id": "core.building.root.heart_tree",
+      "factionId": "core.faction.root",
+      "nameKey": "building.root.heart_tree.name",
+      "descriptionKey": "building.root.heart_tree.desc",
+      "requiredLevel": 1,
+      "cost": { "gold": 0 },
+      "dailyIncome": { "gold": 250 }
+    },
+    {
+      "id": "core.building.root.trail_circle",
+      "factionId": "core.faction.root",
+      "nameKey": "building.root.trail_circle.name",
+      "descriptionKey": "building.root.trail_circle.desc",
+      "requiredLevel": 1,
+      "cost": { "gold": 400, "wood": 5 },
+      "recruitment": { "unitId": "core.unit.root.pathfinder", "growthPerDayMilli": 1000, "stockCap": 14 }
+    },
+    {
+      "id": "core.building.root.branch_nests",
+      "factionId": "core.faction.root",
+      "nameKey": "building.root.branch_nests.name",
+      "descriptionKey": "building.root.branch_nests.desc",
+      "requiredLevel": 1,
+      "cost": { "gold": 900, "wood": 5, "ore": 5 },
+      "recruitment": { "unitId": "core.unit.root.wolfdog", "growthPerDayMilli": 600, "stockCap": 9 }
+    },
+    {
+      "id": "core.building.root.root_stone_circle",
+      "factionId": "core.faction.root",
+      "nameKey": "building.root.root_stone_circle.name",
+      "descriptionKey": "building.root.root_stone_circle.desc",
+      "requiredLevel": 2,
+      "cost": { "gold": 1800, "wood": 10, "ore": 10 },
+      "recruitment": { "unitId": "core.unit.root.grove_druid", "growthPerDayMilli": 400, "stockCap": 6 }
+    },
+    {
+      "id": "core.building.root.whisper_glade",
+      "factionId": "core.faction.root",
+      "nameKey": "building.root.whisper_glade.name",
+      "descriptionKey": "building.root.whisper_glade.desc",
+      "requiredLevel": 2,
+      "cost": { "gold": 3200, "wood": 15, "ore": 15, "crystal": 5 },
+      "recruitment": { "unitId": "core.unit.root.stone_ent", "growthPerDayMilli": 250, "stockCap": 4 }
+    },
+    {
+      "id": "core.building.root.elder_grove",
+      "factionId": "core.faction.root",
+      "nameKey": "building.root.elder_grove.name",
+      "descriptionKey": "building.root.elder_grove.desc",
+      "requiredLevel": 2,
+      "cost": { "gold": 5800, "wood": 20, "ore": 20, "crystal": 10 },
+      "recruitment": { "unitId": "core.unit.root.horned_warden", "growthPerDayMilli": 150, "stockCap": 3 }
+    }
+  ]
+}

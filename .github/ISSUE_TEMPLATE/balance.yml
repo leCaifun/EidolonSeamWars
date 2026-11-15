@@ -1,0 +1,51 @@
+name: Balance report
+description: Сообщить о проблеме баланса с числами и воспроизведением
+title: "[Balance]: "
+labels: ["balance", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Балансные изменения фиксируются в `docs/BALANCE.md` и `docs/CHANGELOG.md`
+        по схеме «старое значение → новое значение → причина».
+
+  - type: textarea
+    id: subject
+    attributes:
+      label: Что балансируем
+      description: Юнит, фракция, здание, формула, ресурс или сценарий.
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Текущие значения
+      description: Характеристики, формулы, сид и состав армий.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: В чём проблема
+      description: Что ломается: доминирование, тупик, бесполезный выбор, слишком долгий бой.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Предлагаемые значения
+      description: Пожалуйста, укажите конкретные числа.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Воспроизведение и данные
+      description: Сид, версия, SimRunner-прогон, логи боя, число побед/поражений.
+      render: text

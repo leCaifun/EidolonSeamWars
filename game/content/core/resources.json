@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "core.resources",
+  "resources": [
+    { "id": "gold", "nameKey": "resource.gold.name", "role": "currency" },
+    { "id": "wood", "nameKey": "resource.wood.name", "role": "material" },
+    { "id": "ore", "nameKey": "resource.ore.name", "role": "material" },
+    { "id": "crystal", "nameKey": "resource.crystal.name", "role": "material" },
+    { "id": "sulfur", "nameKey": "resource.sulfur.name", "role": "material" },
+    { "id": "mercury", "nameKey": "resource.mercury.name", "role": "material" },
+    { "id": "essence", "nameKey": "resource.essence.name", "role": "material" }
+  ]
+}

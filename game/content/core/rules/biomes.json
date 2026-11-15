@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "id": "core.rules.biomes",
+  "biomes": [
+    {
+      "id": "core.biome.grass",
+      "nameKey": "biome.grass.name",
+      "tileId": "hex_grass",
+      "passable": true,
+      "movementCostPerHex": 1,
+      "visibilityRange": 2
+    },
+    {
+      "id": "core.biome.forest",
+      "nameKey": "biome.forest.name",
+      "tileId": "hex_forest",
+      "passable": true,
+      "movementCostPerHex": 2,
+      "visibilityRange": 1
+    },
+    {
+      "id": "core.biome.mountain",
+      "nameKey": "biome.mountain.name",
+      "tileId": "hex_mountain",
+      "passable": false,
+      "movementCostPerHex": 999,
+      "visibilityRange": 0,
+      "flyerPassable": true,
+      "flyerMovementCost": 2
+    },
+    {
+      "id": "core.biome.swamp",
+      "nameKey": "biome.swamp.name",
+      "tileId": "hex_swamp",
+      "passable": true,
+      "movementCostPerHex": 3,
+      "visibilityRange": 2
+    },
+    {
+      "id": "core.biome.snow",
+      "nameKey": "biome.snow.name",
+      "tileId": "hex_snow",
+      "passable": true,
+      "movementCostPerHex": 2,
+      "visibilityRange": 2
+    },
+    {
+      "id": "core.biome.desert",
+      "nameKey": "biome.desert.name",
+      "tileId": "hex_desert",
+      "passable": true,
+      "movementCostPerHex": 2,
+      "visibilityRange": 3
+    },
+    {
+      "id": "core.biome.water",
+      "nameKey": "biome.water.name",
+      "tileId": "hex_water",
+      "passable": false,
+      "movementCostPerHex": 999,
+      "visibilityRange": 0
+    },
+    {
+      "id": "core.biome.void",
+      "nameKey": "biome.void.name",
+      "tileId": "hex_void",
+      "passable": false,
+      "movementCostPerHex": 999,
+      "visibilityRange": 0
+    },
+    {
+      "id": "core.biome.road",
+      "nameKey": "biome.road.name",
+      "tileId": "hex_road",
+      "passable": true,
+      "movementCostPerHex": 1,
+      "visibilityRange": 3
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "core.abilities.hero_commands",
+  "abilities": [
+    {
+      "id": "core.ability.hero.iron_order",
+      "nameKey": "ability.hero.iron_order.name",
+      "descriptionKey": "ability.hero.iron_order.desc",
+      "kind": "command",
+      "trigger": "onCommand",
+      "target": "allAllies",
+      "usesPerBattle": 1,
+      "durationRounds": 2,
+      "effects": [
+        { "type": "defenseModifier", "value": 3 }
+      ]
+    },
+    {
+      "id": "core.ability.hero.ash_harvest",
+      "nameKey": "ability.hero.ash_harvest.name",
+      "descriptionKey": "ability.hero.ash_harvest.desc",
+      "kind": "command",
+      "trigger": "onCommand",
+      "target": "corpses",
+      "usesPerBattle": 1,
+      "effects": [
+        { "type": "summonUnit", "unitId": "core.unit.ash.bone_servant", "count": 3 }
+      ]
+    },
+    {
+      "id": "core.ability.hero.root_call",
+      "nameKey": "ability.hero.root_call.name",
+      "descriptionKey": "ability.hero.root_call.desc",
+      "kind": "command",
+      "trigger": "onCommand",
+      "target": "allAllies",
+      "usesPerBattle": 1,
+      "durationRounds": 3,
+      "effects": [
+        { "type": "regeneration", "value": 4 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "core.rules.escape",
+  "baseChancePercent": 65,
+  "heroLogisticsMultiplier": 3,
+  "enemyLogisticsMultiplier": 2,
+  "minChancePercent": 20,
+  "maxChancePercent": 90,
+  "artifactsLostMin": 1,
+  "artifactsLostMax": 3,
+  "captivityDays": 5,
+  "armyLostOnEscape": true,
+  "defenderCanEscape": false,
+  "herolessArmyLossPercent": 40
+}

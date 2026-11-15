@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "core.hero_class.ash.archivist",
+  "factionId": "core.faction.ash",
+  "nameKey": "hero_class.ash.archivist.name",
+  "descriptionKey": "hero_class.ash.archivist.desc",
+  "startingStats": {
+    "attack": 1,
+    "defense": 2,
+    "spellpower": 4,
+    "knowledge": 3,
+    "leadership": 55,
+    "logistics": 2
+  },
+  "statWeights": {
+    "attack": 5,
+    "defense": 10,
+    "spellpower": 30,
+    "knowledge": 30,
+    "leadership": 15,
+    "logistics": 10
+  },
+  "passiveAbilityId": "core.ability.class.attrition_accounting",
+  "commandAbilityId": "core.ability.hero.ash_harvest",
+  "spellId": "core.spell.ash.dark_ray"
+}

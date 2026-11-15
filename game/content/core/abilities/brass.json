@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "core.abilities.brass",
+  "abilities": [
+    {
+      "id": "core.ability.brass.formation",
+      "nameKey": "ability.brass.formation.name",
+      "descriptionKey": "ability.brass.formation.desc",
+      "kind": "passive",
+      "trigger": "onCalculateDefense",
+      "effects": [
+        { "type": "defenseBonusIfAdjacentAlly", "value": 2 }
+      ]
+    },
+    {
+      "id": "core.ability.brass.piercing",
+      "nameKey": "ability.brass.piercing.name",
+      "descriptionKey": "ability.brass.piercing.desc",
+      "kind": "passive",
+      "trigger": "onCalculateDamage",
+      "effects": [
+        { "type": "ignoreDefensePercent", "value": 20 }
+      ]
+    },
+    {
+      "id": "core.ability.brass.charge",
+      "nameKey": "ability.brass.charge.name",
+      "descriptionKey": "ability.brass.charge.desc",
+      "kind": "passive",
+      "trigger": "onCalculateDamage",
+      "effects": [
+        { "type": "damageBonusPercentIfMovedHexes", "value": 25, "minHexes": 3 }
+      ]
+    },
+    {
+      "id": "core.ability.brass.banner",
+      "nameKey": "ability.brass.banner.name",
+      "descriptionKey": "ability.brass.banner.desc",
+      "kind": "active",
+      "trigger": "onAction",
+      "target": "aura",
+      "radius": 3,
+      "cooldownRounds": 4,
+      "durationRounds": 3,
+      "effects": [
+        { "type": "moraleBonus", "value": 1 }
+      ]
+    },
+    {
+      "id": "core.ability.brass.construct",
+      "nameKey": "ability.brass.construct.name",
+      "descriptionKey": "ability.brass.construct.desc",
+      "kind": "passive",
+      "trigger": "onApplyStatus",
+      "effects": [
+        { "type": "immuneMorale" },
+        { "type": "immuneDamageType", "damageType": "poison" }
+      ]
+    }
+  ]
+}

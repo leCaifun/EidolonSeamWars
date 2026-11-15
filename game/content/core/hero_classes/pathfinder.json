@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "core.hero_class.root.pathfinder",
+  "factionId": "core.faction.root",
+  "nameKey": "hero_class.root.pathfinder.name",
+  "descriptionKey": "hero_class.root.pathfinder.desc",
+  "startingStats": {
+    "attack": 2,
+    "defense": 2,
+    "spellpower": 2,
+    "knowledge": 2,
+    "leadership": 60,
+    "logistics": 4
+  },
+  "statWeights": {
+    "attack": 15,
+    "defense": 15,
+    "spellpower": 15,
+    "knowledge": 10,
+    "leadership": 25,
+    "logistics": 20
+  },
+  "passiveAbilityId": "core.ability.class.trails",
+  "commandAbilityId": "core.ability.hero.root_call",
+  "spellId": "core.spell.root.thorns"
+}

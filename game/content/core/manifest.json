@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "core",
+  "version": "0.3.0",
+  "gameVersionRange": ">=0.3.0 <0.4.0",
+  "dependencies": [],
+  "loadOrder": 0
+}

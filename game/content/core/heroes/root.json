@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "core.hero.root.tarn",
+  "factionId": "core.faction.root",
+  "classId": "core.hero_class.root.pathfinder",
+  "nameKey": "hero.root.tarn.name",
+  "descriptionKey": "hero.root.tarn.desc",
+  "level": 1,
+  "xp": 0,
+  "skillPoints": 0,
+  "stats": {
+    "attack": 2,
+    "defense": 2,
+    "spellpower": 2,
+    "knowledge": 2,
+    "leadership": 60,
+    "logistics": 4
+  },
+  "army": [
+    { "unitId": "core.unit.root.pathfinder", "count": 11 },
+    { "unitId": "core.unit.root.wolfdog", "count": 7 },
+    { "unitId": "core.unit.root.grove_druid", "count": 4 },
+    { "unitId": "core.unit.root.stone_ent", "count": 2 },
+    { "unitId": "core.unit.root.horned_warden", "count": 1 }
+  ],
+  "equipment": {
+    "head": null,
+    "neck": null,
+    "leftHand": null,
+    "rightHand": null,
+    "shoulders": null,
+    "torso": null,
+    "back": null,
+    "belt": null,
+    "legs": null,
+    "feet": null,
+    "ring1": null,
+    "ring2": null
+  },
+  "artifacts": []
+}

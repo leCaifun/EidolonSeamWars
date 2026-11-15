@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "core.faction.brass",
+  "nameKey": "faction.brass.name",
+  "descriptionKey": "faction.brass.desc",
+  "colors": {
+    "primary": "#B8863B",
+    "secondary": "#2C3E50",
+    "accent": "#C0392B",
+    "background": "#1C2833",
+    "frame": "#B8863B"
+  },
+  "maxSettlementLevel": 3,
+  "heroClassId": "core.hero_class.brass.marshal",
+  "tags": ["living", "disciplined"]
+}

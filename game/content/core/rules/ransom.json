@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "core.rules.ransom",
+  "unitPriceMultiplierPercent": 100,
+  "heroLevelCost": 1000,
+  "artifactCost": 100,
+  "keepsArmy": true,
+  "keepsArtifacts": true,
+  "movePointsAfter": 0,
+  "defenderCanRansom": false
+}

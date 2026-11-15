@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+ width="64" height="64" viewBox="0 0 64 64" role="img">
+<defs>
+ <linearGradient id="metal" x2="0" y2="1"><stop stop-color="#f3e6c2"/><stop offset=".22" stop-color="#9d927c"/><stop offset=".5" stop-color="#454b50"/><stop offset=".78" stop-color="#20272e"/><stop offset="1" stop-color="#090e14"/></linearGradient>
+ <linearGradient id="gold" x2=".15" y2="1"><stop stop-color="#fff0a5"/><stop offset=".35" stop-color="#d6a846"/><stop offset=".72" stop-color="#81501e"/><stop offset="1" stop-color="#392516"/></linearGradient>
+ <linearGradient id="stone" x2=".15" y2="1"><stop stop-color="#c4c0b2"/><stop offset=".45" stop-color="#777b78"/><stop offset="1" stop-color="#343b3e"/></linearGradient>
+ <linearGradient id="wood" x2="0" y2="1"><stop stop-color="#bd8a50"/><stop offset=".45" stop-color="#76502f"/><stop offset="1" stop-color="#34251d"/></linearGradient>
+ <radialGradient id="orb"><stop stop-color="#fff"/><stop offset=".18" stop-color="#d8f6ff"/><stop offset=".55" stop-color="#62b8d5"/><stop offset="1" stop-color="#24516e"/></radialGradient>
+ <linearGradient id="panel" x2="0" y2="1"><stop stop-color="#29343c"/><stop offset=".5" stop-color="#151e26"/><stop offset="1" stop-color="#0a1017"/></linearGradient>
+ <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur in="SourceAlpha" stdDeviation="2.2"/><feOffset dy="2"/><feComponentTransfer><feFuncA type="linear" slope=".55"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <pattern id="grain" width="17" height="13" patternUnits="userSpaceOnUse"><circle cx="2" cy="3" r=".65" fill="#fff" opacity=".13"/><circle cx="12" cy="9" r=".7" fill="#080d12" opacity=".17"/><path d="M5 12l2-1" stroke="#fff" stroke-width=".5" opacity=".1"/></pattern>
+ 
+</defs>
+<rect x="1" y="1" width="62" height="62" rx="5" fill="#070c12" stroke="#05080c" stroke-width="2"/>
+<rect x="2.5" y="2.5" width="59" height="59" rx="4" fill="url(#panel)" stroke="#c59a50" stroke-width="1.5"/>
+<rect x="4.48" y="4.48" width="55.04" height="55.04" rx="3" fill="none" stroke="#d8d1bc" stroke-opacity=".16" stroke-width=".8"/>
+<path d="M7 9.48V54.519999999999996" stroke="#c59a50" opacity=".28"/><path d="M57 9.48V54.519999999999996" stroke="#fff" opacity=".08"/>
+<g fill="#c59a50" stroke="#171d22" stroke-width=".6"><circle cx="7" cy="7" r="1.7"/><circle cx="57" cy="7" r="1.7"/><circle cx="7" cy="57" r="1.7"/><circle cx="57" cy="57" r="1.7"/></g>
+<path d="M5 13V51" stroke="#fff" opacity=".035" stroke-width="1"/><circle cx="32" cy="32" r="20" fill="#080e15" fill-opacity=".5" stroke="#d0a958" stroke-opacity=".5" stroke-width="1.5"/><circle cx="32" cy="32" r="15" fill="none" stroke="#fff" stroke-opacity=".08"/>
+</svg>

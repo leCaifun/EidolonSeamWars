@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "core.faction.ash",
+  "nameKey": "faction.ash.name",
+  "descriptionKey": "faction.ash.desc",
+  "colors": {
+    "primary": "#8E7CC3",
+    "secondary": "#3A3A3A",
+    "accent": "#D8D2C4",
+    "background": "#24212B",
+    "frame": "#8E7CC3"
+  },
+  "maxSettlementLevel": 4,
+  "heroClassId": "core.hero_class.ash.archivist",
+  "tags": ["undead"]
+}

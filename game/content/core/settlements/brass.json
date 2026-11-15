@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "core.settlement.brass",
+  "factionId": "core.faction.brass",
+  "nameKey": "settlement.brass.name",
+  "descriptionKey": "settlement.brass.desc",
+  "maxLevel": 3,
+  "levels": [
+    { "level": 1, "buildSlots": 4 },
+    { "level": 2, "buildSlots": 6 },
+    { "level": 3, "buildSlots": 8 }
+  ],
+  "defaultBuildings": ["core.building.brass.brass_townhall"],
+  "upgrades": [
+    {
+      "fromLevel": 1,
+      "toLevel": 2,
+      "cost": { "gold": 2500, "ore": 15, "wood": 10 },
+      "days": 1
+    },
+    {
+      "fromLevel": 2,
+      "toLevel": 3,
+      "cost": { "gold": 6000, "ore": 30, "crystal": 10 },
+      "days": 3
+    }
+  ]
+}

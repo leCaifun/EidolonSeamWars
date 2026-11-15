@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "core.rules.map_generation",
+  "gridWidth": 48,
+  "gridHeight": 48,
+  "offsetType": "odd-r",
+  "defaultBiome": "core.biome.grass",
+  "biomeDistribution": {
+    "core.biome.grass": 50,
+    "core.biome.forest": 15,
+    "core.biome.mountain": 5,
+    "core.biome.swamp": 8,
+    "core.biome.snow": 5,
+    "core.biome.desert": 7,
+    "core.biome.water": 8,
+    "core.biome.void": 2
+  },
+  "playerStartPositions": {
+    "minDistanceBetweenPlayers": 20,
+    "distanceFromBorder": 3
+  },
+  "objectCounts": {
+    "mines": 21,
+    "dwellings": 12,
+    "echoCaches": 6,
+    "patrols": 9
+  },
+  "heroMovementPointsPerDay": 8,
+  "armyMovementPointsPerDay": 6,
+  "roadMovementCostMultiplierPercent": 50,
+  "fogVisibilityRadius": 3,
+  "fogExploredRadius": 5
+}

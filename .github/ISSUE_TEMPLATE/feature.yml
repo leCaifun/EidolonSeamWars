@@ -1,0 +1,53 @@
+name: Feature request
+description: Предложить возможность в рамках текущего этапа ROADMAP
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Фичи вне текущего этапа `docs/ROADMAP.md` не принимаются в код.
+        Изменение дизайна требует записи в `docs/DECISIONS.md`.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Проблема
+      description: Какую задачу игрока или разработчика решает предложение.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Предложение
+      description: Как это должно работать. Ссылки на секции GDD приветствуются.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Этап ROADMAP
+      options:
+        - M0 (база)
+        - M1 (экономика и найм)
+        - M2 (RPG и контент)
+        - M3 (война за поселения)
+        - M4 (моды и сообщество)
+        - M5 (сеть и DLC)
+        - Вне текущего плана
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Альтернативы
+      description: Какие ещё варианты рассматривались и почему они хуже.
+
+  - type: textarea
+    id: content
+    attributes:
+      label: Влияние на контент и данные
+      description: Новые JSON-поля, схемы, локализационные ключи, моды.

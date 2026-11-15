@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "id": "core.buildings.ash",
+  "buildings": [
+    {
+      "id": "core.building.ash.bone_throne",
+      "factionId": "core.faction.ash",
+      "nameKey": "building.ash.bone_throne.name",
+      "descriptionKey": "building.ash.bone_throne.desc",
+      "requiredLevel": 1,
+      "cost": { "gold": 0 },
+      "dailyIncome": { "gold": 250 }
+    },
+    {
+      "id": "core.building.ash.scriptorium_names",
+      "factionId": "core.faction.ash",
+      "nameKey": "building.ash.scriptorium_names.name",
+      "descriptionKey": "building.ash.scriptorium_names.desc",
+      "requiredLevel": 1,
+      "cost": { "gold": 450, "wood": 5 },
+      "recruitment": { "unitId": "core.unit.ash.bone_servant", "growthPerDayMilli": 1000, "stockCap": 14 }
+    },
+    {
+      "id": "core.building.ash.quiet_choir_pits",
+      "factionId": "core.faction.ash",
+      "nameKey": "building.ash.quiet_choir_pits.name",
+      "descriptionKey": "building.ash.quiet_choir_pits.desc",
+      "requiredLevel": 1,
+      "cost": { "gold": 950, "wood": 5, "ore": 5 },
+      "recruitment": { "unitId": "core.unit.ash.corpse_whisperer", "growthPerDayMilli": 600, "stockCap": 9 }
+    },
+    {
+      "id": "core.building.ash.silent_hour_tower",
+      "factionId": "core.faction.ash",
+      "nameKey": "building.ash.silent_hour_tower.name",
+      "descriptionKey": "building.ash.silent_hour_tower.desc",
+      "requiredLevel": 2,
+      "cost": { "gold": 1900, "wood": 10, "ore": 10 },
+      "recruitment": { "unitId": "core.unit.ash.ghoul", "growthPerDayMilli": 400, "stockCap": 6 }
+    },
+    {
+      "id": "core.building.ash.ossuary",
+      "factionId": "core.faction.ash",
+      "nameKey": "building.ash.ossuary.name",
+      "descriptionKey": "building.ash.ossuary.desc",
+      "requiredLevel": 3,
+      "cost": { "gold": 3300, "wood": 15, "ore": 15, "crystal": 5 },
+      "recruitment": { "unitId": "core.unit.ash.bone_knight", "growthPerDayMilli": 250, "stockCap": 4 }
+    },
+    {
+      "id": "core.building.ash.ash_market",
+      "factionId": "core.faction.ash",
+      "nameKey": "building.ash.ash_market.name",
+      "descriptionKey": "building.ash.ash_market.desc",
+      "requiredLevel": 4,
+      "cost": { "gold": 6200, "wood": 20, "ore": 20, "crystal": 10 },
+      "recruitment": { "unitId": "core.unit.ash.ash_avatar", "growthPerDayMilli": 150, "stockCap": 3 }
+    }
+  ]
+}

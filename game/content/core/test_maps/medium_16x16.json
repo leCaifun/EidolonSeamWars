@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "core.test_map.medium_16x16",
+  "nameKey": "test_map.medium_16x16.name",
+  "width": 16,
+  "height": 16,
+  "offsetType": "odd-r",
+  "legend": {
+    "G": "core.biome.grass",
+    "F": "core.biome.forest",
+    "M": "core.biome.mountain",
+    "S": "core.biome.swamp",
+    "N": "core.biome.snow",
+    "D": "core.biome.desert",
+    "W": "core.biome.water",
+    "V": "core.biome.void",
+    "R": "core.biome.road"
+  },
+  "layout": [
+    "NNNNNNNNMMNNNNNN",
+    "NNNNNNNNMMNNNNNN",
+    "NNNNNNNNMMNNNRNN",
+    "GGFFFFFGMMRRRRVG",
+    "GGFFFFFRRRRGGGGG",
+    "GGFFFFRRMMGGGMMG",
+    "GGFFFRRGMMGGGMVM",
+    "GGGGGRGGMMGSGMMG",
+    "WWWWWRWWWWWGWWWW",
+    "GGGGGRGGMMGSGGGG",
+    "GGGGRRGGMMFFFFGG",
+    "GGGRRGGGMMFFFFGG",
+    "GGRRGGGGGGFFFFGG",
+    "DDRDDDGGMMFFFFGG",
+    "DDDDDDGGMMGGGGGG",
+    "DDDDDDGGMMGGGGGG"
+  ],
+  "objects": [
+    { "col": 13, "row": 2, "objectId": "core.map_object.settlement_ash" },
+    { "col": 13, "row": 4, "objectId": "core.map_object.mine_crystal" },
+    { "col": 7, "row": 4, "objectId": "core.map_object.patrol_ash" },
+    { "col": 3, "row": 6, "objectId": "core.map_object.mine_wood" },
+    { "col": 12, "row": 6, "objectId": "core.map_object.echo_cache" },
+    { "col": 11, "row": 9, "objectId": "core.map_object.mine_ore" },
+    { "col": 5, "row": 9, "objectId": "core.map_object.patrol_root" },
+    { "col": 5, "row": 10, "objectId": "core.map_object.mine_gold" },
+    { "col": 10, "row": 12, "objectId": "core.map_object.patrol_brass" },
+    { "col": 6, "row": 12, "objectId": "core.map_object.dwelling_root" },
+    { "col": 2, "row": 13, "objectId": "core.map_object.settlement_brass" }
+  ],
+  "startPositions": {
+    "player": { "col": 2, "row": 13, "factionId": "core.faction.brass", "heroId": "core.hero.brass.idra_veyn" },
+    "enemy": { "col": 13, "row": 2, "factionId": "core.faction.ash", "heroId": "core.hero.ash.selha" }
+  },
+  "testCases": [
+    { "id": "MM-01", "type": "movementCost", "from": { "col": 2, "row": 13 }, "to": { "col": 5, "row": 8 }, "expectedCost": 5 },
+    { "id": "MM-02", "type": "movementCost", "from": { "col": 2, "row": 13 }, "to": { "col": 8, "row": 4 }, "expectedCost": 10 },
+    { "id": "MM-03", "type": "movementCost", "from": { "col": 2, "row": 13 }, "to": { "col": 13, "row": 2 }, "expectedCost": 16 },
+    { "id": "MM-04", "type": "unreachable", "from": { "col": 2, "row": 13 }, "to": { "col": 14, "row": 6 } },
+    { "id": "MM-05", "type": "collision", "from": { "col": 2, "row": 13 }, "to": { "col": 7, "row": 4 }, "expectedCost": 9, "blockingObjectId": "core.map_object.patrol_ash" },
+    { "id": "MM-06", "type": "fogRadius", "at": { "col": 2, "row": 13 }, "radius": 3 }
+  ]
+}

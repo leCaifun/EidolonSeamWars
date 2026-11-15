@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "core.abilities.ash",
+  "abilities": [
+    {
+      "id": "core.ability.ash.undead",
+      "nameKey": "ability.ash.undead.name",
+      "descriptionKey": "ability.ash.undead.desc",
+      "kind": "passive",
+      "trigger": "onApplyStatus",
+      "effects": [
+        { "type": "immuneMorale" },
+        { "type": "immuneDamageType", "damageType": "poison" }
+      ]
+    },
+    {
+      "id": "core.ability.ash.curse",
+      "nameKey": "ability.ash.curse.name",
+      "descriptionKey": "ability.ash.curse.desc",
+      "kind": "active",
+      "trigger": "onAction",
+      "target": "enemyStack",
+      "range": 5,
+      "cooldownRounds": 3,
+      "durationRounds": 3,
+      "effects": [
+        { "type": "attackModifier", "value": -2 }
+      ]
+    },
+    {
+      "id": "core.ability.ash.bloodthirst",
+      "nameKey": "ability.ash.bloodthirst.name",
+      "descriptionKey": "ability.ash.bloodthirst.desc",
+      "kind": "passive",
+      "trigger": "onDamageDealt",
+      "effects": [
+        { "type": "healPercentOfDamage", "value": 20 }
+      ]
+    },
+    {
+      "id": "core.ability.ash.bone_armor",
+      "nameKey": "ability.ash.bone_armor.name",
+      "descriptionKey": "ability.ash.bone_armor.desc",
+      "kind": "passive",
+      "trigger": "onCalculateDamageTaken",
+      "effects": [
+        { "type": "damageTypeResistance", "damageType": "physical", "value": 25 }
+      ]
+    },
+    {
+      "id": "core.ability.ash.ash_burst",
+      "nameKey": "ability.ash.ash_burst.name",
+      "descriptionKey": "ability.ash.ash_burst.desc",
+      "kind": "active",
+      "trigger": "onAction",
+      "target": "enemyArea",
+      "radius": 2,
+      "cooldownRounds": 4,
+      "effects": [
+        { "type": "damage", "damageType": "fire", "min": 8, "max": 12 }
+      ]
+    }
+  ]
+}
