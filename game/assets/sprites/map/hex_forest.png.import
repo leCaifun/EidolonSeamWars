@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1qwdc8vl0duy"
-path="res://.godot/imported/hex_water.svg-e7dbf72adf2f445e2a1a9504ac323e93.ctex"
+uid="uid://koio33pap3y2"
+path="res://.godot/imported/hex_forest.png-2ee69083d159807d49b35f255c2fa3df.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/map/hex_water.svg"
-dest_files=["res://.godot/imported/hex_water.svg-e7dbf72adf2f445e2a1a9504ac323e93.ctex"]
+source_file="res://assets/sprites/map/hex_forest.png"
+dest_files=["res://.godot/imported/hex_forest.png-2ee69083d159807d49b35f255c2fa3df.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

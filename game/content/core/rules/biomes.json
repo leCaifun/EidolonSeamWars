@@ -61,9 +61,9 @@
       "visibilityRange": 0
     },
     {
-      "id": "core.biome.void",
-      "nameKey": "biome.void.name",
-      "tileId": "hex_void",
+      "id": "core.biome.seam",
+      "nameKey": "biome.seam.name",
+      "tileId": "hex_seam",
       "passable": false,
       "movementCostPerHex": 999,
       "visibilityRange": 0

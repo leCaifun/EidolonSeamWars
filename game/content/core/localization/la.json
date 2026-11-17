@@ -39,7 +39,7 @@
     "biome.snow.name": "Nix",
     "biome.desert.name": "Desertum",
     "biome.water.name": "Aqua",
-    "biome.void.name": "Inane",
+    "biome.seam.name": "Inane",
 
     "resource.gold.name": "Aurum",
     "resource.wood.name": "Lignum",

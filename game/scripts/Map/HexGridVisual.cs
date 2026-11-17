@@ -41,7 +41,7 @@ public partial class HexGridVisual : Node2D
 			return cached;
 		}
 
-		string path = $"{TileTextureFolder}{tileId}.svg";
+		string path = $"{TileTextureFolder}{tileId}.png";
 		Texture2D? texture = ResourceLoader.Exists(path) ? GD.Load<Texture2D>(path) : null;
 
 		if (texture is null)

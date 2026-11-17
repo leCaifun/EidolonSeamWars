@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jw82xw1m17h7"
-path="res://.godot/imported/hex_forest.svg-28f065424705733f013155915a179029.ctex"
+uid="uid://c242msqxnwv5v"
+path="res://.godot/imported/hex_seam.png-c8d68b2fb0b3a2e8c8153c88ca269361.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/map/hex_forest.svg"
-dest_files=["res://.godot/imported/hex_forest.svg-28f065424705733f013155915a179029.ctex"]
+source_file="res://assets/sprites/map/hex_seam.png"
+dest_files=["res://.godot/imported/hex_seam.png-c8d68b2fb0b3a2e8c8153c88ca269361.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

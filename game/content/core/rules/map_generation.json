@@ -13,7 +13,7 @@
     "core.biome.snow": 5,
     "core.biome.desert": 7,
     "core.biome.water": 8,
-    "core.biome.void": 2
+    "core.biome.seam": 2
   },
   "playerStartPositions": {
     "minDistanceBetweenPlayers": 20,

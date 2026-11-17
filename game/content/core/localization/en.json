@@ -39,7 +39,7 @@
     "biome.snow.name": "Snow",
     "biome.desert.name": "Desert",
     "biome.water.name": "Water",
-    "biome.void.name": "Void",
+    "biome.seam.name": "Seam",
     "biome.road.name": "Road",
     "map_object.settlement_brass.name": "March Fortress City",
     "map_object.settlement_brass.desc": "Brass March settlement guarded by a garrison.",

@@ -39,7 +39,7 @@
     "biome.snow.name": "Снег",
     "biome.desert.name": "Пустыня",
     "biome.water.name": "Вода",
-    "biome.void.name": "Шов",
+    "biome.seam.name": "Шов",
     "biome.road.name": "Дорога",
     "map_object.settlement_brass.name": "Город-крепость Предела",
     "map_object.settlement_brass.desc": "Поселение Латунного Предела под охраной гарнизона.",

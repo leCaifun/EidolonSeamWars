@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mqgdm5yhgayi"
-path="res://.godot/imported/hex_road.svg-8ee70ba28bca41684102eed0b0caa682.ctex"
+uid="uid://didsla0mwegxs"
+path="res://.godot/imported/hex_water.png-60d83a32e2a8083fadde92dcdcf74337.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/map/hex_road.svg"
-dest_files=["res://.godot/imported/hex_road.svg-8ee70ba28bca41684102eed0b0caa682.ctex"]
+source_file="res://assets/sprites/map/hex_water.png"
+dest_files=["res://.godot/imported/hex_water.png-60d83a32e2a8083fadde92dcdcf74337.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

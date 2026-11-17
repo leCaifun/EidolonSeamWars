@@ -71,6 +71,33 @@ public sealed class MapGenerator
             biomeByHex[hex] = PickBiome(rng, weighted, totalWeight);
         }
 
+        // === НАЛОЖЕНИЕ ШВА ПО ПЕРИМЕТРУ ===
+        // Ищем биом seam напрямую по ID
+        BiomeDefinition? seamBiome = _biomes.Get("core.biome.seam");
+        string? seamBiomeId = seamBiome?.Id;
+
+        if (seamBiomeId is not null)
+        {
+            int borderCount = 0;
+            foreach (Hex hex in grid.AllHexes())
+            {
+                if (IsBorderHex(hex, grid))
+                {
+                    biomeByHex[hex] = seamBiomeId;
+                    borderCount++;
+                }
+            }
+
+            _logger?.Log(LogEvent.Create(
+                LogLevel.Info,
+                "Map",
+                $"Applied seam border: {borderCount} border hexes.",
+                fields: new Dictionary<string, string>
+                {
+                    ["borderCount"] = borderCount.ToString()
+                }));
+        }
+
         HashSet<Hex> occupied = new();
         List<MapLayoutObject> objects = new();
         IReadOnlyList<MapObjectDefinition> settlements = _objects.ByType(SettlementType);
@@ -83,7 +110,13 @@ public sealed class MapGenerator
                     $"Старт «{start.FactionId}» вне сетки: {start.Position}.",
                     nameof(request));
             }
-
+            // Проверяем, что старт не на seam
+            if (IsBorderHex(start.Position, grid))
+            {
+                throw new ArgumentException(
+                    $"Старт «{start.FactionId}» на граничном гексе (seam): {start.Position}.",
+                    nameof(request));
+            }
             if (!occupied.Add(start.Position))
             {
                 throw new ArgumentException(
@@ -130,10 +163,10 @@ public sealed class MapGenerator
             }
         }
 
-        PlaceType(rng, MineType, "mine", settings.MineCount, candidates, objects);
-        PlaceType(rng, DwellingType, "dwelling", settings.DwellingCount, candidates, objects);
-        PlaceType(rng, EchoCacheType, "cache", settings.EchoCacheCount, candidates, objects);
-        PlaceType(rng, PatrolType, "patrol", settings.PatrolCount, candidates, objects);
+        PlaceType(rng, MineType, "mine", settings.MineCount, candidates, biomeByHex, objects);
+        PlaceType(rng, DwellingType, "dwelling", settings.DwellingCount, candidates, biomeByHex, objects);
+        PlaceType(rng, EchoCacheType, "cache", settings.EchoCacheCount, candidates, biomeByHex, objects);
+        PlaceType(rng, PatrolType, "patrol", settings.PatrolCount, candidates, biomeByHex, objects);
 
         List<MapTile> tiles = new(grid.HexCount);
 
@@ -202,6 +235,8 @@ public sealed class MapGenerator
         }
 
         HexGrid grid = new(width, height, settings.Layout);
+
+        // Проверяем, что стартовые позиции не на границе
         Hex[] anchors =
         {
             grid.HexAt(margin, height - 1 - margin),
@@ -209,15 +244,13 @@ public sealed class MapGenerator
             grid.HexAt(width / 2, height / 2)
         };
 
+        // Проверяем, что ни один якорь не на границе
         for (int i = 0; i < anchors.Length; i++)
         {
-            for (int j = 0; j < i; j++)
+            if (IsBorderHex(anchors[i], grid))
             {
-                if (anchors[i] == anchors[j])
-                {
-                    throw new InvalidOperationException(
-                        $"Стартовые гексы совпали: {anchors[i]}.");
-                }
+                throw new InvalidOperationException(
+                    $"Стартовая позиция {i} попала на границу карты: {anchors[i]}. Увеличьте DistanceFromBorder.");
             }
         }
 
@@ -244,6 +277,7 @@ public sealed class MapGenerator
         string idToken,
         int count,
         List<Hex> candidates,
+        Dictionary<Hex, string> biomeByHex,  
         List<MapLayoutObject> objects)
     {
         if (count <= 0)
@@ -258,7 +292,13 @@ public sealed class MapGenerator
             throw new InvalidOperationException(
                 $"Нет определений объектов типа «{type}», а требуется {count}.");
         }
-
+        // Фильтруем граничные гексы (seam) из кандидатов
+        candidates.RemoveAll(hex => 
+        {
+            var biomeId = biomeByHex[hex];
+            var biome = _biomes.Get(biomeId);
+            return biome is not null && string.Equals(biome.Id, "core.biome.seam", StringComparison.Ordinal);
+        });
         for (int i = 0; i < count; i++)
         {
             if (candidates.Count == 0)
@@ -306,5 +346,28 @@ public sealed class MapGenerator
     {
         int index = id.LastIndexOf('.');
         return index >= 0 && index + 1 < id.Length ? id[(index + 1)..] : id;
+    }
+    /// <summary>
+    /// Проверяет, является ли гекс граничным (имеет хотя бы одного соседа вне сетки).
+    /// </summary>
+    private static bool IsBorderHex(Hex hex, HexGrid grid)
+    {
+        // Шесть направлений pointy-top в аксиальных координатах
+        var directions = new[]
+        {
+            new Hex(+1, 0), new Hex(+1, -1), new Hex(0, -1),
+            new Hex(-1, 0), new Hex(-1, +1), new Hex(0, +1)
+        };
+
+        foreach (var dir in directions)
+        {
+            Hex neighbor = hex + dir;
+            if (!grid.Contains(neighbor))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

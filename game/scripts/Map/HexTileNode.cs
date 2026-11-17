@@ -19,10 +19,28 @@ public partial class HexTileNode : Node2D
 		Coordinate = coordinate;
 		Position = HexMetrics.ToPixel(coordinate);
 
-		AddChild(new Sprite2D
+		if (texture != null)
 		{
-			Texture = texture,
-			Centered = true
-		});
+			var sprite = new Sprite2D
+			{
+				Texture = texture,
+				Centered = true
+			};
+
+			// Масштабируем текстуру под размер гекса
+			// Для pointy-top: ширина = Size * √3, высота = Size * 2
+			float targetWidth = HexMetrics.Size * Mathf.Sqrt(3f);
+			float targetHeight = HexMetrics.Size * 2f;
+			
+			// Получаем реальный размер текстуры
+			Vector2 textureSize = texture.GetSize();
+			
+			sprite.Scale = new Vector2(
+				targetWidth / textureSize.X,
+				targetHeight / textureSize.Y
+			);
+
+			AddChild(sprite);
+		}
 	}
 }

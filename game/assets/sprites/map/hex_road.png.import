@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3v05scnd72oi"
-path="res://.godot/imported/hex_swamp.svg-5c34705047467aefadb0436105321c5a.ctex"
+uid="uid://b3y1ykgp1553t"
+path="res://.godot/imported/hex_road.png-03def9154eab57f1c7999d99316ddf14.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/map/hex_swamp.svg"
-dest_files=["res://.godot/imported/hex_swamp.svg-5c34705047467aefadb0436105321c5a.ctex"]
+source_file="res://assets/sprites/map/hex_road.png"
+dest_files=["res://.godot/imported/hex_road.png-03def9154eab57f1c7999d99316ddf14.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
