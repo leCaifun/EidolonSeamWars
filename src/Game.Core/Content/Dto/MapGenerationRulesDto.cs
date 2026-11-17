@@ -25,6 +25,12 @@ public sealed class MapGenerationRulesDto
     public string DefaultBiome { get; init; } = string.Empty;
 
     /// <summary>Веса распределения биомов в процентах; сумма обязана быть 100.</summary>
+    /// <summary>
+    /// ID биома граничного кольца карты (бордюр «Шов»); пусто — без бордюра.
+    /// Биом непроходим и не входит в <see cref="BiomeDistribution"/>.
+    /// </summary>
+    public string BorderBiome { get; init; } = string.Empty;
+
     public IReadOnlyDictionary<string, int> BiomeDistribution { get; init; } =
         new Dictionary<string, int>(StringComparer.Ordinal);
 

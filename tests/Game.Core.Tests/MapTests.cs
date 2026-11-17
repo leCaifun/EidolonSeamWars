@@ -321,6 +321,220 @@ public class MapTests
         Assert.Equal(goal, player.Position);
     }
 
+    private static Party CreateEnemy(string id, Hex position)
+    {
+        return new Party(
+            id,
+            PartyRole.Enemy,
+            "core.faction.ash",
+            null,
+            Army.HeroLessCapacity,
+            position,
+            8);
+    }
+
+    [Fact]
+    public void Pathfinder_BlockedIntermediateHex_IsBypassedOrFails()
+    {
+        HandmadeMapResult loaded = Load(SmallMap);
+        Hex start = At(loaded, 1, 5);
+        Hex goal = At(loaded, 4, 5);
+        Pathfinder pathfinder = new();
+
+        PathResult free = pathfinder.FindPath(loaded.Map, start, goal);
+        Assert.True(free.Success, free.Failure.ToString());
+        Assert.True(free.Path.Count >= 3, "Нужен хотя бы один промежуточный гекс.");
+
+        Hex middle = free.Path[1];
+        HashSet<Hex> blocked = new() { middle };
+
+        PathResult detour = pathfinder.FindPath(loaded.Map, start, goal, false, blocked);
+
+        if (detour.Success)
+        {
+            Assert.DoesNotContain(middle, detour.Path);
+            Assert.True(detour.Cost >= free.Cost);
+        }
+        else
+        {
+            Assert.Equal(PathFailure.NoPath, detour.Failure);
+        }
+    }
+
+    [Fact]
+    public void Pathfinder_GoalInBlockedSet_IsStillReachable()
+    {
+        HandmadeMapResult loaded = Load(SmallMap);
+        Hex start = At(loaded, 1, 5);
+        Hex goal = At(loaded, 2, 5);
+
+        PathResult path = new Pathfinder().FindPath(
+            loaded.Map,
+            start,
+            goal,
+            false,
+            new HashSet<Hex> { goal });
+
+        Assert.True(path.Success, path.Failure.ToString());
+        Assert.Equal(goal, path.Path[^1]);
+    }
+
+    [Fact]
+    public void Pathfinder_AllStartNeighborsBlocked_ReturnsNoPath()
+    {
+        HandmadeMapResult loaded = Load(SmallMap);
+        Hex start = At(loaded, 1, 5);
+        Hex goal = At(loaded, 4, 5);
+
+        HashSet<Hex> blocked = start.GetNeighbors()
+            .Where(neighbor => loaded.Map.Grid.Contains(neighbor))
+            .ToHashSet();
+
+        PathResult path = new Pathfinder().FindPath(loaded.Map, start, goal, false, blocked);
+
+        Assert.False(path.Success);
+        Assert.Equal(PathFailure.NoPath, path.Failure);
+    }
+
+    [Fact]
+    public void Pathfinder_ComputeReachable_BlockedHexIsReachableButNotExpanded()
+    {
+        HandmadeMapResult loaded = Load(SmallMap);
+        Hex start = At(loaded, 1, 5);
+        Pathfinder pathfinder = new();
+
+        IReadOnlyDictionary<Hex, int> free = pathfinder.ComputeReachable(loaded.Map, start, int.MaxValue);
+
+        HashSet<Hex> blocked = start.GetNeighbors()
+            .Where(neighbor => loaded.Map.Grid.Contains(neighbor) && loaded.Map.IsPassable(neighbor))
+            .ToHashSet();
+
+        IReadOnlyDictionary<Hex, int> limited =
+            pathfinder.ComputeReachable(loaded.Map, start, int.MaxValue, blocked);
+
+        foreach (Hex hex in blocked)
+        {
+            Assert.True(limited.ContainsKey(hex));
+        }
+
+        Assert.True(limited.Count <= free.Count);
+        Assert.Equal(blocked.Count + 1, limited.Count);
+    }
+
+    [Fact]
+    public void MoveParty_ThroughAnotherParty_DoesNotCollideEnRoute()
+    {
+        HandmadeMapResult loaded = Load(SmallMap);
+        Hex start = At(loaded, 1, 5);
+        Hex goal = At(loaded, 4, 5);
+        PathResult free = new Pathfinder().FindPath(loaded.Map, start, goal);
+        Assert.True(free.Success, free.Failure.ToString());
+
+        Hex middle = free.Path[1];
+        Party player = new(
+            "party.player",
+            PartyRole.Player,
+            "core.faction.brass",
+            null,
+            Army.HeroLessCapacity,
+            start,
+            40);
+
+        Party enemy = CreateEnemy("party.enemy", middle);
+
+        MapState state = new(
+            loaded.Map,
+            new[] { player, enemy },
+            new FogOfWar(loaded.Map.Grid),
+            MapContentAdapter.CreateSettings(Registry));
+
+        MapCommandResult result = state.Apply(MapCommand.MoveParty("party.player", goal));
+
+        Assert.Null(result.EncounterPartyId);
+
+        if (result.Outcome is MapCommandOutcome.NoPath)
+        {
+            Assert.Equal(start, player.Position);
+            Assert.Equal(40, player.MovementPoints);
+        }
+        else
+        {
+            Assert.Equal(goal, player.Position);
+            Assert.True(result.Cost >= free.Cost);
+        }
+
+        Assert.Equal(middle, enemy.Position);
+    }
+
+    [Fact]
+    public void MoveParty_SurroundedByParties_ReturnsNoPathAndKeepsMovement()
+    {
+        HandmadeMapResult loaded = Load(SmallMap);
+        Hex start = At(loaded, 1, 5);
+        Hex goal = At(loaded, 4, 5);
+
+        Party player = new(
+            "party.player",
+            PartyRole.Player,
+            "core.faction.brass",
+            null,
+            Army.HeroLessCapacity,
+            start,
+            40);
+
+        List<Party> parties = new() { player };
+        int index = 0;
+
+        foreach (Hex neighbor in start.GetNeighbors())
+        {
+            if (loaded.Map.Grid.Contains(neighbor))
+            {
+                parties.Add(CreateEnemy($"party.enemy.{index++}", neighbor));
+            }
+        }
+
+        MapState state = new(
+            loaded.Map,
+            parties,
+            new FogOfWar(loaded.Map.Grid),
+            MapContentAdapter.CreateSettings(Registry));
+
+        MapCommandResult result = state.Apply(MapCommand.MoveParty("party.player", goal));
+
+        Assert.Equal(MapCommandOutcome.NoPath, result.Outcome);
+        Assert.Equal(start, player.Position);
+        Assert.Equal(40, player.MovementPoints);
+    }
+
+    [Fact]
+    public void MapState_ComputeReachable_UsesPartyMovementAndBlocksOtherParties()
+    {
+        HandmadeMapResult loaded = Load(SmallMap);
+        Hex start = At(loaded, 1, 5);
+        Hex neighbor = start.GetNeighbors()
+            .First(hex => loaded.Map.Grid.Contains(hex) && loaded.Map.IsPassable(hex));
+
+        Party player = new(
+            "party.player",
+            PartyRole.Player,
+            "core.faction.brass",
+            null,
+            Army.HeroLessCapacity,
+            start,
+            40);
+
+        MapState state = new(
+            loaded.Map,
+            new[] { player, CreateEnemy("party.enemy", neighbor) },
+            new FogOfWar(loaded.Map.Grid),
+            MapContentAdapter.CreateSettings(Registry));
+
+        IReadOnlyDictionary<Hex, int> reachable = state.ComputeReachable("party.player");
+
+        Assert.True(reachable.ContainsKey(neighbor));
+        Assert.Empty(state.ComputeReachable("party.missing"));
+    }
+
     [Fact]
     public void EnterObject_NonBlockingObject_IsVisited()
     {
@@ -466,6 +680,46 @@ public class MapTests
         Assert.NotEqual(
             first.Tiles.Select(tile => tile.BiomeId),
             second.Tiles.Select(tile => tile.BiomeId));
+    }
+
+    [Fact]
+    public void Generator_BorderRingIsSeamAndInteriorHasNone()
+    {
+        ContentRegistry registry = Registry;
+        MapGenerationSettings settings = MapContentAdapter.CreateSettings(registry);
+        BiomeCatalog biomes = MapContentAdapter.CreateBiomes(registry);
+        MapObjectCatalog objects = MapContentAdapter.CreateMapObjects(registry);
+
+        Assert.Equal("core.biome.seam", settings.BorderBiomeId);
+        Assert.False(settings.BiomeDistribution.ContainsKey(settings.BorderBiomeId));
+
+        IReadOnlyList<MapStartDefinition> starts = MapGenerator.CreateDefaultStarts(
+            settings,
+            new[] { "core.faction.brass", "core.faction.ash", "core.faction.root" });
+
+        MapLayoutDefinition layout = new MapGenerator(biomes, objects)
+            .Generate(new MapStartRequest(31UL, settings, starts));
+        GameMap map = MapContentAdapter.CreateMap(layout, biomes, objects);
+
+        foreach (Hex hex in map.Grid.AllHexes())
+        {
+            bool isBorder = hex.GetNeighbors().Any(neighbor => !map.Grid.Contains(neighbor));
+            bool isSeam = string.Equals(
+                map.GetBiome(hex).Id,
+                settings.BorderBiomeId,
+                StringComparison.Ordinal);
+
+            Assert.Equal(isBorder, isSeam);
+            if (isBorder)
+            {
+                Assert.False(map.IsPassable(hex));
+            }
+        }
+
+        foreach (MapStartDefinition start in starts)
+        {
+            Assert.True(map.IsPassable(start.Position));
+        }
     }
 
     [Fact]

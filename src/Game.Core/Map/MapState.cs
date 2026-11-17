@@ -144,8 +144,16 @@ public sealed class MapState
                 MapCommandOutcome.Impassable);
         }
 
-        // Блокирующие объекты нельзя пройти насквозь: бой возможен только в целевом гексе.
-        PathResult path = _pathfinder.FindPath(Map, party.Position, target, blockOccupiedTiles: true);
+        // Блокирующие объекты и чужие партии нельзя пройти насквозь: бой возможен
+        // только в целевом гексе (KI-017).
+        HashSet<Hex> occupiedByParties = GetOtherPartyHexes(party);
+
+        PathResult path = _pathfinder.FindPath(
+            Map,
+            party.Position,
+            target,
+            blockOccupiedTiles: true,
+            blockedHexes: occupiedByParties);
 
         if (!path.Success)
         {
@@ -376,6 +384,46 @@ public sealed class MapState
                 Fog.MarkExplored(factionId, party.Position, explored);
             }
         }
+    }
+
+    /// <summary>
+    /// Возвращает гексы, занятые партиями, кроме указанной: они блокируют транзитный путь.
+    /// </summary>
+    private HashSet<Hex> GetOtherPartyHexes(Party mover)
+    {
+        HashSet<Hex> hexes = new();
+
+        foreach (Party other in _parties.Values)
+        {
+            if (!ReferenceEquals(other, mover))
+            {
+                hexes.Add(other.Position);
+            }
+        }
+
+        return hexes;
+    }
+
+    /// <summary>
+    /// Строит область достижимости партии в пределах её остатка очков движения:
+    /// чужие партии и их гексы не пропускают путь транзитом (гекс с партией достижим как цель).
+    /// </summary>
+    /// <param name="partyId">ID партии.</param>
+    /// <returns>Гексы и минимальная стоимость входа; пусто, если партия не найдена.</returns>
+    public IReadOnlyDictionary<Hex, int> ComputeReachable(string partyId)
+    {
+        Party? party = FindParty(partyId);
+
+        if (party is null)
+        {
+            return new Dictionary<Hex, int>();
+        }
+
+        return _pathfinder.ComputeReachable(
+            Map,
+            party.Position,
+            party.MovementPoints,
+            GetOtherPartyHexes(party));
     }
 
     private IEnumerable<Party> SortedParties()

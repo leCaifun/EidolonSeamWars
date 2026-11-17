@@ -2173,6 +2173,40 @@ public sealed class ContentValidator
             // Ошибка уже зафиксирована.
         }
 
+        if (!string.IsNullOrWhiteSpace(rules.BorderBiome)
+            && RequireReference(
+                registry.Biomes,
+                rules.BorderBiome,
+                "CONTENT_REF_BIOME_MISSING",
+                "биом",
+                source,
+                rules.Id,
+                "borderBiome",
+                diagnostics))
+        {
+            if (registry.Biomes[rules.BorderBiome].Value.Passable)
+            {
+                Error(
+                    diagnostics,
+                    "CONTENT_MAP_BORDER_PASSABLE",
+                    $"Граничный биом «{rules.BorderBiome}» должен быть непроходимым.",
+                    source,
+                    rules.Id,
+                    "borderBiome");
+            }
+
+            if (rules.BiomeDistribution.ContainsKey(rules.BorderBiome))
+            {
+                Error(
+                    diagnostics,
+                    "CONTENT_MAP_BORDER_IN_DISTRIBUTION",
+                    $"Граничный биом «{rules.BorderBiome}» не должен входить в biomeDistribution.",
+                    source,
+                    rules.Id,
+                    "borderBiome");
+            }
+        }
+
         int distributionSum = 0;
 
         foreach (KeyValuePair<string, int> pair in rules.BiomeDistribution)

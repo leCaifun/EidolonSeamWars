@@ -38,7 +38,9 @@ public sealed class UnitDef
         Resistances resistances,
         IEnumerable<string>? abilityIds = null,
         IEnumerable<string>? promotionIds = null,
-        int ammo = 0)
+        int ammo = 0,
+        string unitClass = "",
+        DamageType damageType = DamageType.Physical)
     {
         Id = RequireText(id, nameof(id));
         SchemaVersion = RequirePositive(schemaVersion, nameof(schemaVersion));
@@ -70,6 +72,8 @@ public sealed class UnitDef
         _abilityIds = (ReadOnlyCollection<string>)CopyIds(abilityIds, nameof(abilityIds));
         _promotionIds = (ReadOnlyCollection<string>)CopyIds(promotionIds, nameof(promotionIds));
         Ammo = RequireNonNegative(ammo, nameof(ammo));
+        UnitClass = unitClass ?? string.Empty;
+        DamageType = damageType;
     }
 
     /// <summary>Стабильный строковый ID записи контента.</summary>
@@ -134,6 +138,15 @@ public sealed class UnitDef
 
     /// <summary>Зарезервированный боезапас; в MVP не влияет на бой (ADR-015).</summary>
     public int Ammo { get; }
+
+    /// <summary>
+    /// Класс юнита из контента (например, <c>undead</c>, <c>construct</c>, <c>caster</c>);
+    /// пустая строка, если класс не задан. Используется правилами морали (иммунитет по тегам).
+    /// </summary>
+    public string UnitClass { get; }
+
+    /// <summary>Тип урона, который наносит атака юнита (GDD §7.4).</summary>
+    public DamageType DamageType { get; }
 
     /// <summary>
     /// Создаёт стак этого юнита с указанным количеством.

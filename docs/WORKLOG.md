@@ -17,7 +17,9 @@
 6. [W-0005 · 2026-11-13 · M0 Localization Draft](#6-w-0005--2026-11-13--m0-localization-draft)
 7. [W-0006 · 2026-11-15 · Этап 03: контентный конвейер](#7-w-0006--2026-11-15--этап-03-контентный-конвейер)
 8. [W-0007 · 2026-11-16 · Этап 04: карта, A*, туман, экран карты](#8-w-0007--2026-11-16--этап-04-карта-a-туман-экран-карты)
-9. [Связанные документы](#9-связанные-документы)
+9. [W-0008 · 2026-11-17 · Блокировка пути партиями и этап 05a](#9-w-0008--2026-11-17--блокировка-пути-партиями-и-этап-05a)
+10. [W-0009 · 2026-11-17 · Ревизия Void → Seam и этап 05b (мораль)](#10-w-0009--2026-11-17--ревизия-void--seam-и-этап-05b-мораль)
+11. [Связанные документы](#11-связанные-документы)
 
 ## 1. Правила ведения
 
@@ -751,7 +753,58 @@ feat(map): finish stage 04 map core fixes and add map screen
 Refs: prompts/04_adventure_map.md, ADR-027, ADR-028, ADR-033, ADR-034
 ```
 
-## 9. Связанные документы
+## 9. W-0008 · 2026-11-17 · Блокировка пути партиями и этап 05a
+
+### Сделано
+
+- KI-017 закрыт: `Pathfinder.FindPath/ComputeReachable` принимают `blockedHexes`; `MapState` передаёт гексы других партий, добавлен `MapState.ComputeReachable(partyId)`; 7 новых тестов в `MapTests`.
+- Этап 05a (ADR-035): `BattleRules`, `DamageCalculator`, `DamageRequest`, `DamageResult`, `BattleContentAdapter`, расширение `UnitDef`; тесты `DamageCalculatorTests`, `BattleContentTests`.
+
+### Не проверено
+
+- `dotnet build/test` не запускались (нет SDK в среде): KI-019.
+
+**Commit-message:**
+
+```
+feat(battle): add damage calculator and block paths through parties
+
+- pathfinder: blockedHexes for transit through other parties (KI-017)
+- battle: BattleRules, DamageCalculator, content adapter, ADR-035
+```
+
+## 10. W-0009 · 2026-11-17 · Ревизия Void → Seam и этап 05b (мораль)
+
+### Ревизия замены Void → Seam
+
+- В коде, JSON и английском/русском контенте остатков `void` нет; `generate_assets.py` ещё создавал `hex_void` — исправлено на `hex_seam`.
+- Найдено и исправлено: ID `core.biome.seam` вписан в `MapGenerator` (нарушение инварианта 3) → поле `borderBiome` (ADR-036), валидатор `CONTENT_MAP_BORDER_*`; «Шов» оставался в `biomeDistribution` с весом 2 (появлялся внутри карты) → удалён, трава 52 %; мёртвый `RemoveAll` в `PlaceType` и дубль направлений удалены; добавлен тест кольца.
+- Документация: `ASSET_LICENSES` (SVG → PNG, `hex_void` → `hex_seam`), `CONTENT_SCHEMA`, `TDD` §12.6, `GDD` §4, ADR-036.
+- Не исправлено: переводы `biome.seam.name` в 22 языках — это слова «Пустота» (KI-020); тестовые карты бордюра не содержат (допустимо по ADR-036); источник PNG не подтверждён.
+
+### Этап 05b (ADR-037)
+
+- Мораль: `MoraleRules`, `MoraleLevelRule`, `MoraleContext`, `MoraleRoll`, `MoraleSystem`, адаптер; `MoraleSystemTests`.
+
+### Вопрос на 05c
+
+- Порог «большой дистанции» (в гексах) и правило «препятствие на линии» не заданы; нужны значения.
+
+### Не проверено
+
+- `dotnet build/test` не запускались (KI-019).
+
+**Commit-message:**
+
+```
+feat(battle): add morale system; make map border biome data-driven
+
+- morale: rules, context, system, adapter, tests (ADR-037)
+- map: borderBiome in map_generation.json, validator, generator (ADR-036)
+- docs: seam/PNG fixes, ASSET_LICENSES, CONTENT_SCHEMA
+```
+
+## 11. Связанные документы
 
 - [AGENTS.md](../AGENTS.md) — правила проекта
 - [docs/CHANGELOG.md](CHANGELOG.md) — версии

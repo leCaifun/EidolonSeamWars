@@ -26,6 +26,14 @@
 - Godot-слой карты: экран, камера, туман, токены, HUD (не проверен в движке).
 - ADR-029…034.
 
+### Added (этап 05a)
+
+- `Game.Core.Battle`: `BattleRules`, `DamageCalculator`, `DamageRequest`, `DamageResult`; `BattleContentAdapter`; `UnitDef.UnitClass/DamageType`; ADR-035.
+
+### Added (этап 05b)
+
+- Мораль: `MoraleRules`, `MoraleLevelRule`, `MoraleContext`, `MoraleRoll`, `MoraleSystem`; `BattleContentAdapter.CreateMoraleRules`; ADR-037.
+
 ### Changed (этап 04)
 
 - Шкала движения: местность не менее 2, дорога 1, очки героя `12 + Логистика` (ADR-034).
@@ -36,6 +44,8 @@
 
 - Туман войны учитывает все партии фракции (ADR-033).
 - Путь обходит блокирующие объекты.
+- Бордюр карты «Шов» задаётся данными (`borderBiome`, ADR-036); вес «Шва» убран из распределения (трава 52 %); переименование Void → Seam проверено.
+- Партии на промежуточных гексах блокируют транзитный путь; `MapState.ComputeReachable(partyId)` (KI-017).
 
 ### Added (до этапа 04)
 

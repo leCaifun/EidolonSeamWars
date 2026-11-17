@@ -18,6 +18,7 @@ public sealed class MapGenerationSettings
         int height,
         HexOffsetLayout layout,
         string defaultBiomeId,
+        string borderBiomeId,
         IReadOnlyDictionary<string, int> biomeDistribution,
         int minDistanceBetweenPlayers,
         int distanceFromBorder,
@@ -33,6 +34,7 @@ public sealed class MapGenerationSettings
         Height = height;
         Layout = layout;
         DefaultBiomeId = defaultBiomeId;
+        BorderBiomeId = borderBiomeId;
         _biomeDistribution = new ReadOnlyDictionary<string, int>(
             new Dictionary<string, int>(biomeDistribution, StringComparer.Ordinal));
         MinDistanceBetweenPlayers = minDistanceBetweenPlayers;
@@ -57,6 +59,9 @@ public sealed class MapGenerationSettings
 
     /// <summary>ID биома, которым заполняется карта по умолчанию.</summary>
     public string DefaultBiomeId { get; }
+
+    /// <summary>ID биома граничного кольца («Шов»); пусто — карта без бордюра.</summary>
+    public string BorderBiomeId { get; }
 
     /// <summary>Веса распределения биомов в процентах.</summary>
     public IReadOnlyDictionary<string, int> BiomeDistribution => _biomeDistribution;
@@ -155,6 +160,7 @@ public sealed class MapGenerationSettings
             dto.GridHeight,
             ParseLayout(dto.OffsetType),
             dto.DefaultBiome,
+            dto.BorderBiome ?? string.Empty,
             dto.BiomeDistribution,
             dto.PlayerStartPositions.MinDistanceBetweenPlayers,
             dto.PlayerStartPositions.DistanceFromBorder,

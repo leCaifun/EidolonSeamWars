@@ -81,7 +81,7 @@ BIOMES = {
 "hex_road": ("#77736a", "#403c36", '''
  <path d="M-4 43Q15 28 28 34T68 20" fill="none" stroke="#3d3a35" stroke-width="18"/><path d="M-4 40Q15 25 28 31T68 17" fill="none" stroke="#b9aa8c" stroke-width="13"/><path d="M-4 40Q15 25 28 31T68 17" fill="none" stroke="#e0d3b4" stroke-width="1.5" stroke-dasharray="4 4"/>
  <path d="M7 50l5-3m24-5l5-3m8-18l4-2" stroke="#514b42" stroke-width="2"/>'''),
-"hex_void": ("#171b2a", "#080c16", '''
+"hex_seam": ("#171b2a", "#080c16", '''
  <path d="M4 15L24 25 17 40 34 59 60 42 47 28 57 10" fill="none" stroke="#4b477b" stroke-width="5" opacity=".8"/><path d="M4 15L24 25 17 40 34 59 60 42" fill="none" stroke="#9a79d0" stroke-width="1.5"/>
  <g fill="#b5a1ff" filter="url(#glow)"><circle cx="24" cy="25" r="2"/><circle cx="47" cy="28" r="1.5"/><circle cx="34" cy="48" r="2"/></g><path d="M32 13l3 8-4 5 7 7-7 7" fill="none" stroke="#6c5ab2" stroke-width="1.5"/>'''),
 }

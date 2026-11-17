@@ -35,8 +35,18 @@ public sealed class Pathfinder
     /// транзитом; целевой гекс всё равно разрешён (столкновение обрабатывается
     /// командой движения отдельно).
     /// </param>
+    /// <param name="blockedHexes">
+    /// Необязательное множество гексов, занятых другими партиями: их нельзя
+    /// проходить транзитом, но целевой гекс разрешён (встреча → бой). Стартовый
+    /// гекс множеством не блокируется.
+    /// </param>
     /// <exception cref="ArgumentNullException">Карта не задана.</exception>
-    public PathResult FindPath(GameMap map, Hex start, Hex goal, bool blockOccupiedTiles = false)
+    public PathResult FindPath(
+        GameMap map,
+        Hex start,
+        Hex goal,
+        bool blockOccupiedTiles = false,
+        IReadOnlySet<Hex>? blockedHexes = null)
     {
         ArgumentNullException.ThrowIfNull(map);
 
@@ -96,6 +106,11 @@ public sealed class Pathfinder
                     continue;
                 }
 
+                if (blockedHexes is not null && neighbor != goal && blockedHexes.Contains(neighbor))
+                {
+                    continue;
+                }
+
                 int stepCost = map.GetMovementCost(neighbor);
                 int tentative = checked(bestCost[current] + stepCost);
 
@@ -132,8 +147,16 @@ public sealed class Pathfinder
     /// <param name="map">Карта.</param>
     /// <param name="start">Стартовый гекс.</param>
     /// <param name="maxCost">Бюджет очков движения; отрицательный — только старт.</param>
+    /// <param name="blockedHexes">
+    /// Необязательное множество гексов, занятых другими партиями: в них можно войти
+    /// (встреча), но через них нельзя пройти дальше.
+    /// </param>
     /// <exception cref="ArgumentNullException">Карта не задана.</exception>
-    public IReadOnlyDictionary<Hex, int> ComputeReachable(GameMap map, Hex start, int maxCost)
+    public IReadOnlyDictionary<Hex, int> ComputeReachable(
+        GameMap map,
+        Hex start,
+        int maxCost,
+        IReadOnlySet<Hex>? blockedHexes = null)
     {
         ArgumentNullException.ThrowIfNull(map);
 
@@ -180,6 +203,13 @@ public sealed class Pathfinder
                 }
 
                 costs[neighbor] = tentative;
+
+                if (blockedHexes is not null && blockedHexes.Contains(neighbor))
+                {
+                    // Гекс с чужой партией достижим как цель, но не расширяет область.
+                    continue;
+                }
+
                 open.Enqueue(neighbor, (tentative, (int)sequence++));
             }
         }

@@ -5,15 +5,15 @@
   "gridHeight": 48,
   "offsetType": "odd-r",
   "defaultBiome": "core.biome.grass",
+  "borderBiome": "core.biome.seam",
   "biomeDistribution": {
-    "core.biome.grass": 50,
+    "core.biome.grass": 52,
     "core.biome.forest": 15,
     "core.biome.mountain": 5,
     "core.biome.swamp": 8,
     "core.biome.snow": 5,
     "core.biome.desert": 7,
-    "core.biome.water": 8,
-    "core.biome.seam": 2
+    "core.biome.water": 8
   },
   "playerStartPositions": {
     "minDistanceBetweenPlayers": 20,

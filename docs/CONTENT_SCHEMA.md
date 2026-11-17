@@ -648,6 +648,7 @@ game/content/core/
 | `gridWidth`, `gridHeight` | размеры карты, 48×48 в MVP |
 | `offsetType` | `odd-r` или `even-r` |
 | `defaultBiome` | ID биома из `biomeDistribution` |
+| `borderBiome` | необязательный ID непроходимого биома граничного кольца («Шов», ADR-036); не входит в `biomeDistribution` |
 | `biomeDistribution` | ID биома → вес; сумма весов 100 |
 | `playerStartPositions` | `minDistanceBetweenPlayers`, `distanceFromBorder` |
 | `objectCounts` | `mines`, `dwellings`, `echoCaches`, `patrols` (не менее 0) |
@@ -655,7 +656,8 @@ game/content/core/
 | `fogVisibilityRadius`, `fogExploredRadius` | радиусы тумана, не менее 0 |
 
 Коды: `CONTENT_MAP_WIDTH`, `CONTENT_MAP_HEIGHT`, `CONTENT_MAP_OFFSET_TYPE`,
-`CONTENT_MAP_DISTRIBUTION_SUM`, `CONTENT_MAP_DISTRIBUTION_VALUE`, `CONTENT_MAP_START_DISTANCE`,
+`CONTENT_MAP_DISTRIBUTION_SUM`, `CONTENT_MAP_DISTRIBUTION_VALUE`, `CONTENT_MAP_BORDER_PASSABLE`,
+`CONTENT_MAP_BORDER_IN_DISTRIBUTION`, `CONTENT_MAP_START_DISTANCE`,
 `CONTENT_MAP_BORDER_DISTANCE`, `CONTENT_MAP_OBJECT_COUNT`, `CONTENT_MAP_OBJECT_TYPE`,
 `CONTENT_MAP_ARMY_MP`, `CONTENT_MAP_FOG_VISIBILITY`, `CONTENT_MAP_FOG_EXPLORED`.
 

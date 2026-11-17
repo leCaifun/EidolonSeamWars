@@ -105,7 +105,8 @@
 | Ошибка pathfinding | Warning | Map | `from`, `to`, `reason` |
 | Побег/выкуп/плен | Info | Hero | `heroId`, `roll`, `chance`, `outcome` |
 | Порог ветеранства | Info | Battle | `unitId`, `oldRank`, `newRank`, `kills` |
-| Бросок морали | Debug | Battle | `unitId`, `moraleLevel`, `roll`, `result` |
+| Расчёт урона удара | Debug | Battle | `unitRoll`, `critRoll`, `baseDamage`, `finalDamage`, `critical` |
+| Бросок морали | Debug | Battle | `unitId`, `moraleLevel`, `chancePercent`, `roll`, `result` |
 | Применение настроек | Info | Settings | `key`, `oldValue`, `newValue` |
 | Смена языка | Info | Settings | `oldLocale`, `newLocale` |
 | Отсутствующий ключ локализации | Warning | Loc | `key`, `locale` |
