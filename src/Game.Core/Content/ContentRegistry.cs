@@ -21,6 +21,8 @@ public sealed class ContentRegistry
     private readonly ReadOnlyDictionary<string, ContentEntry<SettlementTemplateDto>> _settlements;
     private readonly ReadOnlyDictionary<string, ContentEntry<MapObjectDto>> _mapObjects;
     private readonly ReadOnlyDictionary<string, ContentEntry<ResourceDefinitionDto>> _resources;
+    private readonly ReadOnlyDictionary<string, ContentEntry<TestMapDto>> _testMaps;
+    private readonly ReadOnlyDictionary<string, ContentEntry<BiomeDto>> _biomes;
     private readonly ReadOnlyCollection<ContentChange> _changes;
     private readonly ReadOnlyCollection<ModManifestDto> _manifests;
 
@@ -39,6 +41,9 @@ public sealed class ContentRegistry
         IEnumerable<ContentEntry<SettlementTemplateDto>> settlements,
         IEnumerable<ContentEntry<MapObjectDto>> mapObjects,
         IEnumerable<ContentEntry<ResourceDefinitionDto>> resources,
+        IEnumerable<ContentEntry<TestMapDto>> testMaps,
+        ContentEntry<BiomesRulesDto>? biomesRules,
+        ContentEntry<MapGenerationRulesDto>? mapGenerationRules,
         ContentEntry<BattleRulesDto>? battleRules,
         ContentEntry<MoraleRulesDto>? moraleRules,
         ContentEntry<EconomyRulesDto>? economyRules,
@@ -60,6 +65,7 @@ public sealed class ContentRegistry
         ArgumentNullException.ThrowIfNull(settlements);
         ArgumentNullException.ThrowIfNull(mapObjects);
         ArgumentNullException.ThrowIfNull(resources);
+        ArgumentNullException.ThrowIfNull(testMaps);
         ArgumentNullException.ThrowIfNull(changes);
         ArgumentNullException.ThrowIfNull(manifests);
 
@@ -73,6 +79,16 @@ public sealed class ContentRegistry
         _settlements = ToDictionary(settlements, entry => entry.Value.Id);
         _mapObjects = ToDictionary(mapObjects, entry => entry.Value.Id);
         _resources = ToDictionary(resources, entry => entry.Value.Id);
+        _testMaps = ToDictionary(testMaps, entry => entry.Value.Id);
+        _biomes = biomesRules is null
+            ? new ReadOnlyDictionary<string, ContentEntry<BiomeDto>>(
+                new Dictionary<string, ContentEntry<BiomeDto>>(StringComparer.Ordinal))
+            : ToDictionary(
+                biomesRules.Value.Biomes.Select(biome => new ContentEntry<BiomeDto>(
+                    biome,
+                    biomesRules.SourceFile,
+                    biomesRules.SourcePack)),
+                entry => entry.Value.Id);
         _changes = Array.AsReadOnly(changes.ToArray());
         _manifests = Array.AsReadOnly(manifests.ToArray());
         BattleRules = battleRules;
@@ -82,6 +98,8 @@ public sealed class ContentRegistry
         RansomRules = ransomRules;
         VeterancyRules = veterancyRules;
         ProgressionRules = progressionRules;
+        BiomesRules = biomesRules;
+        MapGenerationRules = mapGenerationRules;
         Localization = localization;
     }
 
@@ -114,6 +132,18 @@ public sealed class ContentRegistry
 
     /// <summary>Ресурсы по ID.</summary>
     public IReadOnlyDictionary<string, ContentEntry<ResourceDefinitionDto>> Resources => _resources;
+
+    /// <summary>Рукотворные карты по ID.</summary>
+    public IReadOnlyDictionary<string, ContentEntry<TestMapDto>> TestMaps => _testMaps;
+
+    /// <summary>Биомы по ID (из объединённых правил биомов).</summary>
+    public IReadOnlyDictionary<string, ContentEntry<BiomeDto>> Biomes => _biomes;
+
+    /// <summary>Правила биомов или null.</summary>
+    public ContentEntry<BiomesRulesDto>? BiomesRules { get; }
+
+    /// <summary>Правила генерации карты или null.</summary>
+    public ContentEntry<MapGenerationRulesDto>? MapGenerationRules { get; }
 
     /// <summary>Боевые правила или null.</summary>
     public ContentEntry<BattleRulesDto>? BattleRules { get; }
@@ -152,7 +182,7 @@ public sealed class ContentRegistry
     public int EntityCount =>
         _factions.Count + _units.Count + _heroClasses.Count + _heroes.Count +
         _abilities.Count + _spells.Count + _buildings.Count + _settlements.Count +
-        _mapObjects.Count + _resources.Count;
+        _mapObjects.Count + _resources.Count + _testMaps.Count;
 
     /// <summary>
     /// Возвращает юнит по ID или null.
@@ -220,6 +250,26 @@ public sealed class ContentRegistry
     public BuildingDto? FindBuilding(string id)
     {
         return id is not null && _buildings.TryGetValue(id, out ContentEntry<BuildingDto>? entry)
+            ? entry.Value
+            : null;
+    }
+
+    /// <summary>
+    /// Возвращает рукотворную карту по ID или null.
+    /// </summary>
+    public TestMapDto? FindTestMap(string id)
+    {
+        return id is not null && _testMaps.TryGetValue(id, out ContentEntry<TestMapDto>? entry)
+            ? entry.Value
+            : null;
+    }
+
+    /// <summary>
+    /// Возвращает биом по ID или null.
+    /// </summary>
+    public BiomeDto? FindBiome(string id)
+    {
+        return id is not null && _biomes.TryGetValue(id, out ContentEntry<BiomeDto>? entry)
             ? entry.Value
             : null;
     }

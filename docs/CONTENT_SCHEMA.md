@@ -2,9 +2,9 @@
 
 | Параметр | Значение |
 |---|---|
-| Версия | 0.3.0 |
-| Статус | Реализовано на этапе 03: DTO, загрузчик, merge, валидатор |
-| Дата | 2026-11-15 |
+| Версия | 0.4.0 |
+| Статус | Актуально для этапа 04: добавлены биомы, правила карты, тестовые карты |
+| Дата | 2026-11-16 |
 | Источник истины | [docs/GDD.md](GDD.md) §5, §8, §9, §14.3, §15, §18 |
 
 ## Оглавление
@@ -14,7 +14,7 @@
 3. [Формы файлов](#3-формы-файлов)
 4. [Стабильные ID](#4-стабильные-id)
 5. [Общие поля](#5-общие-поля)
-6. [Сущности](#6-сущности)
+6. [Сущности](#6-сущности) (включая 6.11 тестовые карты)
 7. [Правила](#7-правила)
 8. [Локализация](#8-локализация)
 9. [Правила валидации](#9-правила-валидации)
@@ -41,7 +41,7 @@ game/content/core/
 ├── manifest.json          манифест пака
 ├── resources.json         список семи ресурсов
 ├── rules/                 battle, morale, economy, escape, ransom,
-│                          veterancy, progression
+│                          veterancy, progression, biomes, map_generation
 ├── factions/              по файлу на фракцию
 ├── units/                 коллекции юнитов по фракциям
 ├── hero_classes/          по файлу на класс героя
@@ -51,6 +51,7 @@ game/content/core/
 ├── buildings/             коллекции зданий по фракциям
 ├── settlements/           по файлу на шаблон поселения
 ├── map_objects/           коллекции объектов карты
+├── test_maps/             тестовые карты в формате layout (ADR-028)
 └── localization/          languages.json + по файлу на язык
 ```
 
@@ -129,8 +130,9 @@ game/content/core/
 
 `rules/<name>.json` — одиночный объект с `schemaVersion` и `id`.
 Имя файла (`battle`, `morale`, …) определяет тип правила.
-Неизвестное имя файла правила на этапе 03 пропускается с предупреждением
-`CONTENT_RULE_UNKNOWN`; это не ошибка загрузки.
+Неизвестное имя файла правила — ошибка `CONTENT_RULE_UNKNOWN` (ADR-030).
+Поддерживаются: `battle`, `morale`, `economy`, `escape`, `ransom`, `veterancy`,
+`progression`, `biomes`, `map_generation`.
 
 ### 3.5. Языковой файл
 
@@ -515,6 +517,38 @@ game/content/core/
 | `role` | `currency` или `material`; ровно один `currency` — `gold` |
 | `nameKey` | ключ локализации |
 
+### 6.11. Тестовая карта (`test_maps/*.json`)
+
+Карта задаётся строками `layout`: один символ — один гекс, `legend` связывает символ
+с ID биома (ADR-028). Координаты — offset (`col`, `row`), схема `odd-r`.
+
+```json
+{
+  "schemaVersion": 1,
+  "id": "core.test_map.small_8x8",
+  "nameKey": "test_map.small_8x8.name",
+  "width": 8, "height": 8, "offsetType": "odd-r",
+  "legend": { "G": "core.biome.grass", "R": "core.biome.road" },
+  "layout": ["GGGGGGGG", "..."],
+  "objects": [ { "col": 6, "row": 0, "objectId": "core.map_object.mine_gold" } ],
+  "startPositions": { "player": { "col": 1, "row": 5, "factionId": "core.faction.brass", "heroId": "core.hero.brass.idra_veyn" } },
+  "testCases": [ { "id": "MS-01", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 2, "row": 5 }, "expectedCost": 2 } ]
+}
+```
+
+| Поле | Правило |
+|---|---|
+| `width`, `height` | совпадают с размерами `layout` |
+| `layout` | `height` строк по `width` символов, каждый символ есть в `legend` |
+| `legend` | не пуста; значения — существующие ID биомов |
+| `objects[]` | `objectId` — существующий объект карты; координаты внутри карты |
+| `startPositions` | роль → позиция внутри карты, фракция, необязательный герой |
+| `testCases[].type` | `movementCost`, `unreachable`, `collision`, `fogRadius`, `fullConnectivity`, `objectCount`, `minStartDistance` |
+| `testCases[].id` | непустой, уникален в пределах карты |
+
+Эталонные стоимости (`expectedCost`) считаются по шкале ADR-034; при смене стоимостей
+биомов их нужно пересчитать (см. [docs/BALANCE_MAP.md](BALANCE_MAP.md)).
+
 ## 7. Правила
 
 Все правила — целочисленные. Источник чисел — `game/content/core/rules/*.json`.
@@ -585,11 +619,45 @@ game/content/core/
 `scenarioSoftCap` задаётся сценарием; 0 или меньше — без предела.
 `skillPointsPerLevel` — очки навыка за уровень.
 
-### 7.8. Файлы правил этапа 04
+### 7.8. `rules/biomes.json`
 
-`rules/biomes.json` и `rules/map_generation.json` присутствуют в контенте,
-но на этапе 03 не загружаются: загрузчик сообщает `CONTENT_RULE_UNKNOWN`
-и продолжает работу. Их DTO и валидация появятся на этапе 04.
+```json
+{ "schemaVersion": 1, "id": "core.rules.biomes", "biomes": [
+  { "id": "core.biome.grass", "nameKey": "biome.grass.name", "tileId": "hex_grass",
+    "passable": true, "movementCostPerHex": 2, "visibilityRange": 2 } ] }
+```
+
+| Поле | Правило |
+|---|---|
+| `id` | стабильный ID `core.biome.*`, уникален |
+| `nameKey`, `tileId` | ключ локализации и ID тайла спрайта, обязательны |
+| `passable` | проходим ли биом для наземных отрядов |
+| `movementCostPerHex` | проходимый биом: не менее 2, дорога — ровно 1 (ADR-034); непроходимый — 999 |
+| `visibilityRange` | не менее 0; фактический обзор — максимум из него и `fogVisibilityRadius` |
+| `flyerPassable`, `flyerMovementCost` | необязательны; стоимость для летающих не менее 2 |
+| `road` | необязательный флаг дороги |
+
+Коды: `CONTENT_BIOMES_EMPTY`, `CONTENT_BIOME_DUPLICATE`, `CONTENT_BIOME_NAME_KEY`,
+`CONTENT_BIOME_TILE`, `CONTENT_BIOME_MOVEMENT_COST`, `CONTENT_BIOME_PASSABLE_COST`,
+`CONTENT_BIOME_ROAD_COST`, `CONTENT_BIOME_FLYER_COST`, `CONTENT_BIOME_VISIBILITY`.
+
+### 7.9. `rules/map_generation.json`
+
+| Поле | Правило |
+|---|---|
+| `gridWidth`, `gridHeight` | размеры карты, 48×48 в MVP |
+| `offsetType` | `odd-r` или `even-r` |
+| `defaultBiome` | ID биома из `biomeDistribution` |
+| `biomeDistribution` | ID биома → вес; сумма весов 100 |
+| `playerStartPositions` | `minDistanceBetweenPlayers`, `distanceFromBorder` |
+| `objectCounts` | `mines`, `dwellings`, `echoCaches`, `patrols` (не менее 0) |
+| `armyMovementPointsPerDay` | очки движения отряда без героя, не менее 1; очки героя — `12 + Логистика` (ADR-034) |
+| `fogVisibilityRadius`, `fogExploredRadius` | радиусы тумана, не менее 0 |
+
+Коды: `CONTENT_MAP_WIDTH`, `CONTENT_MAP_HEIGHT`, `CONTENT_MAP_OFFSET_TYPE`,
+`CONTENT_MAP_DISTRIBUTION_SUM`, `CONTENT_MAP_DISTRIBUTION_VALUE`, `CONTENT_MAP_START_DISTANCE`,
+`CONTENT_MAP_BORDER_DISTANCE`, `CONTENT_MAP_OBJECT_COUNT`, `CONTENT_MAP_OBJECT_TYPE`,
+`CONTENT_MAP_ARMY_MP`, `CONTENT_MAP_FOG_VISIBILITY`, `CONTENT_MAP_FOG_EXPLORED`.
 
 ## 8. Локализация
 
@@ -605,7 +673,7 @@ game/content/core/
 
 ## 9. Правила валидации
 
-Валидатор этапа 03 (`SimRunner validate`) проверяет:
+Валидатор (`SimRunner validate`) проверяет:
 
 1. JSON синтаксически валиден, UTF-8, без комментариев и trailing commas.
 2. `schemaVersion` поддерживается (`1`); неизвестное поле — ошибка.
@@ -620,6 +688,9 @@ game/content/core/
 10. Ровно семь ресурсов, `gold` — единственная валюта.
 11. Зарезервированные поля MVP (`ammo`, `promotionIds`) не влияют на игру
     и дают предупреждение при ненулевом значении.
+12. Биомы, правила генерации карты и тестовые карты (разделы 6.11, 7.8, 7.9).
+13. Переопределение core-ID модом без `overridesCore` — ошибка
+    `CONTENT_CORE_OVERRIDE_FORBIDDEN` (ADR-031).
 
 Диагностика содержит код, серьёзность, путь файла, ID сущности и поле.
 Коды сгруппированы префиксами: `CONTENT_*` — структура и ссылки,
@@ -639,12 +710,14 @@ game/content/core/
 - Загрузка: `core` → моды по зависимостям, затем `loadOrder`, затем ID.
 - Одинаковые ID переопределяются последним паком (last-wins);
   каждое переопределение пишется в журнал (`ContentChange`).
+- Переопределить ID из core можно только с `"overridesCore": true` в манифесте
+  (ADR-031); иначе ошибка `CONTENT_CORE_OVERRIDE_FORBIDDEN`.
 - Мод не может менять код, только данные (до M4).
 - Подробности — [docs/MODDING.md](MODDING.md).
 
 ## 12. Состояние реального контента
 
-На 2026-11-15 `game/content/core` содержит:
+На 2026-11-16 `game/content/core` содержит:
 
 | Категория | Количество |
 |---|---:|
@@ -660,12 +733,12 @@ game/content/core/
 | Ресурсы | 7 |
 | Языки | 26 |
 | Ключи `en` / `ru` | 238 / 238 |
-| Загруженные правила | 7 |
-| Файлы правил этапа 04 | 2 (`biomes`, `map_generation`) |
+| Загруженные правила | 9 (добавлены `biomes`, `map_generation`) |
+| Тестовые карты | 3 (`small_8x8`, `medium_16x16`, `full_48x48`) |
 
-Реальный контент проходит валидатор с exit 0. Два предупреждения
-`CONTENT_RULE_UNKNOWN` относятся к файлам правил этапа 04 и не являются
-ошибками этапа 03.
+Ожидается, что реальный контент проходит валидатор с exit 0 без диагностики
+`CONTENT_RULE_UNKNOWN`. Счётчики сущностей выводит `SimRunner validate`; после этапа 04
+их нужно сверить с этой таблицей (сборка в среде автора правок не запускалась).
 
 ## 13. Связанные документы
 

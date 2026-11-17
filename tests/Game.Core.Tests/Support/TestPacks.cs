@@ -11,9 +11,11 @@ internal static class TestPacks
     public static string Manifest(
         string id,
         int loadOrder = 0,
+        bool overridesCore = false,
         params string[] dependencies)
     {
         string list = string.Join(", ", dependencies.Select(dependency => $"\"{dependency}\""));
+        string overrides = overridesCore ? "true" : "false";
 
         return $$"""
         {
@@ -22,7 +24,8 @@ internal static class TestPacks
           "version": "0.0.1",
           "gameVersionRange": ">=0.3.0 <0.4.0",
           "dependencies": [{{list}}],
-          "loadOrder": {{loadOrder}}
+          "loadOrder": {{loadOrder}},
+          "overridesCore": {{overrides}}
         }
         """;
     }
@@ -106,11 +109,12 @@ internal static class TestPacks
         string id,
         int loadOrder = 0,
         string[]? dependencies = null,
+        bool overridesCore = false,
         params (string Path, string Json)[] files)
     {
         Dictionary<string, string> map = new(StringComparer.Ordinal)
         {
-            ["manifest.json"] = Manifest(id, loadOrder, dependencies ?? Array.Empty<string>())
+            ["manifest.json"] = Manifest(id, loadOrder, overridesCore, dependencies ?? Array.Empty<string>())
         };
 
         foreach ((string path, string json) in files)

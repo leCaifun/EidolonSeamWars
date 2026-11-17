@@ -37,11 +37,11 @@
     "enemy": { "col": 6, "row": 7, "factionId": "core.faction.ash", "heroId": "core.hero.ash.selha" }
   },
   "testCases": [
-    { "id": "MS-01", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 2, "row": 5 }, "expectedCost": 1 },
-    { "id": "MS-02", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 4, "row": 5 }, "expectedCost": 5 },
-    { "id": "MS-03", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 4, "row": 1 }, "expectedCost": 9 },
+    { "id": "MS-01", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 2, "row": 5 }, "expectedCost": 2 },
+    { "id": "MS-02", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 4, "row": 5 }, "expectedCost": 10 },
+    { "id": "MS-03", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 4, "row": 1 }, "expectedCost": 18 },
     { "id": "MS-03b", "type": "unreachable", "from": { "col": 1, "row": 5 }, "to": { "col": 4, "row": 3 } },
-    { "id": "MS-04", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 0, "row": 7 }, "expectedCost": 5 },
-    { "id": "MS-05", "type": "collision", "from": { "col": 1, "row": 5 }, "to": { "col": 5, "row": 7 }, "expectedCost": 5, "blockingObjectId": "core.map_object.patrol_ash" }
+    { "id": "MS-04", "type": "movementCost", "from": { "col": 1, "row": 5 }, "to": { "col": 0, "row": 7 }, "expectedCost": 10 },
+    { "id": "MS-05", "type": "collision", "from": { "col": 1, "row": 5 }, "to": { "col": 5, "row": 7 }, "expectedCost": 10, "blockingObjectId": "core.map_object.patrol_ash" }
   ]
 }

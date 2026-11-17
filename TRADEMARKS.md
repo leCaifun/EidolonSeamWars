@@ -1,6 +1,6 @@
 # Trademark Policy
 
-The following are trademarks of Georgy Saprynsky-Berozin:
+The following are trademarks of Georgy Saprinsky-Berozin:
 - the game name «Эйдолон: Войны Шва» / "Eidolon: Seam Wars";
 - the game logo;
 - faction names and sigils;

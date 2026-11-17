@@ -16,8 +16,8 @@ public sealed class Hero
     /// <summary>Мана за каждую единицу знания (GDD §9.2).</summary>
     public const int ManaPerKnowledge = 5;
 
-    /// <summary>Базовые очки движения (GDD §9.2).</summary>
-    public const int BaseMovementPoints = 6;
+    /// <summary>Базовые очки движения (GDD §9.2, ADR-034).</summary>
+    public const int BaseMovementPoints = 12;
 
     private readonly IGameLogger? _logger;
 
@@ -106,8 +106,8 @@ public sealed class Hero
     /// <summary>Максимальная мана: <c>10 + Знание × 5</c>.</summary>
     public int Mana => BaseMana + (Stats.Knowledge * ManaPerKnowledge);
 
-    /// <summary>Очки движения: <c>6 + floor(Логистика / 2)</c>.</summary>
-    public int MovementPoints => BaseMovementPoints + (Stats.Logistics / 2);
+    /// <summary>Очки движения: <c>12 + Логистика</c> (ADR-034).</summary>
+    public int MovementPoints => BaseMovementPoints + Stats.Logistics;
 
     /// <summary>Достигнут ли мягкий предел уровня сценария; предел задаёт <see cref="HeroProgression"/>.</summary>
     public bool IsAtSoftCap(HeroProgression progression)

@@ -115,7 +115,7 @@ public class LevelUpTests
 
         Assert.Equal(70, hero.Leadership);
         Assert.Equal(25, hero.Mana);
-        Assert.Equal(8, hero.MovementPoints);
+        Assert.Equal(17, hero.MovementPoints);
         Assert.Equal(0, hero.SkillPoints);
     }
 

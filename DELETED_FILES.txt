@@ -1,0 +1,2 @@
+LICENSE-CONTENT.md
+game/scenes/map/FogTile.tscn

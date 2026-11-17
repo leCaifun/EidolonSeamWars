@@ -1,23 +1,37 @@
 [gd_scene format=3 uid="uid://bd1uubighd27o"]
 
+[ext_resource type="Script" path="res://scripts/Map/AdventureMapController.cs" id="1_map"]
+[ext_resource type="Script" path="res://scripts/Map/FogOfWarVisual.cs" id="2_fog"]
+[ext_resource type="Script" path="res://scripts/Map/HexGridVisual.cs" id="3_grid"]
+[ext_resource type="Script" path="res://scripts/Map/CameraController.cs" id="4_camera"]
+[ext_resource type="Script" path="res://scripts/UI/ResourcePanelController.cs" id="5_resources"]
+[ext_resource type="Script" path="res://scripts/UI/DayCounterController.cs" id="6_day"]
+[ext_resource type="Script" path="res://scripts/UI/EndDayButtonController.cs" id="7_endday"]
+
 [node name="AdventureMap" type="Node2D" unique_id=1032371981]
+script = ExtResource("1_map")
 
 [node name="FogOfWarVisual" type="Node2D" parent="." unique_id=535464683]
+script = ExtResource("2_fog")
 
 [node name="HexGridVisual" type="Node2D" parent="." unique_id=1535255675]
+script = ExtResource("3_grid")
 
 [node name="MapObjectTokens" type="Node2D" parent="." unique_id=1767440902]
 
 [node name="PartyTokens" type="Node2D" parent="." unique_id=1350268490]
 
 [node name="Camera" type="Camera2D" parent="." unique_id=2003531618]
+script = ExtResource("4_camera")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=820413803]
 
 [node name="ResourcePanel" type="PanelContainer" parent="UI" unique_id=1812895537]
-offset_right = 40.0
-offset_bottom = 40.0
-offset_transform_enabled = true
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 48.0
+offset_bottom = 48.0
+script = ExtResource("5_resources")
 
 [node name="ResourceList" type="HBoxContainer" parent="UI/ResourcePanel" unique_id=536901385]
 layout_mode = 2
@@ -26,13 +40,14 @@ layout_mode = 2
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -55.0
-offset_bottom = 23.0
+offset_left = -120.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 31.0
 grow_horizontal = 0
-offset_transform_enabled = true
-text = "День 1"
 horizontal_alignment = 2
 vertical_alignment = 1
+script = ExtResource("6_day")
 
 [node name="EndDayButton" type="Button" parent="UI" unique_id=1766513544]
 anchors_preset = 3
@@ -40,8 +55,30 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -143.0
-offset_top = -31.0
+offset_left = -160.0
+offset_top = -40.0
+offset_right = -8.0
+offset_bottom = -8.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "Завершить день"
+script = ExtResource("7_endday")
+
+[node name="MovementLabel" type="Label" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -64.0
+offset_right = 400.0
+offset_bottom = -41.0
+grow_vertical = 0
+
+[node name="StatusLabel" type="Label" parent="UI"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -36.0
+offset_right = 640.0
+offset_bottom = -13.0
+grow_vertical = 0

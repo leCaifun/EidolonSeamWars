@@ -37,14 +37,11 @@ public class ContentPipelineTests
         Assert.Equal("core", result.Pack!.Manifest.Id);
         Assert.Equal(1, result.Pack.Manifest.SchemaVersion);
 
-        // Файлы правил, которых ещё нет в этапе 03 (карта, генерация), осознанно
-        // пропускаются загрузчиком с предупреждением. Любая другая диагностика —
-        // повод разобраться.
-        ContentDiagnostic[] unexpected = result.Diagnostics.Items
-            .Where(item => item.Code != "CONTENT_RULE_UNKNOWN"
-                || !item.SourceFile.Replace('\\', '/').Contains("/rules/", StringComparison.Ordinal))
-            .ToArray();
-        Assert.Empty(unexpected);
+        // С этапа 04 все файлы rules/ (включая biomes и map_generation) загружаются;
+        // неизвестное имя правила — ошибка, и в реальном паке его быть не должно.
+        Assert.DoesNotContain(
+            result.Diagnostics.Items,
+            item => item.Code == "CONTENT_RULE_UNKNOWN");
     }
 
     [Fact]
@@ -60,8 +57,9 @@ public class ContentPipelineTests
         Assert.Equal(3, pack.Spells.Count);
         Assert.Equal(18, pack.Buildings.Count);
         Assert.Equal(3, pack.Settlements.Count);
-        Assert.Equal(14, pack.MapObjects.Count);
+        Assert.Equal(17, pack.MapObjects.Count);
         Assert.Equal(7, pack.Resources.Count);
+        Assert.Equal(3, pack.TestMaps.Count);
         Assert.Equal(26, pack.LocalizationTables.Count);
     }
 
@@ -193,6 +191,7 @@ public class ContentPipelineTests
         ContentPack first = LoadPack("overlay-a", TestPacks.Pack(
             "overlay-a",
             loadOrder: 10,
+            overridesCore: true,
             files: ("units/militia.json", TestPacks.UnitsFile(
                 "overlay-a.units",
                 TestPacks.Unit(id, attack: "90", nameKey: "unit.brass.militia.name",
@@ -200,6 +199,7 @@ public class ContentPipelineTests
         ContentPack second = LoadPack("overlay-b", TestPacks.Pack(
             "overlay-b",
             loadOrder: 20,
+            overridesCore: true,
             files: ("units/militia.json", TestPacks.UnitsFile(
                 "overlay-b.units",
                 TestPacks.Unit(id, attack: "100", nameKey: "unit.brass.militia.name",
@@ -241,6 +241,7 @@ public class ContentPipelineTests
             "seventh",
             10,
             null,
+            false,
             (
                 "units/extra.json",
                 TestPacks.UnitsFile("seventh.units", TestPacks.Unit(id))
@@ -284,6 +285,73 @@ public class ContentPipelineTests
             .Single(table => table.Language == "en")
             .Count;
         Assert.Equal(baselineEnglishKeys + 2, registry.Localization!.Find("en")!.Count);
+    }
+
+    [Fact]
+    public void RejectsCoreOverrideWithoutFlag()
+    {
+        string id = "core.unit.brass.militia";
+        ContentPack overlay = LoadPack("rogue-overlay", TestPacks.Pack(
+            "rogue-overlay",
+            loadOrder: 10,
+            files: ("units/militia.json", TestPacks.UnitsFile(
+                "rogue-overlay.units",
+                TestPacks.Unit(id, attack: "99", nameKey: "unit.brass.militia.name",
+                    descriptionKey: "unit.brass.militia.desc")))));
+
+        ContentMergeResult result = new ContentMerge().Merge(new[] { RealContent.Pack, overlay });
+
+        Assert.Contains(
+            result.Diagnostics.Items,
+            item => item.Code == "CONTENT_CORE_OVERRIDE_FORBIDDEN"
+                && item.EntityId == id
+                && item.Severity == ContentDiagnosticSeverity.Error);
+
+        ContentRegistry registry = Assert.IsType<ContentRegistry>(result.Registry);
+        Assert.Equal(4, registry.FindUnit(id)!.Attack);
+    }
+
+    [Fact]
+    public void LoadsBiomesMapGenerationAndTestMaps()
+    {
+        ContentPack pack = RealContent.Pack;
+
+        Assert.NotNull(pack.BiomesRules);
+        Assert.NotNull(pack.MapGenerationRules);
+        Assert.Equal(9, pack.BiomesRules!.Value.Biomes.Count);
+        Assert.Equal(48, pack.MapGenerationRules!.Value.GridWidth);
+        Assert.Equal(48, pack.MapGenerationRules.Value.GridHeight);
+        Assert.Equal(3, pack.TestMaps.Count);
+
+        TestMapDto? small = pack.TestMaps
+            .Select(entry => entry.Value)
+            .SingleOrDefault(map => map.Id == "core.test_map.small_8x8");
+
+        Assert.NotNull(small);
+        Assert.Equal(8, small!.Width);
+        Assert.Equal(8, small.Height);
+        Assert.Equal(8, small.Layout.Count);
+        Assert.Equal(6, small.TestCases.Count);
+    }
+
+    [Fact]
+    public void RejectsUnknownRuleName()
+    {
+        InMemoryContentFileSystem fileSystem = TestPacks.Pack(
+            "unknown-rule",
+            files: ("rules/unknown_rule.json", """
+            {
+              "schemaVersion": 1,
+              "id": "test.rules.unknown"
+            }
+            """));
+
+        ContentLoadResult result = new ContentLoader(fileSystem).Load("mem://unknown-rule");
+
+        Assert.Contains(
+            result.Diagnostics.Items,
+            item => item.Code == "CONTENT_RULE_UNKNOWN"
+                && item.Severity == ContentDiagnosticSeverity.Error);
     }
 
     private static ContentPack LoadManifestOnly(

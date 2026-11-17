@@ -278,6 +278,13 @@
     "movement_type.cavalry.name": "Cavalry",
     "movement_type.beast.name": "Beast",
     "movement_type.flyer.name": "Flyer",
-    "movement_type.siege.name": "Siege"
+    "movement_type.siege.name": "Siege",
+    "ui.map.day": "Day {day}",
+    "ui.map.end_day": "End day",
+    "ui.map.movement": "Movement: {current}/{max}",
+    "ui.map.battle_pending": "Encounter. Battle arrives in stage 05.",
+    "ui.map.not_enough_movement": "Not enough movement points.",
+    "ui.map.blocked": "You cannot go there.",
+    "ui.map.unexplored": "This hex is not explored yet."
   }
 }

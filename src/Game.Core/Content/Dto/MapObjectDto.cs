@@ -22,8 +22,14 @@ public sealed class MapObjectDto
     public IReadOnlyDictionary<string, int> IncomePerDay { get; init; } =
         new Dictionary<string, int>(StringComparer.Ordinal);
 
-    /// <summary>ID фракции для жилищ и патрулей.</summary>
+    /// <summary>ID фракции для жилищ, патрулей и поселений.</summary>
     public string? FactionId { get; init; }
+
+    /// <summary>ID шаблона поселения для объектов типа <c>settlement</c>.</summary>
+    public string? TemplateId { get; init; }
+
+    /// <summary>Начальный уровень поселения для объектов типа <c>settlement</c>.</summary>
+    public int? InitialLevel { get; init; }
 
     /// <summary>Найм для жилищ.</summary>
     public RecruitmentDto? Recruitment { get; init; }

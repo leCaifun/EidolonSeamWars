@@ -49,6 +49,15 @@ public sealed class ContentPack
     /// <summary>Описания семи ресурсов.</summary>
     public required IReadOnlyList<ContentEntry<ResourceDefinitionDto>> Resources { get; init; }
 
+    /// <summary>Рукотворные тестовые и сценарные карты.</summary>
+    public required IReadOnlyList<ContentEntry<TestMapDto>> TestMaps { get; init; }
+
+    /// <summary>Правила биомов; null, если пак их не задаёт.</summary>
+    public required ContentEntry<BiomesRulesDto>? BiomesRules { get; init; }
+
+    /// <summary>Правила генерации карты; null, если пак их не задаёт.</summary>
+    public required ContentEntry<MapGenerationRulesDto>? MapGenerationRules { get; init; }
+
     /// <summary>Боевые правила; null, если пак их не задаёт.</summary>
     public required ContentEntry<BattleRulesDto>? BattleRules { get; init; }
 
@@ -80,5 +89,5 @@ public sealed class ContentPack
     public int EntityCount =>
         Factions.Count + Units.Count + HeroClasses.Count + Heroes.Count +
         Abilities.Count + Spells.Count + Buildings.Count + Settlements.Count +
-        MapObjects.Count + Resources.Count;
+        MapObjects.Count + Resources.Count + TestMaps.Count;
 }

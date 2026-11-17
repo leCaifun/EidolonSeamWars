@@ -52,11 +52,11 @@
     "enemy": { "col": 13, "row": 2, "factionId": "core.faction.ash", "heroId": "core.hero.ash.selha" }
   },
   "testCases": [
-    { "id": "MM-01", "type": "movementCost", "from": { "col": 2, "row": 13 }, "to": { "col": 5, "row": 8 }, "expectedCost": 5 },
-    { "id": "MM-02", "type": "movementCost", "from": { "col": 2, "row": 13 }, "to": { "col": 8, "row": 4 }, "expectedCost": 10 },
-    { "id": "MM-03", "type": "movementCost", "from": { "col": 2, "row": 13 }, "to": { "col": 13, "row": 2 }, "expectedCost": 16 },
+    { "id": "MM-01", "type": "movementCost", "from": { "col": 2, "row": 13 }, "to": { "col": 5, "row": 8 }, "expectedCost": 6 },
+    { "id": "MM-02", "type": "movementCost", "from": { "col": 2, "row": 13 }, "to": { "col": 8, "row": 4 }, "expectedCost": 11 },
+    { "id": "MM-03", "type": "movementCost", "from": { "col": 2, "row": 13 }, "to": { "col": 13, "row": 2 }, "expectedCost": 17 },
     { "id": "MM-04", "type": "unreachable", "from": { "col": 2, "row": 13 }, "to": { "col": 14, "row": 6 } },
-    { "id": "MM-05", "type": "collision", "from": { "col": 2, "row": 13 }, "to": { "col": 7, "row": 4 }, "expectedCost": 9, "blockingObjectId": "core.map_object.patrol_ash" },
+    { "id": "MM-05", "type": "collision", "from": { "col": 2, "row": 13 }, "to": { "col": 7, "row": 4 }, "expectedCost": 10, "blockingObjectId": "core.map_object.patrol_ash" },
     { "id": "MM-06", "type": "fogRadius", "at": { "col": 2, "row": 13 }, "radius": 3 }
   ]
 }

@@ -52,6 +52,9 @@ public sealed class ContentValidator
         ValidateRansomRules(registry, diagnostics);
         ValidateVeterancyRules(registry, diagnostics);
         ValidateProgressionRules(registry, diagnostics);
+        ValidateBiomes(registry, diagnostics);
+        ValidateMapGenerationRules(registry, diagnostics);
+        ValidateTestMaps(registry, diagnostics);
         ValidateLocalization(registry, diagnostics);
 
         _logger?.Log(LogEvent.Create(
@@ -127,6 +130,7 @@ public sealed class ContentValidator
         AddIds(registry.Settlements, "поселение", seen, diagnostics);
         AddIds(registry.MapObjects, "объект карты", seen, diagnostics);
         AddIds(registry.Resources, "ресурс", seen, diagnostics);
+        AddIds(registry.TestMaps, "рукотворная карта", seen, diagnostics);
     }
 
     private static void AddIds<T>(
@@ -1183,6 +1187,9 @@ public sealed class ContentValidator
                 case "patrol":
                     ValidatePatrol(mapObject, registry, source, diagnostics);
                     break;
+                case "settlement":
+                    ValidateSettlementObject(mapObject, registry, source, diagnostics);
+                    break;
             }
         }
     }
@@ -1261,6 +1268,66 @@ public sealed class ContentValidator
         }
 
         ValidateRecruitment(recruitment, mapObject.FactionId, mapObject.Id, "recruitment", source, registry, diagnostics);
+    }
+
+    private static void ValidateSettlementObject(
+        MapObjectDto mapObject,
+        ContentRegistry registry,
+        string source,
+        ContentDiagnosticCollection diagnostics)
+    {
+        RequireReference(
+            registry.Factions,
+            mapObject.FactionId,
+            "CONTENT_REF_FACTION_MISSING",
+            "фракция",
+            source,
+            mapObject.Id,
+            "factionId",
+            diagnostics);
+
+        if (!RequireReference(
+                registry.Settlements,
+                mapObject.TemplateId,
+                "CONTENT_REF_SETTLEMENT_MISSING",
+                "шаблон поселения",
+                source,
+                mapObject.Id,
+                "templateId",
+                diagnostics))
+        {
+            return;
+        }
+
+        SettlementTemplateDto? template = mapObject.TemplateId is null
+            ? null
+            : registry.Settlements[mapObject.TemplateId].Value;
+
+        int level = mapObject.InitialLevel ?? 1;
+
+        if (level < 1)
+        {
+            Error(
+                diagnostics,
+                "CONTENT_SETTLEMENT_OBJECT_LEVEL",
+                $"initialLevel должен быть не меньше 1, указано {level}.",
+                source,
+                mapObject.Id,
+                "initialLevel");
+
+            return;
+        }
+
+        if (template is not null && level > template.MaxLevel)
+        {
+            Error(
+                diagnostics,
+                "CONTENT_SETTLEMENT_OBJECT_LEVEL_MAX",
+                $"initialLevel {level} больше maxLevel {template.MaxLevel} шаблона «{template.Id}».",
+                source,
+                mapObject.Id,
+                "initialLevel");
+        }
     }
 
     private static void ValidateEchoCache(
@@ -1974,6 +2041,439 @@ public sealed class ContentValidator
         RequireAtLeast(rules.ScenarioSoftCap, 0, "scenarioSoftCap", rules.Id, source, diagnostics, "CONTENT_PROGRESSION_SOFT_CAP");
     }
 
+    private static void ValidateBiomes(ContentRegistry registry, ContentDiagnosticCollection diagnostics)
+    {
+        if (registry.BiomesRules is not { } entry)
+        {
+            Error(diagnostics, "CONTENT_RULE_MISSING", "Отсутствуют правила биомов rules/biomes.json.");
+            return;
+        }
+
+        BiomesRulesDto rules = entry.Value;
+        string source = entry.SourceFile;
+
+        if (rules.Biomes.Count == 0)
+        {
+            Error(diagnostics, "CONTENT_BIOMES_EMPTY", "Список биомов пуст.", source, rules.Id, "biomes");
+            return;
+        }
+
+        HashSet<string> ids = new(StringComparer.Ordinal);
+
+        foreach (BiomeDto biome in rules.Biomes)
+        {
+            RequireEntityId(biome.Id, source, diagnostics);
+
+            if (!string.IsNullOrWhiteSpace(biome.Id) && !ids.Add(biome.Id))
+            {
+                Error(
+                    diagnostics,
+                    "CONTENT_BIOME_DUPLICATE",
+                    $"Биом «{biome.Id}» объявлен более одного раза.",
+                    source,
+                    biome.Id,
+                    "biomes");
+            }
+
+            RequireKey(biome.NameKey, "nameKey", biome.Id, source, diagnostics, "CONTENT_BIOME_NAME_KEY");
+            RequireKey(biome.TileId, "tileId", biome.Id, source, diagnostics, "CONTENT_BIOME_TILE");
+
+            RequireAtLeast(
+                biome.MovementCostPerHex,
+                0,
+                "movementCostPerHex",
+                biome.Id,
+                source,
+                diagnostics,
+                "CONTENT_BIOME_MOVEMENT_COST");
+            RequireAtLeast(
+                biome.VisibilityRange,
+                0,
+                "visibilityRange",
+                biome.Id,
+                source,
+                diagnostics,
+                "CONTENT_BIOME_VISIBILITY");
+
+            // ADR-034: по местности — не менее 2 очков движения, по дороге — ровно 1.
+            if (biome.Passable && biome.Road && biome.MovementCostPerHex != 1)
+            {
+                Error(
+                    diagnostics,
+                    "CONTENT_BIOME_ROAD_COST",
+                    "Дорога обязана иметь movementCostPerHex, равный 1.",
+                    source,
+                    biome.Id,
+                    "movementCostPerHex");
+            }
+            else if (biome.Passable && !biome.Road && biome.MovementCostPerHex < 2)
+            {
+                Error(
+                    diagnostics,
+                    "CONTENT_BIOME_PASSABLE_COST",
+                    "Проходимый биом (не дорога) обязан иметь movementCostPerHex не меньше 2.",
+                    source,
+                    biome.Id,
+                    "movementCostPerHex");
+            }
+
+            if (biome.FlyerPassable && biome.FlyerMovementCost < 2)
+            {
+                Error(
+                    diagnostics,
+                    "CONTENT_BIOME_FLYER_COST",
+                    "Проходимый для летающих биом обязан иметь flyerMovementCost не меньше 2.",
+                    source,
+                    biome.Id,
+                    "flyerMovementCost");
+            }
+        }
+    }
+
+    private static void ValidateMapGenerationRules(
+        ContentRegistry registry,
+        ContentDiagnosticCollection diagnostics)
+    {
+        if (registry.MapGenerationRules is not { } entry)
+        {
+            Error(
+                diagnostics,
+                "CONTENT_RULE_MISSING",
+                "Отсутствуют правила генерации карты rules/map_generation.json.");
+            return;
+        }
+
+        MapGenerationRulesDto rules = entry.Value;
+        string source = entry.SourceFile;
+
+        RequireAtLeast(rules.GridWidth, 1, "gridWidth", rules.Id, source, diagnostics, "CONTENT_MAP_WIDTH");
+        RequireAtLeast(rules.GridHeight, 1, "gridHeight", rules.Id, source, diagnostics, "CONTENT_MAP_HEIGHT");
+
+        if (!ContentSchema.OffsetTypes.Contains(rules.OffsetType))
+        {
+            Error(
+                diagnostics,
+                "CONTENT_MAP_OFFSET_TYPE",
+                $"Неизвестный offsetType «{rules.OffsetType}»; допустимы {Join(ContentSchema.OffsetTypes)}.",
+                source,
+                rules.Id,
+                "offsetType");
+        }
+
+        if (!RequireReference(
+                registry.Biomes,
+                rules.DefaultBiome,
+                "CONTENT_REF_BIOME_MISSING",
+                "биом",
+                source,
+                rules.Id,
+                "defaultBiome",
+                diagnostics))
+        {
+            // Ошибка уже зафиксирована.
+        }
+
+        int distributionSum = 0;
+
+        foreach (KeyValuePair<string, int> pair in rules.BiomeDistribution)
+        {
+            if (!RequireReference(
+                    registry.Biomes,
+                    pair.Key,
+                    "CONTENT_REF_BIOME_MISSING",
+                    "биом",
+                    source,
+                    rules.Id,
+                    $"biomeDistribution.{pair.Key}",
+                    diagnostics))
+            {
+                continue;
+            }
+
+            if (pair.Value < 0)
+            {
+                Error(
+                    diagnostics,
+                    "CONTENT_MAP_DISTRIBUTION_VALUE",
+                    $"Вес биома «{pair.Key}» не может быть отрицательным: {pair.Value}.",
+                    source,
+                    rules.Id,
+                    $"biomeDistribution.{pair.Key}");
+            }
+
+            distributionSum = checked(distributionSum + pair.Value);
+        }
+
+        if (rules.BiomeDistribution.Count > 0 && distributionSum != 100)
+        {
+            Error(
+                diagnostics,
+                "CONTENT_MAP_DISTRIBUTION_SUM",
+                $"Сумма biomeDistribution должна быть 100, указано {distributionSum}.",
+                source,
+                rules.Id,
+                "biomeDistribution");
+        }
+
+        RequireAtLeast(
+            rules.PlayerStartPositions.MinDistanceBetweenPlayers,
+            0,
+            "playerStartPositions.minDistanceBetweenPlayers",
+            rules.Id,
+            source,
+            diagnostics,
+            "CONTENT_MAP_START_DISTANCE");
+        RequireAtLeast(
+            rules.PlayerStartPositions.DistanceFromBorder,
+            0,
+            "playerStartPositions.distanceFromBorder",
+            rules.Id,
+            source,
+            diagnostics,
+            "CONTENT_MAP_BORDER_DISTANCE");
+
+        RequireAtLeast(rules.ObjectCounts.Mines, 0, "objectCounts.mines", rules.Id, source, diagnostics, "CONTENT_MAP_OBJECT_COUNT");
+        RequireAtLeast(rules.ObjectCounts.Dwellings, 0, "objectCounts.dwellings", rules.Id, source, diagnostics, "CONTENT_MAP_OBJECT_COUNT");
+        RequireAtLeast(rules.ObjectCounts.EchoCaches, 0, "objectCounts.echoCaches", rules.Id, source, diagnostics, "CONTENT_MAP_OBJECT_COUNT");
+        RequireAtLeast(rules.ObjectCounts.Patrols, 0, "objectCounts.patrols", rules.Id, source, diagnostics, "CONTENT_MAP_OBJECT_COUNT");
+
+        RequireAtLeast(rules.ArmyMovementPointsPerDay, 1, "armyMovementPointsPerDay", rules.Id, source, diagnostics, "CONTENT_MAP_ARMY_MP");
+        RequireAtLeast(rules.FogVisibilityRadius, 0, "fogVisibilityRadius", rules.Id, source, diagnostics, "CONTENT_MAP_FOG_VISIBILITY");
+        RequireAtLeast(rules.FogExploredRadius, 0, "fogExploredRadius", rules.Id, source, diagnostics, "CONTENT_MAP_FOG_EXPLORED");
+    }
+
+    private static void ValidateTestMaps(ContentRegistry registry, ContentDiagnosticCollection diagnostics)
+    {
+        foreach (ContentEntry<TestMapDto> entry in registry.TestMaps.Values)
+        {
+            TestMapDto map = entry.Value;
+            string source = entry.SourceFile;
+
+            RequireEntityId(map.Id, source, diagnostics);
+            RequireKey(map.NameKey, "nameKey", map.Id, source, diagnostics, "CONTENT_TEST_MAP_NAME_KEY");
+            RequireAtLeast(map.Width, 1, "width", map.Id, source, diagnostics, "CONTENT_TEST_MAP_WIDTH");
+            RequireAtLeast(map.Height, 1, "height", map.Id, source, diagnostics, "CONTENT_TEST_MAP_HEIGHT");
+
+            if (!ContentSchema.OffsetTypes.Contains(map.OffsetType))
+            {
+                Error(
+                    diagnostics,
+                    "CONTENT_TEST_MAP_OFFSET_TYPE",
+                    $"Неизвестный offsetType «{map.OffsetType}»; допустимы {Join(ContentSchema.OffsetTypes)}.",
+                    source,
+                    map.Id,
+                    "offsetType");
+            }
+
+            if (map.Legend.Count == 0)
+            {
+                Error(diagnostics, "CONTENT_TEST_MAP_LEGEND_EMPTY", "Отсутствует legend.", source, map.Id, "legend");
+            }
+
+            foreach (KeyValuePair<string, string> pair in map.Legend)
+            {
+                if (pair.Key.Length != 1)
+                {
+                    Error(
+                        diagnostics,
+                        "CONTENT_TEST_MAP_LEGEND_KEY",
+                        $"Ключ legend «{pair.Key}» должен быть одним символом.",
+                        source,
+                        map.Id,
+                        $"legend.{pair.Key}");
+                }
+
+                RequireReference(
+                    registry.Biomes,
+                    pair.Value,
+                    "CONTENT_REF_BIOME_MISSING",
+                    "биом",
+                    source,
+                    map.Id,
+                    $"legend.{pair.Key}",
+                    diagnostics);
+            }
+
+            if (map.Layout.Count != map.Height)
+            {
+                Error(
+                    diagnostics,
+                    "CONTENT_TEST_MAP_LAYOUT_ROWS",
+                    $"Строк layout {map.Layout.Count}, ожидается height {map.Height}.",
+                    source,
+                    map.Id,
+                    "layout");
+            }
+
+            for (int row = 0; row < map.Layout.Count; row++)
+            {
+                string line = map.Layout[row];
+
+                if (line.Length != map.Width)
+                {
+                    Error(
+                        diagnostics,
+                        "CONTENT_TEST_MAP_LAYOUT_WIDTH",
+                        $"Длина строки {row} равна {line.Length}, ожидается width {map.Width}.",
+                        source,
+                        map.Id,
+                        $"layout[{row}]");
+                }
+
+                foreach (char symbol in line)
+                {
+                    if (!map.Legend.ContainsKey(symbol.ToString()))
+                    {
+                        Error(
+                            diagnostics,
+                            "CONTENT_TEST_MAP_LAYOUT_SYMBOL",
+                            $"Символ «{symbol}» в строке {row} отсутствует в legend.",
+                            source,
+                            map.Id,
+                            $"layout[{row}]");
+
+                        break;
+                    }
+                }
+            }
+
+            foreach (TestMapObjectDto mapObject in map.Objects)
+            {
+                if (!IsInside(mapObject.Col, mapObject.Row, map.Width, map.Height))
+                {
+                    Error(
+                        diagnostics,
+                        "CONTENT_TEST_MAP_OBJECT_BOUNDS",
+                        $"Объект «{mapObject.ObjectId}» вне карты: ({mapObject.Col}, {mapObject.Row}).",
+                        source,
+                        map.Id,
+                        "objects");
+                }
+
+                RequireReference(
+                    registry.MapObjects,
+                    mapObject.ObjectId,
+                    "CONTENT_REF_MAP_OBJECT_MISSING",
+                    "объект карты",
+                    source,
+                    map.Id,
+                    "objects.objectId",
+                    diagnostics);
+            }
+
+            if (map.StartPositions is { } starts)
+            {
+                ValidateTestMapStart(starts.Player, registry, map, source, "startPositions.player", diagnostics);
+                ValidateTestMapStart(starts.Enemy, registry, map, source, "startPositions.enemy", diagnostics);
+                ValidateTestMapStart(starts.Neutral, registry, map, source, "startPositions.neutral", diagnostics);
+            }
+
+            HashSet<string> caseIds = new(StringComparer.Ordinal);
+
+            foreach (TestMapCaseDto testCase in map.TestCases)
+            {
+                if (string.IsNullOrWhiteSpace(testCase.Id))
+                {
+                    Error(diagnostics, "CONTENT_TEST_MAP_CASE_ID", "У тестового утверждения отсутствует id.", source, map.Id, "testCases");
+                }
+                else if (!caseIds.Add(testCase.Id))
+                {
+                    Error(
+                        diagnostics,
+                        "CONTENT_TEST_MAP_CASE_DUPLICATE",
+                        $"Утверждение «{testCase.Id}» объявлено более одного раза.",
+                        source,
+                        map.Id,
+                        "testCases");
+                }
+
+                if (string.IsNullOrWhiteSpace(testCase.Type))
+                {
+                    Error(
+                        diagnostics,
+                        "CONTENT_TEST_MAP_CASE_TYPE",
+                        $"У утверждения «{testCase.Id}» отсутствует type.",
+                        source,
+                        map.Id,
+                        "testCases");
+                }
+            }
+        }
+    }
+
+    private static void ValidateTestMapStart(
+        TestMapStartDto? start,
+        ContentRegistry registry,
+        TestMapDto map,
+        string source,
+        string field,
+        ContentDiagnosticCollection diagnostics)
+    {
+        if (start is null)
+        {
+            return;
+        }
+
+        if (!IsInside(start.Col, start.Row, map.Width, map.Height))
+        {
+            Error(
+                diagnostics,
+                "CONTENT_TEST_MAP_START_BOUNDS",
+                $"Старт вне карты: ({start.Col}, {start.Row}).",
+                source,
+                map.Id,
+                field);
+        }
+
+        RequireReference(
+            registry.Factions,
+            start.FactionId,
+            "CONTENT_REF_FACTION_MISSING",
+            "фракция",
+            source,
+            map.Id,
+            $"{field}.factionId",
+            diagnostics);
+
+        if (!string.IsNullOrWhiteSpace(start.HeroId))
+        {
+            RequireReference(
+                registry.Heroes,
+                start.HeroId,
+                "CONTENT_REF_HERO_MISSING",
+                "герой",
+                source,
+                map.Id,
+                $"{field}.heroId",
+                diagnostics);
+        }
+    }
+
+    private static bool IsInside(int column, int row, int width, int height)
+    {
+        return column >= 0 && row >= 0 && column < width && row < height;
+    }
+
+    private static void RequireKey(
+        string? value,
+        string field,
+        string? entityId,
+        string source,
+        ContentDiagnosticCollection diagnostics,
+        string code)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            Error(
+                diagnostics,
+                code,
+                $"Обязательное поле «{field}» не заполнено.",
+                source,
+                entityId,
+                field);
+        }
+    }
+
     private static void ValidateLocalization(ContentRegistry registry, ContentDiagnosticCollection diagnostics)
     {
         if (registry.Localization is not { } localization)
@@ -2315,6 +2815,16 @@ public sealed class ContentValidator
                 AddKey(keys, option.NameKey);
                 AddKey(keys, option.DescriptionKey);
             }
+        }
+
+        foreach (ContentEntry<BiomeDto> entry in registry.Biomes.Values)
+        {
+            AddKey(keys, entry.Value.NameKey);
+        }
+
+        foreach (ContentEntry<TestMapDto> entry in registry.TestMaps.Values)
+        {
+            AddKey(keys, entry.Value.NameKey);
         }
 
         if (registry.MoraleRules is { } morale)

@@ -22,6 +22,11 @@ public partial class BootController : Node
 	public const string ContentRoot = "res://content/core";
 
 	/// <summary>
+	/// Сцена, на которую Boot переходит после успешной загрузки контента.
+	/// </summary>
+	public const string MapScenePath = "res://scenes/map/AdventureMap.tscn";
+
+	/// <summary>
 	/// Вызывается при входе узла в дерево сцены.
 	/// Версия проекта читается из настроек, версия движка — из Engine.GetVersionInfo().
 	/// После проверки версии загружается и валидируется контент.
@@ -34,7 +39,11 @@ public partial class BootController : Node
 		{
 			GD.PushError("[Boot] Контент не прошёл загрузку или валидацию. Запуск остановлен.");
 			GetTree().Quit(1);
+			return;
 		}
+
+		// Смена сцены откладывается: во время _Ready дерево ещё занято.
+		GetTree().CallDeferred(SceneTree.MethodName.ChangeSceneToFile, MapScenePath);
 	}
 
 	private void LogVersions()
@@ -110,6 +119,7 @@ public partial class BootController : Node
 				+ merge.Diagnostics.WarningCount
 				+ validation.Diagnostics.WarningCount;
 			LogContentSummary(registry, warningCount);
+			GameSession.Initialize(registry, logger);
 			return true;
 		}
 		catch (InvalidOperationException exception)

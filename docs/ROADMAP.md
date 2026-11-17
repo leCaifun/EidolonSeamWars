@@ -28,7 +28,7 @@
 - Критерии приёмки M0 — все пункты [docs/GDD.md](GDD.md) §19.
 - Балансные и дизайнерские изменения фиксируются в [docs/DECISIONS.md](DECISIONS.md)
   и [docs/BALANCE.md](BALANCE.md), а не «молча» в коде.
-- История работ без Git ведётся в [docs/WORKLOG.md](WORKLOG.md) (ADR-019).
+- История решений и проверок ведётся в [docs/WORKLOG.md](WORKLOG.md); правила Git — ADR-029.
 
 ## 2. M0 — база за 24 часа
 
@@ -53,7 +53,7 @@
 | [prompts/01_bootstrap.md](../prompts/01_bootstrap.md) | Каркас, документация, инфраструктурные типы, git-ready файлы | 0–2 |
 | [prompts/02_core_domain.md](../prompts/02_core_domain.md) | Домен: Hex-сетка, UnitDef, Stack, Army, Hero, Settlement, экономика, DailyTick | 2–5 |
 | [prompts/03_content_pipeline.md](../prompts/03_content_pipeline.md) | JSON-контент, ContentRegistry, валидатор, ModLoader, локализация | 2–5, 20–22 |
-| [prompts/04_adventure_map.md](../prompts/04_adventure_map.md) | Карта 48×48, A*, туман, движение партий, объекты карты | 5–8 |
+| [prompts/04_adventure_map.md](../prompts/04_adventure_map.md) | Карта 48×48, A*, туман, движение партий, объекты карты (ядро готово, экран не проверен — KI-004, KI-014) | 5–8 |
 | [prompts/05_battle.md](../prompts/05_battle.md) | Бой 13×9, очередь, действия, урон, резисты, мораль, герой off-field | 8–16 |
 | [prompts/06_ui_cards.md](../prompts/06_ui_cards.md) | Карточки юнитов, армия, поселение, осада, HUD | 16–18 |
 | [prompts/07_menu_settings_save.md](../prompts/07_menu_settings_save.md) | Меню, настройки, сейв/лоад, тестовая битва | 18–20 |

@@ -2,9 +2,9 @@
 
 | Параметр | Значение |
 |---|---|
-| Версия | 0.3.0 |
-| Статус | Актуально для этапа 01 |
-| Дата | 2026-11-13 |
+| Версия | 0.4.0 |
+| Статус | Актуально для этапа 04 |
+| Дата | 2026-11-16 |
 | Источник истины | [docs/GDD.md](GDD.md) §1.2, §13 |
 
 ## Оглавление
@@ -30,16 +30,76 @@
 
 | Файл | Автор | Источник | Лицензия | Дата | Статус |
 |---|---|---|---|---|---|
-| `game/icon.svg` | Авторы проекта | Создан вручную для проекта: оригинальная геометрия «гекс + шов + якорь» | MIT (код проекта) | 2026-11-13 | используется |
+| `game/icon.svg` | Авторы проекта | Создан вручную для проекта: оригинальная геометрия «гекс + шов + якорь» | Собственная (LICENSE-ASSETS.md) | 2026-11-13 | используется |
+| `game/assets/sprites/map/hex_desert.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/hex_forest.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/hex_grass.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/hex_mountain.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/hex_road.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/hex_snow.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/hex_swamp.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/hex_void.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/hex_water.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_army_neutral.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_dwelling_ash.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_dwelling_brass.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_dwelling_root.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_echo_cache.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_flag_ash.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_flag_brass.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_flag_root.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_hero_ash.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_hero_brass.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_hero_root.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_mine_crystal.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_mine_essence.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_mine_gold.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_mine_mercury.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_mine_ore.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_mine_sulfur.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_mine_wood.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_patrol_ash.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_patrol_brass.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_patrol_root.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_settlement_ash.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_settlement_brass.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/map/objects/token_settlement_root.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_blocked.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_danger.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_explored.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_flyer.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_hidden.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_movement_cost.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_passable.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_road.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_selected.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/map/icon_visibility.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_bottom_dark.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_button_hover.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_button_normal.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_button_pressed.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_card_dark.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_resource_slot.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_side_left.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_side_right.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_tooltip.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/panels/panel_top_dark.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/resources/icon_crystal.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/resources/icon_essence.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/resources/icon_gold.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/resources/icon_mercury.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/resources/icon_ore.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/resources/icon_sulfur.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
+| `game/assets/sprites/ui/resources/icon_wood.svg` | Авторы проекта | Сгенерирован `tools/scripts/generate_assets.py` (процедурная геометрия, без сторонних исходников) | Собственная (LICENSE-ASSETS.md) | 2026-11-16 | используется (этап 04, не проверен в Godot) |
 
-Иных графических, звуковых или шрифтовых ассетов на этапе 01 нет.
-JSON-контент и документация — авторские материалы проекта.
+Иных звуковых и шрифтовых ассетов нет. JSON-контент и документация — авторские материалы проекта.
 
 ## 3. Допустимые лицензии
 
 | Лицензия | Использование | Условия |
 |---|---|---|
-| MIT | код, собственные ассеты | сохранить уведомление |
+| MIT | сторонний код и ассеты под MIT | сохранить уведомление |
+| Apache-2.0 | исходный код проекта (ADR-032) | сохранить уведомление и NOTICE при наличии |
 | CC0 | графика, звук, шрифты | без обязательств, но фиксируется источник |
 | CC-BY 3.0/4.0 | графика, звук, шрифты | обязательная атрибуция |
 | OFL 1.1 | шрифты | сохранить лицензию, не продавать шрифт отдельно |
@@ -62,7 +122,7 @@ fan art, ripped assets.
 
 ## 5. Шрифты
 
-- На этапе 01 шрифты не добавлены; UI использует системный шрифт Godot или
+- Шрифты не добавлены; UI использует системный шрифт Godot или
   будущий OFL-шрифт.
 - Перед добавлением проверить поддержку кириллицы и право на встраивание.
 - Файл лицензии шрифта хранится рядом со шрифтом в `game/assets/fonts`.

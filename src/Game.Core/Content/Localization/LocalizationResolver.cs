@@ -35,6 +35,28 @@ public sealed class LocalizationResolver
             return string.Empty;
         }
 
+        return TryResolve(language, key, out string value) ? value : key;
+    }
+
+    /// <summary>
+    /// Возвращает перевод для показа в UI. При полном промахе возвращает
+    /// ключ в квадратных скобках (<c>[key]</c>), чтобы пропуск перевода был
+    /// заметен игроку и тестировщику (UI_SPEC.md).
+    /// </summary>
+    /// <param name="language">Выбранный язык.</param>
+    /// <param name="key">Ключ локализации.</param>
+    public string ResolveForUi(string language, string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return string.Empty;
+        }
+
+        return TryResolve(language, key, out string value) ? value : $"[{key}]";
+    }
+
+    private bool TryResolve(string language, string key, out string value)
+    {
         HashSet<string> visited = new(StringComparer.Ordinal);
         string? current = language;
 
@@ -42,9 +64,9 @@ public sealed class LocalizationResolver
         {
             LocalizationTable? table = _set.Find(current);
 
-            if (table is not null && table.TryGet(key, out string value))
+            if (table is not null && table.TryGet(key, out value))
             {
-                return value;
+                return true;
             }
 
             current = ResolveNextLanguage(current, table);
@@ -60,7 +82,8 @@ public sealed class LocalizationResolver
                 ["language"] = language
             }));
 
-        return key;
+        value = key;
+        return false;
     }
 
     private string? ResolveNextLanguage(string language, LocalizationTable? table)

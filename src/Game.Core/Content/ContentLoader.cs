@@ -84,6 +84,7 @@ public sealed class ContentLoader
         List<ContentEntry<SettlementTemplateDto>> settlements = new();
         List<ContentEntry<MapObjectDto>> mapObjects = new();
         List<ContentEntry<ResourceDefinitionDto>> resources = new();
+        List<ContentEntry<TestMapDto>> testMaps = new();
         Dictionary<string, string> idSources = new(StringComparer.Ordinal);
         ContentEntry<BattleRulesDto>? battle = null;
         ContentEntry<MoraleRulesDto>? morale = null;
@@ -92,6 +93,8 @@ public sealed class ContentLoader
         ContentEntry<RansomRulesDto>? ransom = null;
         ContentEntry<VeterancyRulesDto>? veterancy = null;
         ContentEntry<ProgressionRulesDto>? progression = null;
+        ContentEntry<BiomesRulesDto>? biomes = null;
+        ContentEntry<MapGenerationRulesDto>? mapGeneration = null;
         HashSet<string> ruleFiles = new(StringComparer.OrdinalIgnoreCase);
         List<string> localizationFiles = new();
 
@@ -253,6 +256,19 @@ public sealed class ContentLoader
                 continue;
             }
 
+            if (normalized.StartsWith("test_maps/", StringComparison.Ordinal))
+            {
+                ReadSingle(
+                    rootDirectory,
+                    relativePath,
+                    sourcePack,
+                    diagnostics,
+                    idSources,
+                    testMaps,
+                    item => item.Id);
+                continue;
+            }
+
             if (normalized.StartsWith("rules/", StringComparison.Ordinal))
             {
                 ReadRule(
@@ -267,7 +283,9 @@ public sealed class ContentLoader
                     ref escape,
                     ref ransom,
                     ref veterancy,
-                    ref progression);
+                    ref progression,
+                    ref biomes,
+                    ref mapGeneration);
                 continue;
             }
 
@@ -299,6 +317,9 @@ public sealed class ContentLoader
             Settlements = settlements.AsReadOnly(),
             MapObjects = mapObjects.AsReadOnly(),
             Resources = resources.AsReadOnly(),
+            TestMaps = testMaps.AsReadOnly(),
+            BiomesRules = biomes,
+            MapGenerationRules = mapGeneration,
             BattleRules = battle,
             MoraleRules = morale,
             EconomyRules = economy,
@@ -445,7 +466,9 @@ public sealed class ContentLoader
         ref ContentEntry<EscapeRulesDto>? escape,
         ref ContentEntry<RansomRulesDto>? ransom,
         ref ContentEntry<VeterancyRulesDto>? veterancy,
-        ref ContentEntry<ProgressionRulesDto>? progression)
+        ref ContentEntry<ProgressionRulesDto>? progression,
+        ref ContentEntry<BiomesRulesDto>? biomes,
+        ref ContentEntry<MapGenerationRulesDto>? mapGeneration)
     {
         string source = ContentJsonReader.BuildSourcePath(rootDirectory, relativePath);
         string normalized = relativePath.Replace('\\', '/');
@@ -487,11 +510,18 @@ public sealed class ContentLoader
             case "progression":
                 progression = ReadRuleFile<ProgressionRulesDto>(rootDirectory, relativePath, sourcePack, diagnostics);
                 break;
+            case "biomes":
+                biomes = ReadRuleFile<BiomesRulesDto>(rootDirectory, relativePath, sourcePack, diagnostics);
+                break;
+            case "map_generation":
+                mapGeneration = ReadRuleFile<MapGenerationRulesDto>(rootDirectory, relativePath, sourcePack, diagnostics);
+                break;
             default:
-                diagnostics.Add(ContentDiagnostic.Warning(
+                diagnostics.Add(ContentDiagnostic.Error(
                     "CONTENT_RULE_UNKNOWN",
-                    $"Файл правила «{name}» не поддерживается этапом 03 и пропущен.",
-                    source));
+                    $"Неизвестное имя правила «{name}»; поддерживаемые правила перечислены в docs/CONTENT_SCHEMA.md.",
+                    source,
+                    field: "rules"));
                 break;
         }
     }
@@ -624,6 +654,11 @@ public sealed class ContentLoader
                 Require(mapObject.NameKey, "nameKey", source, mapObject.Id, diagnostics);
                 Require(mapObject.DescriptionKey, "descriptionKey", source, mapObject.Id, diagnostics);
                 break;
+            case TestMapDto testMap:
+                Require(testMap.Id, "id", source, testMap.Id, diagnostics);
+                Require(testMap.NameKey, "nameKey", source, testMap.Id, diagnostics);
+                Require(testMap.OffsetType, "offsetType", source, testMap.Id, diagnostics);
+                break;
             case ResourceDefinitionDto resource:
                 Require(resource.Id, "id", source, resource.Id, diagnostics);
                 Require(resource.NameKey, "nameKey", source, resource.Id, diagnostics);
@@ -706,6 +741,16 @@ public sealed class ContentLoader
         }
 
         if (pack.ProgressionRules is not null)
+        {
+            count++;
+        }
+
+        if (pack.BiomesRules is not null)
+        {
+            count++;
+        }
+
+        if (pack.MapGenerationRules is not null)
         {
             count++;
         }

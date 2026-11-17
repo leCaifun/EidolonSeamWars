@@ -1,3 +1,6 @@
 [gd_scene format=3 uid="uid://uhhb76iiwbil"]
 
+[ext_resource type="Script" path="res://scripts/Map/HexGridVisual.cs" id="1_grid"]
+
 [node name="HexGridVisual" type="Node2D" unique_id=1535255675]
+script = ExtResource("1_grid")

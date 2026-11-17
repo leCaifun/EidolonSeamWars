@@ -101,9 +101,8 @@ dotnet run --project src/Game.SimRunner -c Release -- validate
 
 ## Git
 
-Git в текущей среде недоступен и не используется. История ведётся в
-[docs/WORKLOG.md](docs/WORKLOG.md), версии — в [docs/CHANGELOG.md](docs/CHANGELOG.md).
-Git-ready файлы (`.gitignore`, `.gitattributes`, CI, шаблоны issue/PR) подготовлены заранее.
+Репозиторий публичный на GitHub. Правила работы с Git — [AGENTS.md](AGENTS.md) §5 и ADR-029.
+История решений и проверок — [docs/WORKLOG.md](docs/WORKLOG.md), версии — [docs/CHANGELOG.md](docs/CHANGELOG.md).
 
 ## License
 

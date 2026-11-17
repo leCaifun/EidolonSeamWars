@@ -2,10 +2,10 @@
 
 | Параметр | Значение |
 |---|---|
-| Версия | 0.3.0 |
+| Версия | 0.4.0 |
 | Статус | Актуально |
-| Дата | 2026-11-15 |
-| Формат | W-XXXX, история без Git (ADR-019) |
+| Дата | 2026-11-16 |
+| Формат | W-XXXX; правила Git — ADR-029 |
 
 ## Оглавление
 
@@ -16,14 +16,16 @@
 5. [W-0004 · 2026-11-13 · Этап 03: Content Draft](#5-w-0004--2026-11-13--этап-03-content-draft)
 6. [W-0005 · 2026-11-13 · M0 Localization Draft](#6-w-0005--2026-11-13--m0-localization-draft)
 7. [W-0006 · 2026-11-15 · Этап 03: контентный конвейер](#7-w-0006--2026-11-15--этап-03-контентный-конвейер)
-8. [Связанные документы](#8-связанные-документы)
+8. [W-0007 · 2026-11-16 · Этап 04: карта, A*, туман, экран карты](#8-w-0007--2026-11-16--этап-04-карта-a-туман-экран-карты)
+9. [Связанные документы](#9-связанные-документы)
 
 ## 1. Правила ведения
 
 Каждая задача добавляет запись с полями: ID, дата, этап ROADMAP, цель,
 созданные/изменённые/удалённые файлы, тесты и результат, ручные проверки,
-что не проверено, риски и техдолг, commit-message для будущего Git
-(Conventional Commits). Git-команды не выполняются (ADR-019).
+что не проверено, риски и техдолг, commit-message (Conventional Commits).
+Правила Git — ADR-029. Записи W-0001…W-0006 созданы, пока Git был недоступен (ADR-019),
+поэтому их commit-message предназначались для будущего репозитория.
 
 ## 2. W-0001 · 2026-11-13 · M0 Bootstrap
 
@@ -412,17 +414,26 @@ Refs: prompts/02_core_domain.md, ADR-004, ADR-006, ADR-012, ADR-014, ADR-022
 ```
 
 ## 5. W-0004 · 2026-11-13 · Этап 03. Content Draft
-**Цель:** вручную подготовлен полный core-пак контента.
+
+**Этап ROADMAP:** M0, этап 03 (черновик контента).
+
+**Цель:** вручную подготовить полный core-пак контента.
+
 **Создано:** manifest, resources, 7 rules, 3 factions, 15 units, 3 hero classes, 3 heroes,
 abilities, spells, buildings, settlements, map objects, ru/en локализация.
+
 **Не проверено:** строгая валидация через ContentValidator, сборка контента в рантайме.
+
 **Риски:** схемы черновые, этап 03 должен формализовать DTO и валидатор.
-**Commit-message:** feat(content): add full core content pack draft
+
+**Commit-message:** `feat(content): add full core content pack draft`
 
 **Обновлено W-0006:** валидатор и загрузка реализованы; дубликат ID и
 несоответствия `heroes/ash.json` / `settlements/root.json` исправлены.
 
 ## 6. W-0005 · 2026-11-13 · M0 Localization Draft
+
+**Этап ROADMAP:** M0, локализация (черновик).
 
 **Цель:** вручную подготовлены переводы всего контента из `ru` и `en` для расширенного списка языков.
 
@@ -445,7 +456,7 @@ abilities, spells, buildings, settlements, map objects, ru/en локализац
 - машинные или черновые переводы малых языков могут быть неточными;
 - возможны проблемы шрифтового покрытия.
 
-**Commit-message:** feat(localization): add extended language drafts
+**Commit-message:** `feat(localization): add extended language drafts`
 
 **Обновлено W-0006:** статусы языковых файлов приведены к `languages.json`
 (ADR-026), `check-localization.ps1` смягчён для необязательных языков.
@@ -651,12 +662,99 @@ feat(content): implement stage 03 content pipeline and validator
 
 Refs: prompts/03_content_pipeline.md, ADR-016, ADR-024, ADR-025, ADR-026
 ```
-feat(content): add validated test map fixtures 8x8/16x16/48x48
 
-## 8. Связанные документы
+**Дополнение (тестовые карты этапа 04, добавлены вне записи):**
+
+```
+feat(content): add validated test map fixtures 8x8/16x16/48x48
+```
+
+## 8. W-0007 · 2026-11-16 · Этап 04: карта, A*, туман, экран карты
+
+**Этап ROADMAP:** M0, часы 5–8, этап 04 «Adventure Map» (`prompts/04_adventure_map.md`).
+
+**Цель:** привести документацию в порядок, проверить и исправить уже сделанное по этапу 04
+и дописать недостающее (презентационный слой карты).
+
+**Важно:** в среде этой записи не было `dotnet` и Godot. Ни сборка, ни тесты, ни запуск
+движка не выполнялись. Всё ниже написано по чтению исходников и требует проверки.
+
+### Найдено и исправлено в Core
+
+- Туман: видимость сбрасывалась для всех партий фракции, кроме последней (ADR-033,
+  `FogOfWar.ClearVisibility`/`AddVision`, `MapState.RefreshFog`, тест
+  `FogOfWar_TwoPartiesOfOneFaction_KeepBothVisionAreas`).
+- Движение: очки героя считались из плоского значения JSON, а не по GDD; множитель дороги
+  не давал эффекта. Новая шкала ADR-034: местность не менее 2, дорога 1, очки героя
+  `12 + Логистика`, отряда без героя 12. Удалены `heroMovementPointsPerDay` и
+  `roadMovementCostMultiplierPercent`, обновлены биомы, валидатор, `GameMap`, адаптер,
+  эталоны трёх тестовых карт и числа в тестах.
+- Путь теперь обходит блокирующие объекты (`blockOccupiedTiles: true` в `MapState`).
+- Устаревший фильтр `CONTENT_RULE_UNKNOWN` в тесте реального контента заменён проверкой
+  отсутствия этой диагностики.
+
+### Документация
+
+- ADR-029…034 (Git, строгое имя правила, overridesCore, лицензирование, общий туман,
+  шкала движения); ADR-024…028 приведены к единому формату, оглавление пересобрано.
+- Политика Git приведена к ADR-029 в `AGENTS.md`, `CONTRIBUTING`, `README`, `ROADMAP`,
+  `CHANGELOG`, `WORKLOG`, промтах и `.opencode`; разделы `AGENTS.md` перенумерованы.
+- Опечатки и китайские вставки удалены; `LICENSE-CONTENT.md` объединён с `LICENSE-ASSETS.md`;
+  правообладатель везде Saprinsky-Berozin.
+- Обновлены `CONTENT_SCHEMA`, `TDD` (раздел 12), `BALANCE_MAP`, `TESTING`, `RUNBOOK`,
+  `KNOWN_ISSUES`, `ASSET_LICENSES` (61 SVG), `test_scenarios/map_movement.md`, `GDD` §9.2.
+
+### Godot-слой (написан без запуска движка)
+
+- Новые: `scripts/Boot/GameSession.cs`, `scripts/Map/HexMetrics.cs`.
+- Заполнены: `AdventureMapController`, `HexGridVisual`, `HexTileNode`, `FogOfWarVisual`,
+  `MapObjectTokenController`, `PartyTokenController`, `CameraController`,
+  `DayCounterController`, `EndDayButtonController`, `ResourcePanelController`.
+- Сцены: `AdventureMap`, `HexGridVisual`, `HexTile`, `MapObjectToken`, `PartyToken`;
+  пустая `FogTile.tscn` удалена (туман рисуется одним `_Draw`).
+- `BootController` после загрузки контента переходит на `AdventureMap.tscn`.
+- Ключи `ui.map.*` добавлены в `ru` и `en` (в остальных 24 языках их нет, KI-018).
+
+### Как проверить (по порядку)
+
+1. `dotnet build EidolonSeamWars.sln -c Release` и `dotnet test -c Release` — ожидается
+   компиляция без предупреждений и зелёные тесты; обратить внимание на `MapTests`,
+   `MapContentTests`, `ContentPipelineTests`, `LevelUpTests`.
+2. `dotnet run --project src/Game.SimRunner -c Release -- validate` — ожидается exit 0,
+   без `CONTENT_RULE_UNKNOWN`; 24 предупреждения `LOC_*_KEYS_MISSING` для языков, кроме ru/en.
+3. Открыть `game/` в Godot 4.7.2 .NET, собрать C# (Build), запустить: Boot должен перейти
+   на карту без ошибок в выводе.
+4. На карте: виден игрок в стартовом гексе, вокруг открыт туман; клик по соседнему гексу
+   двигает токен и уменьшает «Очки движения»; «Завершить день» увеличивает день и
+   восстанавливает очки; WASD/колесо/средняя кнопка двигают камеру; клик по тёмному гексу —
+   сообщение «не исследован».
+5. После проверки обновить KI-004 и KI-014.
+
+### Не проверено и риски
+
+- Всё вышеперечисленное; особенно точность API Godot C# и формат вручную написанных `.tscn`.
+- Эталоны `expectedCost` посчитаны отдельной моделью Дейкстры, совпавшей со старыми значениями.
+- Бой по столкновению, награды объектов, ИИ партий, сохранение карты — не реализованы.
+- Стартовые ресурсы панели — нули (экономика игрока не подключена к карте).
+
+**Commit-message:**
+
+```
+feat(map): finish stage 04 map core fixes and add map screen
+
+- fix fog union for multiple parties of one faction (ADR-033)
+- rebalance movement: terrain >= 2, road 1, hero MP 12 + logistics (ADR-034)
+- block guarded objects mid-route, drop legacy rule filter in tests
+- add adventure map presentation layer and boot-to-map transition
+- docs: ADR-029..034, unified ADR format, Git policy, licenses, asset registry
+
+Refs: prompts/04_adventure_map.md, ADR-027, ADR-028, ADR-033, ADR-034
+```
+
+## 9. Связанные документы
 
 - [AGENTS.md](../AGENTS.md) — правила проекта
 - [docs/CHANGELOG.md](CHANGELOG.md) — версии
 - [docs/ROADMAP.md](ROADMAP.md) — этапы
-- [docs/DECISIONS.md](DECISIONS.md) — ADR-019 о workflow без Git
+- [docs/DECISIONS.md](DECISIONS.md) — ADR-029 о Git и GitHub
 - [docs/patchnotes/v0.3.0.md](patchnotes/v0.3.0.md) — патчноут версии

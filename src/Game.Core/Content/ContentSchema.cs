@@ -49,7 +49,14 @@ public static class ContentSchema
         "mine",
         "dwelling",
         "echoCache",
-        "patrol"
+        "patrol",
+        "settlement"
+    };
+
+    private static readonly HashSet<string> OffsetTypesInternal = new(StringComparer.Ordinal)
+    {
+        "odd-r",
+        "even-r"
     };
 
     private static readonly HashSet<string> AbilityKindsInternal = new(StringComparer.Ordinal)
@@ -121,8 +128,11 @@ public static class ContentSchema
     /// <summary>Допустимые токены типа урона.</summary>
     public static IReadOnlySet<string> DamageTypes => DamageTypesInternal;
 
-    /// <summary>Допустимые типы объектов карты этапа 03.</summary>
+    /// <summary>Допустимые типы объектов карты.</summary>
     public static IReadOnlySet<string> MapObjectTypes => MapObjectTypesInternal;
+
+    /// <summary>Допустимые схемы offset-координат.</summary>
+    public static IReadOnlySet<string> OffsetTypes => OffsetTypesInternal;
 
     /// <summary>Допустимые виды способностей.</summary>
     public static IReadOnlySet<string> AbilityKinds => AbilityKindsInternal;

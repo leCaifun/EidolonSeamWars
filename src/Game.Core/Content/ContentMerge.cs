@@ -175,26 +175,35 @@ public sealed class ContentMerge
             return new ContentMergeResult(null, diagnostics, changes.AsReadOnly());
         }
 
+        Dictionary<string, bool> overridesCore = new(StringComparer.Ordinal);
+
+        foreach (ContentPack pack in ordered)
+        {
+            overridesCore[pack.Manifest.Id] = pack.Manifest.OverridesCore;
+        }
+
         List<ContentEntry<FactionDto>> factions = MergeCategory(
-            ordered, pack => pack.Factions, "faction", changes, diagnostics);
+            ordered, pack => pack.Factions, "faction", changes, diagnostics, overridesCore);
         List<ContentEntry<UnitDto>> units = MergeCategory(
-            ordered, pack => pack.Units, "unit", changes, diagnostics);
+            ordered, pack => pack.Units, "unit", changes, diagnostics, overridesCore);
         List<ContentEntry<HeroClassDto>> heroClasses = MergeCategory(
-            ordered, pack => pack.HeroClasses, "heroClass", changes, diagnostics);
+            ordered, pack => pack.HeroClasses, "heroClass", changes, diagnostics, overridesCore);
         List<ContentEntry<HeroDto>> heroes = MergeCategory(
-            ordered, pack => pack.Heroes, "hero", changes, diagnostics);
+            ordered, pack => pack.Heroes, "hero", changes, diagnostics, overridesCore);
         List<ContentEntry<AbilityDto>> abilities = MergeCategory(
-            ordered, pack => pack.Abilities, "ability", changes, diagnostics);
+            ordered, pack => pack.Abilities, "ability", changes, diagnostics, overridesCore);
         List<ContentEntry<SpellDto>> spells = MergeCategory(
-            ordered, pack => pack.Spells, "spell", changes, diagnostics);
+            ordered, pack => pack.Spells, "spell", changes, diagnostics, overridesCore);
         List<ContentEntry<BuildingDto>> buildings = MergeCategory(
-            ordered, pack => pack.Buildings, "building", changes, diagnostics);
+            ordered, pack => pack.Buildings, "building", changes, diagnostics, overridesCore);
         List<ContentEntry<SettlementTemplateDto>> settlements = MergeCategory(
-            ordered, pack => pack.Settlements, "settlement", changes, diagnostics);
+            ordered, pack => pack.Settlements, "settlement", changes, diagnostics, overridesCore);
         List<ContentEntry<MapObjectDto>> mapObjects = MergeCategory(
-            ordered, pack => pack.MapObjects, "mapObject", changes, diagnostics);
+            ordered, pack => pack.MapObjects, "mapObject", changes, diagnostics, overridesCore);
         List<ContentEntry<ResourceDefinitionDto>> resources = MergeCategory(
-            ordered, pack => pack.Resources, "resource", changes, diagnostics);
+            ordered, pack => pack.Resources, "resource", changes, diagnostics, overridesCore);
+        List<ContentEntry<TestMapDto>> testMaps = MergeCategory(
+            ordered, pack => pack.TestMaps, "testMap", changes, diagnostics, overridesCore);
 
         ContentEntry<BattleRulesDto>? battle = null;
         ContentEntry<MoraleRulesDto>? morale = null;
@@ -203,18 +212,28 @@ public sealed class ContentMerge
         ContentEntry<RansomRulesDto>? ransom = null;
         ContentEntry<VeterancyRulesDto>? veterancy = null;
         ContentEntry<ProgressionRulesDto>? progression = null;
+        ContentEntry<BiomesRulesDto>? biomes = null;
+        ContentEntry<MapGenerationRulesDto>? mapGeneration = null;
         ContentEntry<LanguagesManifestDto>? languages = null;
 
         foreach (ContentPack pack in ordered)
         {
-            battle = MergeRule(battle, pack.BattleRules, "rules.battle", changes);
-            morale = MergeRule(morale, pack.MoraleRules, "rules.morale", changes);
-            economy = MergeRule(economy, pack.EconomyRules, "rules.economy", changes);
-            escape = MergeRule(escape, pack.EscapeRules, "rules.escape", changes);
-            ransom = MergeRule(ransom, pack.RansomRules, "rules.ransom", changes);
-            veterancy = MergeRule(veterancy, pack.VeterancyRules, "rules.veterancy", changes);
-            progression = MergeRule(progression, pack.ProgressionRules, "rules.progression", changes);
-            languages = MergeRule(languages, pack.LanguagesManifest, "languages", changes);
+            battle = MergeRule(battle, pack.BattleRules, "rules.battle", changes, diagnostics, overridesCore);
+            morale = MergeRule(morale, pack.MoraleRules, "rules.morale", changes, diagnostics, overridesCore);
+            economy = MergeRule(economy, pack.EconomyRules, "rules.economy", changes, diagnostics, overridesCore);
+            escape = MergeRule(escape, pack.EscapeRules, "rules.escape", changes, diagnostics, overridesCore);
+            ransom = MergeRule(ransom, pack.RansomRules, "rules.ransom", changes, diagnostics, overridesCore);
+            veterancy = MergeRule(veterancy, pack.VeterancyRules, "rules.veterancy", changes, diagnostics, overridesCore);
+            progression = MergeRule(progression, pack.ProgressionRules, "rules.progression", changes, diagnostics, overridesCore);
+            biomes = MergeRule(biomes, pack.BiomesRules, "rules.biomes", changes, diagnostics, overridesCore);
+            mapGeneration = MergeRule(
+                mapGeneration,
+                pack.MapGenerationRules,
+                "rules.map_generation",
+                changes,
+                diagnostics,
+                overridesCore);
+            languages = MergeRule(languages, pack.LanguagesManifest, "languages", changes, diagnostics, overridesCore);
         }
 
         Dictionary<string, LocalizationTable> tables = new(StringComparer.Ordinal);
@@ -270,6 +289,9 @@ public sealed class ContentMerge
             settlements,
             mapObjects,
             resources,
+            testMaps,
+            biomes,
+            mapGeneration,
             battle,
             morale,
             economy,
@@ -340,7 +362,8 @@ public sealed class ContentMerge
         Func<ContentPack, IReadOnlyList<ContentEntry<T>>> selector,
         string category,
         List<ContentChange> changes,
-        ContentDiagnosticCollection diagnostics)
+        ContentDiagnosticCollection diagnostics,
+        IReadOnlyDictionary<string, bool> overridesCore)
         where T : class
     {
         List<ContentEntry<T>> result = new();
@@ -365,6 +388,17 @@ public sealed class ContentMerge
                             id,
                             "id"));
 
+                        continue;
+                    }
+
+                    if (!AllowCoreOverride(
+                            previous.SourcePack,
+                            entry.SourcePack,
+                            id,
+                            entry.SourceFile,
+                            overridesCore,
+                            diagnostics))
+                    {
                         continue;
                     }
 
@@ -399,7 +433,9 @@ public sealed class ContentMerge
         ContentEntry<T>? current,
         ContentEntry<T>? next,
         string category,
-        List<ContentChange> changes)
+        List<ContentChange> changes,
+        ContentDiagnosticCollection diagnostics,
+        IReadOnlyDictionary<string, bool> overridesCore)
         where T : class
     {
         if (next is null)
@@ -415,6 +451,17 @@ public sealed class ContentMerge
             return next;
         }
 
+        if (!AllowCoreOverride(
+                current.SourcePack,
+                next.SourcePack,
+                id,
+                next.SourceFile,
+                overridesCore,
+                diagnostics))
+        {
+            return current;
+        }
+
         RecordChange(
             changes,
             ContentChangeKind.Replace,
@@ -424,6 +471,46 @@ public sealed class ContentMerge
             current.SourcePack);
 
         return next;
+    }
+
+    private bool AllowCoreOverride(
+        string previousPack,
+        string nextPack,
+        string id,
+        string sourceFile,
+        IReadOnlyDictionary<string, bool> overridesCore,
+        ContentDiagnosticCollection diagnostics)
+    {
+        if (!string.Equals(previousPack, "core", StringComparison.Ordinal)
+            || string.Equals(nextPack, "core", StringComparison.Ordinal))
+        {
+            return true;
+        }
+
+        if (!overridesCore.TryGetValue(nextPack, out bool allowed) || !allowed)
+        {
+            diagnostics.Add(ContentDiagnostic.Error(
+                "CONTENT_CORE_OVERRIDE_FORBIDDEN",
+                $"Пак «{nextPack}» переопределяет core-ID «{id}» без overridesCore=true.",
+                sourceFile,
+                id,
+                "overridesCore"));
+
+            return false;
+        }
+
+        _logger?.Log(LogEvent.Create(
+            LogLevel.Warning,
+            "Mods",
+            $"Пак «{nextPack}» явно переопределяет core-ID «{id}» (overridesCore=true).",
+            fields: new Dictionary<string, string>
+            {
+                ["packId"] = nextPack,
+                ["entityId"] = id,
+                ["overridesCore"] = "true"
+            }));
+
+        return true;
     }
 
     private void RecordChange(
@@ -489,6 +576,9 @@ public sealed class ContentMerge
             SettlementTemplateDto settlement => settlement.Id,
             MapObjectDto mapObject => mapObject.Id,
             ResourceDefinitionDto resource => resource.Id,
+            TestMapDto testMap => testMap.Id,
+            BiomesRulesDto biomes => biomes.Id,
+            MapGenerationRulesDto mapGeneration => mapGeneration.Id,
             BattleRulesDto battle => battle.Id,
             MoraleRulesDto morale => morale.Id,
             EconomyRulesDto economy => economy.Id,

@@ -7,7 +7,7 @@ namespace Game.Core.Tests;
 public class ContentValidatorTests
 {
     [Fact]
-    public void RealContentPassesValidationWithoutWarnings()
+    public void RealContentPassesValidationWithoutErrors()
     {
         ContentMergeResult merge = RealContent.MergeWith();
         ContentRegistry registry = Assert.IsType<ContentRegistry>(merge.Registry);
@@ -15,7 +15,15 @@ public class ContentValidatorTests
         ContentValidationResult result = new ContentValidator().Validate(registry);
 
         Assert.Equal(0, result.Diagnostics.ErrorCount);
-        Assert.Equal(0, result.Diagnostics.WarningCount);
+
+        // ADR-026: необязательные языки могут отставать по ключам; это
+        // предупреждение, а не ошибка. Любое другое предупреждение — дефект.
+        Assert.All(
+            result.Diagnostics.Items.Where(item => item.Severity == ContentDiagnosticSeverity.Warning),
+            item => Assert.True(
+                item.Code is "LOC_OPTIONAL_KEYS_MISSING" or "LOC_COMPLETE_KEYS_MISSING",
+                $"Неожиданное предупреждение {item.Code}: {item.Message}"));
+
         Assert.Equal(registry.EntityCount, result.EntityCount);
     }
 
@@ -225,6 +233,19 @@ public class ContentValidatorTests
         Assert.Equal("Loc", entry.Category);
         Assert.Equal("no.such.key", entry.Fields["key"]);
         Assert.Equal("ru", entry.Fields["language"]);
+    }
+
+    [Fact]
+    public void MissingKeyForUiRendersBracketedKey()
+    {
+        LocalizationSet localization = Assert.IsType<LocalizationSet>(
+            RealContent.MergeWith().Registry!.Localization);
+        LocalizationResolver resolver = new(localization);
+
+        Assert.Equal("[no.such.key]", resolver.ResolveForUi("ru", "no.such.key"));
+        Assert.NotEqual(
+            "[unit.brass.militia.name]",
+            resolver.ResolveForUi("ru", "unit.brass.militia.name"));
     }
 
     [Fact]

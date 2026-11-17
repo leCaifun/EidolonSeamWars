@@ -70,14 +70,12 @@
 
 ## 6. Git и коммиты
 
-Сейчас Git **не используется**: запрещены `git init/add/commit/push/tag/remote`,
-GitVersion, hooks, `git describe`. История — в `docs/WORKLOG.md`.
-
-Когда репозиторий будет загружен на GitHub:
+Git и GitHub доступны (ADR-029). Правила для агентов — `AGENTS.md` §5.
 
 - Conventional Commits (`feat:`, `fix:`, `docs:`, `test:`, `chore:`, `balance:`).
 - Одна задача — один логический коммит; сообщение указывается в записи WORKLOG.
 - Ветки: `feat/<short-name>`, `fix/<short-name>`, `docs/<short-name>`.
+- `git push`, слияние в `main`, теги и релизы выполняет владелец репозитория.
 
 ## 7. Чек-лист перед сдачей
 

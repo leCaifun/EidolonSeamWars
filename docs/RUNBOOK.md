@@ -133,10 +133,9 @@ dotnet run --project src/Game.SimRunner -c Release -- validate --content game/co
 (предупреждения допустимы), `1` — есть ошибки, `2` — ошибка запуска
 (например, каталог не найден).
 
-Ожидаемый результат на текущем контенте: 90 сущностей, 26 языков,
-`ru`/`en` по 238 ключей, 7 загруженных правил, 0 ошибок и 2 предупреждения
-`CONTENT_RULE_UNKNOWN` для `rules/biomes.json` и `rules/map_generation.json`
-(их загрузит этап 04).
+Ожидаемый результат на текущем контенте: 26 языков, `ru`/`en` с одинаковым числом ключей,
+9 загруженных правил, 0 ошибок и 0 диагностик `CONTENT_RULE_UNKNOWN`. Точные счётчики
+выводит команда; после этапа 04 сверить их с [docs/CONTENT_SCHEMA.md](CONTENT_SCHEMA.md) §12.
 
 ## 6. Godot .NET project: состояние и восстановление
 
@@ -264,7 +263,7 @@ godot --path game
 | `BootController` не компилируется в Godot | не собран `game/EidolonSeamWars.csproj` | нажмите **Build** или запустите `run-headless.ps1` |
 | `validate.ps1` возвращает код 1 | в контенте есть ошибки | смотрите строки `ОШИБКА` в выводе: файл, поле, ID |
 | `validate.ps1` возвращает код 2 | не найден каталог контента | передайте `--content <path>` или запустите из корня репозитория |
-| `CONTENT_RULE_UNKNOWN` для `biomes`/`map_generation` | файлы правил этапа 04 | предупреждение, не ошибка; загрузка появится на этапе 04 |
+| `CONTENT_RULE_UNKNOWN` | имя файла в `rules/` не из списка CONTENT_SCHEMA §3.4 | ошибка (ADR-030); исправить имя файла |
 | `run.ps1 simulate` возвращает код 2 | симуляция ещё не реализована | этап 05/08 |
 | Тесты падают с `using Godot` в Core | нарушен ADR-002 | уберите Godot-типы из `src/Game.Core` |
 | Кириллица в консоли PowerShell выглядит неверно | кодировка консоли | `chcp 65001` или `[Console]::OutputEncoding = [Text.Encoding]::UTF8` |

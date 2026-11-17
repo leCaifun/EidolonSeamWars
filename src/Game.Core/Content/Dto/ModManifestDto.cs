@@ -22,4 +22,10 @@ public sealed class ModManifestDto
 
     /// <summary>Порядок загрузки среди паков с одинаковыми зависимостями.</summary>
     public int LoadOrder { get; init; }
+
+    /// <summary>
+    /// Явное разрешение переопределять определения пака <c>core</c>.
+    /// Без этого флага переопределение core-ID считается ошибкой (ADR-031).
+    /// </summary>
+    public bool OverridesCore { get; init; }
 }

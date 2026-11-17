@@ -4,7 +4,7 @@
 |---|---|
 | Версия | 0.3.0 + `[Unreleased]` |
 | Статус | Актуально |
-| Дата | 2026-11-15 |
+| Дата | 2026-11-16 |
 | Формат | [Keep a Changelog](https://keepachangelog.com/ru/1.1.0/) + [SemVer](https://semver.org/lang/ru/) |
 
 ## Оглавление
@@ -14,11 +14,30 @@
 3. [Связанные документы](#связанные-документы)
 
 Формат: Keep a Changelog, версионирование: SemVer.
-История работ без Git — [docs/WORKLOG.md](WORKLOG.md) (ADR-019).
+История решений и проверок — [docs/WORKLOG.md](WORKLOG.md); правила Git — ADR-029.
 
 ## [Unreleased]
 
-### Added
+### Added (этап 04)
+
+- Карта: `HexGrid`, `GameMap`, `Pathfinder` (A*), `FogOfWar`, `Party`, `MapState`,
+  команды и журнал, `MapGenerator`, загрузчик тестовых карт; правила `biomes` и
+  `map_generation`; тестовые карты 8×8, 16×16, 48×48.
+- Godot-слой карты: экран, камера, туман, токены, HUD (не проверен в движке).
+- ADR-029…034.
+
+### Changed (этап 04)
+
+- Шкала движения: местность не менее 2, дорога 1, очки героя `12 + Логистика` (ADR-034).
+- `CONTENT_RULE_UNKNOWN` — ошибка (ADR-030); переопределение core-ID требует `overridesCore`.
+- Лицензия кода — Apache-2.0 (ADR-032); `LICENSE-CONTENT.md` объединён с `LICENSE-ASSETS.md`.
+
+### Fixed (этап 04)
+
+- Туман войны учитывает все партии фракции (ADR-033).
+- Путь обходит блокирующие объекты.
+
+### Added (до этапа 04)
 
 - Каркас solution `EidolonSeamWars.sln`: `Game.Core`, `Game.SimRunner`,
   `Game.Core.Tests`.

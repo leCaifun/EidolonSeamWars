@@ -125,8 +125,8 @@
     "neutral": { "col": 40, "row": 40, "factionId": "core.faction.root", "heroId": null }
   },
   "testCases": [
-    { "id": "MF-01", "type": "movementCost", "from": { "col": 6, "row": 40 }, "to": { "col": 41, "row": 7 }, "expectedCost": 54 },
-    { "id": "MF-02", "type": "movementCost", "from": { "col": 6, "row": 40 }, "to": { "col": 40, "row": 40 }, "expectedCost": 34 },
+    { "id": "MF-01", "type": "movementCost", "from": { "col": 6, "row": 40 }, "to": { "col": 41, "row": 7 }, "expectedCost": 68 },
+    { "id": "MF-02", "type": "movementCost", "from": { "col": 6, "row": 40 }, "to": { "col": 40, "row": 40 }, "expectedCost": 35 },
     { "id": "MF-03", "type": "fullConnectivity", "from": { "col": 6, "row": 40 }, "expectedReachableCount": 2067 },
     { "id": "MF-04", "type": "objectCount", "expectedTotal": 51 },
     { "id": "MF-05", "type": "minStartDistance", "expectedMinHexDistance": 20 }

@@ -11,12 +11,15 @@ This includes, but is not limited to:
 - JSON content packs under game/content/core;
 - UI layouts and visual design.
 
-The source code is licensed separately under the Apache License 2.0. See LICENSE.
+You may view these assets and content for personal and educational purposes.
 
 You may NOT redistribute, sell, or use these assets and content in another product
 without explicit written permission.
 
-You may create mods using the modding API and your own original assets.
-See MODDING_POLICY.md.
+You may create and distribute mods that add or override content through the public
+mod API and your own original assets. See MODDING_POLICY.md. Names, logos and sigils
+are covered by TRADEMARKS.md.
 
 Third-party assets, if any, are listed in docs/ASSET_LICENSES.md with their own licenses.
+
+The source code is licensed separately under the Apache License 2.0. See LICENSE.

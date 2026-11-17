@@ -25,9 +25,7 @@
     "echoCaches": 6,
     "patrols": 9
   },
-  "heroMovementPointsPerDay": 8,
-  "armyMovementPointsPerDay": 6,
-  "roadMovementCostMultiplierPercent": 50,
+  "armyMovementPointsPerDay": 12,
   "fogVisibilityRadius": 3,
   "fogExploredRadius": 5
 }

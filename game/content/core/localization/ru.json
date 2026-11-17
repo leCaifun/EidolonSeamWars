@@ -278,6 +278,13 @@
     "movement_type.cavalry.name": "Кавалерия",
     "movement_type.beast.name": "Зверь",
     "movement_type.flyer.name": "Летун",
-    "movement_type.siege.name": "Осадный"
+    "movement_type.siege.name": "Осадный",
+    "ui.map.day": "День {day}",
+    "ui.map.end_day": "Завершить день",
+    "ui.map.movement": "Очки движения: {current}/{max}",
+    "ui.map.battle_pending": "Столкновение. Бой появится на этапе 05.",
+    "ui.map.not_enough_movement": "Не хватает очков движения.",
+    "ui.map.blocked": "Туда не пройти.",
+    "ui.map.unexplored": "Этот гекс ещё не исследован."
   }
 }

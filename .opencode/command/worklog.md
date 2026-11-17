@@ -17,7 +17,7 @@ description: Добавить запись в docs/WORKLOG.md
 **Проверено руками:**
 **Не проверено:**
 **Риски и техдолг:**
-**Commit-message для будущего Git:** <Conventional Commits>
+**Commit-message:** <Conventional Commits>
 ```
 
 Правила:
@@ -26,4 +26,4 @@ description: Добавить запись в docs/WORKLOG.md
 2. Дата — текущая.
 3. Перечисляй реальные файлы, не выдумывай проверки.
 4. Если тесты не запускались — так и напиши.
-5. Не выполняй git-команды.
+5. Git — только по AGENTS.md §5 (ADR-029); push не выполняй.

@@ -7,7 +7,7 @@
       "nameKey": "biome.grass.name",
       "tileId": "hex_grass",
       "passable": true,
-      "movementCostPerHex": 1,
+      "movementCostPerHex": 2,
       "visibilityRange": 2
     },
     {
@@ -15,7 +15,7 @@
       "nameKey": "biome.forest.name",
       "tileId": "hex_forest",
       "passable": true,
-      "movementCostPerHex": 2,
+      "movementCostPerHex": 4,
       "visibilityRange": 1
     },
     {
@@ -26,14 +26,14 @@
       "movementCostPerHex": 999,
       "visibilityRange": 0,
       "flyerPassable": true,
-      "flyerMovementCost": 2
+      "flyerMovementCost": 4
     },
     {
       "id": "core.biome.swamp",
       "nameKey": "biome.swamp.name",
       "tileId": "hex_swamp",
       "passable": true,
-      "movementCostPerHex": 3,
+      "movementCostPerHex": 6,
       "visibilityRange": 2
     },
     {
@@ -41,7 +41,7 @@
       "nameKey": "biome.snow.name",
       "tileId": "hex_snow",
       "passable": true,
-      "movementCostPerHex": 2,
+      "movementCostPerHex": 4,
       "visibilityRange": 2
     },
     {
@@ -49,7 +49,7 @@
       "nameKey": "biome.desert.name",
       "tileId": "hex_desert",
       "passable": true,
-      "movementCostPerHex": 2,
+      "movementCostPerHex": 4,
       "visibilityRange": 3
     },
     {
@@ -74,7 +74,8 @@
       "tileId": "hex_road",
       "passable": true,
       "movementCostPerHex": 1,
-      "visibilityRange": 3
+      "visibilityRange": 3,
+      "road": true
     }
   ]
 }
