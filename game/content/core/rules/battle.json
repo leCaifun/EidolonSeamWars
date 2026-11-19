@@ -18,5 +18,10 @@
   "attackDefenseModifierMax": 4000,
   "critChanceCapPercent": 75,
   "critDamageCapPercent": 300,
+  "rangedLongDistanceFieldPercent": 80,
+  "rangedLongDistancePenaltyPercent": 25,
+  "rangedObstaclePenaltyPercent": 25,
+  "rangedMeleePenaltyPercent": 75,
+  "attackMovementCost": 1,
   "damageTypes": ["physical", "magical", "poison", "fire", "firearm"]
 }

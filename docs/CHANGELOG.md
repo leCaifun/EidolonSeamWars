@@ -30,6 +30,42 @@
 
 - `Game.Core.Battle`: `BattleRules`, `DamageCalculator`, `DamageRequest`, `DamageResult`; `BattleContentAdapter`; `UnitDef.UnitClass/DamageType`; ADR-035.
 
+### Added (этап 05g)
+
+- Способности, заклинания и герой в бою: `BattleCatalog`, `BattleHero`, эффекты, кулдауны, мана, пассивки класса, `BattleResult.RaisedUnits`; команды `UseAbility`/`CastSpell`/`UseCommandAbility`; ADR-043.
+
+### Changed (этап 05g)
+
+- Побеждённая армия (без героя; с героем без выкупа/побега) перестаёт существовать; `herolessArmyLossPercent` = 100; `BattleAftermathResolver` принимает `ransomPaid`.
+
+### Added (этап 05f2)
+
+- `BattleResult`, `BattleStackResult`, `BattleState.CreateResult/CommitResult`, `BattleAftermathResolver` (побег/плен/разгром на формулах этапа 02); ADR-042.
+
+### Added (этап 05f1)
+
+- `BattleCommandCodec`, `BattleCommandJournal` (с `Replay`), `BattleState.CreateSnapshot`, `attackMovementCost` в `battle.json`, исход `NotEnoughMovement`; ADR-041.
+
+### Added (этап 05e2)
+
+- Пул очков движения (`BattleUnit.MovementPointsRemaining`), команда `BattleCommand.Attack` (ручной и комбинированный подход), контратака, штраф стрелков в ближнем бою (`rangedMeleePenaltyPercent` 75), урон с учётом морали/защиты/ветеранства; ADR-040.
+
+### Changed (этап 05e2)
+
+- Перемещение больше не завершает ход (заменяет ADR-039).
+
+### Added (этап 05e1)
+
+- `BattleState`: расстановка 13×9, перемещение/ожидание/защита, мораль в начале хода, статус боя; `BattleCommand*`, `BattleSideSetup`, `BattleStatus`; ADR-039.
+
+### Added (этап 05d)
+
+- `BattleUnit`, `CasualtyResult`, `BattleSide`, `TurnEntry`, `TurnQueue`: пул здоровья, ветеранство в бою, очередь A/B с ожиданием, дополнительные действия морали; ADR-038.
+
+### Added (этап 05c)
+
+- `BattleField` (геометрия поля, линия огня), штрафы дальнего боя (`rangedLongDistance*`, `rangedObstaclePenaltyPercent` в `battle.json`), `BattleRules.LongDistanceThreshold`.
+
 ### Added (этап 05b)
 
 - Мораль: `MoraleRules`, `MoraleLevelRule`, `MoraleContext`, `MoraleRoll`, `MoraleSystem`; `BattleContentAdapter.CreateMoraleRules`; ADR-037.

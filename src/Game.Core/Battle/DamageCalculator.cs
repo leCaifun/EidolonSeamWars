@@ -67,6 +67,42 @@ public sealed class DamageCalculator
     }
 
     /// <summary>
+    /// Совокупный множитель дальней атаки в промилле (ADR-037): на большой дистанции (с
+    /// <see cref="BattleRules.LongDistanceThreshold"/>) и при препятствии на линии огня действуют
+    /// штрафы, которые суммируются. Результат передаётся в <see cref="DamageRequest.ModifierPerMille"/>.
+    /// </summary>
+    /// <param name="distance">Расстояние от стрелка до цели, гексов.</param>
+    /// <param name="obstacleBetween">Есть ли препятствие или юнит на линии огня.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Расстояние отрицательно.</exception>
+    public int GetRangedModifierPerMille(int distance, bool obstacleBetween)
+    {
+        RequireAtLeast(distance, 0, nameof(distance));
+
+        int penaltyPercent = 0;
+
+        if (distance >= _rules.LongDistanceThreshold)
+        {
+            penaltyPercent += _rules.RangedLongDistancePenaltyPercent;
+        }
+
+        if (obstacleBetween)
+        {
+            penaltyPercent += _rules.RangedObstaclePenaltyPercent;
+        }
+
+        return Math.Max(0, PerMille - penaltyPercent * CritChanceToPerMille);
+    }
+
+    /// <summary>
+    /// Множитель урона стрелка в ближнем бою (удар по соседнему гексу и контратака) в промилле:
+    /// при штрафе 75 % — 250.
+    /// </summary>
+    public int GetShooterMeleeModifierPerMille()
+    {
+        return Math.Max(0, PerMille - _rules.RangedMeleePenaltyPercent * CritChanceToPerMille);
+    }
+
+    /// <summary>
     /// Рассчитывает урон одного удара, расходуя броски стрима <c>battle</c>.
     /// </summary>
     /// <param name="request">Запрос на расчёт урона.</param>

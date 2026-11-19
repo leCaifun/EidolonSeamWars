@@ -39,6 +39,9 @@ public sealed class MoraleSystem
         _logger = logger;
     }
 
+    /// <summary>Сколько раундов действует штраф за смерть союзного стака.</summary>
+    public int AllyStackDeathDurationRounds => _rules.AllyStackDeathDurationRounds;
+
     /// <summary>Ограничивает уровень морали диапазоном правил.</summary>
     public int ClampLevel(int level)
     {

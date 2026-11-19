@@ -1673,6 +1673,24 @@ public sealed class ContentValidator
         RequireRange(rules.CritChanceCapPercent, 0, 100, "critChanceCapPercent", rules.Id, source, diagnostics, "CONTENT_BATTLE_CRIT_CHANCE");
         RequireAtLeast(rules.CritDamageCapPercent, 100, "critDamageCapPercent", rules.Id, source, diagnostics, "CONTENT_BATTLE_CRIT_DAMAGE");
 
+        RequireRange(rules.RangedLongDistanceFieldPercent, 1, 100, "rangedLongDistanceFieldPercent", rules.Id, source, diagnostics, "CONTENT_BATTLE_RANGED_DISTANCE");
+        RequireRange(rules.RangedLongDistancePenaltyPercent, 0, 100, "rangedLongDistancePenaltyPercent", rules.Id, source, diagnostics, "CONTENT_BATTLE_RANGED_PENALTY");
+        RequireRange(rules.RangedObstaclePenaltyPercent, 0, 100, "rangedObstaclePenaltyPercent", rules.Id, source, diagnostics, "CONTENT_BATTLE_RANGED_PENALTY");
+
+        RequireRange(rules.AttackMovementCost, 0, 100, "attackMovementCost", rules.Id, source, diagnostics, "CONTENT_BATTLE_ATTACK_COST");
+        RequireRange(rules.RangedMeleePenaltyPercent, 0, 100, "rangedMeleePenaltyPercent", rules.Id, source, diagnostics, "CONTENT_BATTLE_RANGED_PENALTY");
+
+        if (rules.RangedLongDistancePenaltyPercent + rules.RangedObstaclePenaltyPercent > 100)
+        {
+            Error(
+                diagnostics,
+                "CONTENT_BATTLE_RANGED_PENALTY_SUM",
+                "Сумма штрафов дальнего боя не должна превышать 100 %, иначе урон станет отрицательным.",
+                source,
+                rules.Id,
+                "rangedLongDistancePenaltyPercent");
+        }
+
         HashSet<string> damageTypes = new(StringComparer.Ordinal);
 
         foreach (string damageType in rules.DamageTypes)

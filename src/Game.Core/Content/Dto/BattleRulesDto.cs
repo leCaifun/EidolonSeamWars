@@ -60,6 +60,27 @@ public sealed class BattleRulesDto
     /// <summary>Кап критического урона, %.</summary>
     public int CritDamageCapPercent { get; init; }
 
+    /// <summary>
+    /// Доля длины поля, с которой начинается «большая дистанция», %
+    /// (80 % для поля 10 гексов — с 8-го гекса).
+    /// </summary>
+    public int RangedLongDistanceFieldPercent { get; init; }
+
+    /// <summary>Штраф урона дальней атаки на большой дистанции, %.</summary>
+    public int RangedLongDistancePenaltyPercent { get; init; }
+
+    /// <summary>Штраф урона дальней атаки при препятствии на линии огня, %.</summary>
+    public int RangedObstaclePenaltyPercent { get; init; }
+
+    /// <summary>Штраф урона стрелка в ближнем бою (удар вплотную и контратака), %.</summary>
+    public int RangedMeleePenaltyPercent { get; init; }
+
+    /// <summary>
+    /// Очков движения, требуемых для любой атаки (по умолчанию 1); навыки могут менять стоимость.
+    /// Атака всегда завершает ход.
+    /// </summary>
+    public int AttackMovementCost { get; init; }
+
     /// <summary>Пять типов урона.</summary>
     public IReadOnlyList<string> DamageTypes { get; init; } = Array.Empty<string>();
 }

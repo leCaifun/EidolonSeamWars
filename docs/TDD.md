@@ -21,7 +21,7 @@
 10. [Интеграция с Godot](#10-интеграция-с-godot)
 11. [Состояние этапа 03](#11-состояние-этапа-03)
 12. [Карта: этап 04](#12-карта-этап-04)
-13. [Бой: этапы 05a–05b (формулы и мораль)](#13-бой-этапы-05a05b-формулы-и-мораль)
+13. [Бой: этапы 05a–05g (формулы, мораль, поле, очередь, состояние, атака, реплей, итог, способности и герой)](#13-бой-этапы-05a05g-формулы-мораль-поле-очередь-состояние-атака-реплей-итог-способности-и-герой)
 14. [Связанные документы](#14-связанные-документы)
 
 ## 1. Назначение
@@ -350,7 +350,7 @@ return z ^ (z >> 31)
 карты. Godot-слой (`game/scripts/Map`, `game/scenes/map`) написан без запуска движка и
 не проверен (KI-004, KI-014).
 
-## 13. Бой: этапы 05a–05b (формулы и мораль)
+## 13. Бой: этапы 05a–05e1 (формулы, мораль, поле, очередь, состояние)
 
 - `BattleRules` — иммутабельные числа из `rules/battle.json`; `BattleContentAdapter` строит правила и `UnitDef`.
 - `DamageCalculator.Calculate(DamageRequest, SeededRandom battle) → DamageResult` — порядок шагов и
@@ -359,7 +359,25 @@ return z ^ (z >> 31)
 - 05b: `MoraleRules` (из `rules/morale.json` через `BattleContentAdapter.CreateMoraleRules`), `MoraleContext`,
   `MoraleSystem` (уровень армии, иммунитет, шанс/модификатор по таблице с капами, бросок `RollAction` — один
   бросок `battle`, ADR-037).
-- Не реализовано (05c–05d): ветеранство в бою, дальние штрафы, `BattleState`, очередь, команды, герой, реплей.
+- 05c: `BattleField` (сетка 13×9, препятствия, `GetLine`, `HasBlockerBetween`), `DamageCalculator.GetRangedModifierPerMille`
+  (штрафы дистанции и препятствия суммируются, ADR-037); `BattleRules.LongDistanceThreshold`.
+- 05d: `BattleUnit` (пул здоровья, ветеранство, флаги раунда), `CasualtyResult`, `TurnQueue`/`TurnEntry` (группы A/B,
+  тай-брейк, ожидание, дополнительные действия морали, ADR-038).
+- 05e1: `BattleState` (расстановка, `Start`, `Apply`, `ComputeReachable`, мораль в начале хода, уровень морали стороны,
+  статус боя), `BattleCommand`/`BattleCommandKind`/`BattleCommandOutcome`/`BattleCommandResult`, `BattleSideSetup`,
+  `BattleStatus` (ADR-039). Команды: перемещение, ожидание, защита, атака.
+- 05e2 (ADR-040): пул очков движения `BattleUnit.MovementPointsRemaining` (перемещение ход не завершает, атака
+  завершает); `BattleCommand.Attack` — ближняя атака с ручным или комбинированным подходом (`путь < остатка`),
+  дальняя атака стрелков без контратаки; автоматическая контратака (1 за раунд) со штрафом 75 % для стрелков;
+  урон с учётом морали, «Защиты», ветеранства; гибель стака → ветеранство атакующему, штраф морали стороне.
+- 05f1 (ADR-041): `BattleCommandCodec` (JSON), `BattleCommandJournal` (применение, запись, `Replay`),
+  `BattleState.CreateSnapshot()`; атака требует `attackMovementCost` очков (ADR-040).
+- 05f2 (ADR-042): `BattleResult`/`BattleStackResult`, `BattleState.CreateResult/CommitResult`, `BattleAftermathResolver`
+  (`BattleAftermath`, `BattleAftermathKind`) на формулах `EscapeRules` этапа 02.
+- 05g (ADR-043): `BattleCatalog`/`AbilityDef`/`SpellDef`/`EffectDef`/`BattleEffectTypes`, `BattleHero`, `ActiveEffect`;
+  команды `UseAbility`, `CastSpell`, `UseCommandAbility`; пассивные эффекты в расчёте удара; регенерация, кулдауны,
+  укоренение; `BattleResult.RaisedUnits`. Итог поражения — армия перестаёт существовать (ADR-042).
+- Не реализовано: эффекты командных способностей (заглушка), масштабирование Чародейством (KI-021, KI-022).
 
 ## 14. Связанные документы
 

@@ -9,7 +9,7 @@ public class DamageCalculatorTests
     private static BattleRules CreateRules(int critChanceCap = 75, int critDamageCap = 300)
     {
         return new BattleRules(
-            13, 9, false, 25, 0, 0, 1, false, true, true, 50, 300, 4000, critChanceCap, critDamageCap);
+            13, 9, false, 25, 0, 0, 1, false, true, true, 50, 300, 4000, critChanceCap, critDamageCap, 80, 25, 25, 75, 1);
     }
 
     private static DamageRequest Request(
@@ -271,5 +271,53 @@ public class DamageCalculatorTests
         new DamageCalculator(CreateRules(), logger).Calculate(Request(), new SeededRandom(1));
 
         Assert.Contains(logger.Events, e => e.Category == "Battle" && e.Fields["finalDamage"] == "30");
+    }
+
+    [Theory]
+    [InlineData(10, 8)]
+    [InlineData(13, 11)]
+    [InlineData(15, 12)]
+    public void LongDistanceThreshold_ScalesWithFieldLength(int width, int expected)
+    {
+        BattleRules rules = new(
+            width, 9, false, 25, 0, 0, 1, false, true, true, 50, 300, 4000, 75, 300, 80, 25, 25, 75, 1);
+
+        Assert.Equal(expected, rules.LongDistanceThreshold);
+    }
+
+    [Theory]
+    [InlineData(1, false, 1000)]
+    [InlineData(10, false, 1000)]
+    [InlineData(11, false, 750)]
+    [InlineData(12, false, 750)]
+    [InlineData(3, true, 750)]
+    [InlineData(11, true, 500)]
+    public void GetRangedModifierPerMille_StacksPenaltiesAdditively(int distance, bool obstacle, int expected)
+    {
+        Assert.Equal(expected, new DamageCalculator(CreateRules()).GetRangedModifierPerMille(distance, obstacle));
+    }
+
+    [Fact]
+    public void GetShooterMeleeModifierPerMille_AppliesSeventyFivePercentPenalty()
+    {
+        Assert.Equal(250, new DamageCalculator(CreateRules()).GetShooterMeleeModifierPerMille());
+    }
+
+    [Fact]
+    public void RangedModifier_FeedsIntoDamage()
+    {
+        DamageCalculator calculator = new(CreateRules());
+        int modifier = calculator.GetRangedModifierPerMille(11, true);
+
+        DamageResult result = calculator.Calculate(Request(modifier: modifier), new SeededRandom(1));
+
+        Assert.Equal(15, result.FinalDamage);
+    }
+
+    [Fact]
+    public void GetRangedModifierPerMille_NegativeDistance_Throws()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => new DamageCalculator(CreateRules()).GetRangedModifierPerMille(-1, false));
     }
 }

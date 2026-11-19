@@ -11,5 +11,5 @@
   "captivityDays": 5,
   "armyLostOnEscape": true,
   "defenderCanEscape": false,
-  "herolessArmyLossPercent": 40
+  "herolessArmyLossPercent": 100
 }

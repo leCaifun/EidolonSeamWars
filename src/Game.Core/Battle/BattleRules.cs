@@ -25,6 +25,11 @@ public sealed class BattleRules
     /// <param name="attackDefenseModifierMax">Верхняя граница модификатора, промилле.</param>
     /// <param name="critChanceCapPercent">Кап шанса крита, %.</param>
     /// <param name="critDamageCapPercent">Кап критического урона, %.</param>
+    /// <param name="rangedLongDistanceFieldPercent">Доля длины поля, с которой начинается большая дистанция, %.</param>
+    /// <param name="rangedLongDistancePenaltyPercent">Штраф урона на большой дистанции, %.</param>
+    /// <param name="rangedObstaclePenaltyPercent">Штраф урона при препятствии на линии огня, %.</param>
+    /// <param name="rangedMeleePenaltyPercent">Штраф урона стрелка в ближнем бою, %.</param>
+    /// <param name="attackMovementCost">Очков движения, требуемых для любой атаки.</param>
     /// <exception cref="ArgumentOutOfRangeException">Значение вне допустимого диапазона.</exception>
     public BattleRules(
         int fieldWidth,
@@ -41,7 +46,12 @@ public sealed class BattleRules
         int attackDefenseModifierMin,
         int attackDefenseModifierMax,
         int critChanceCapPercent,
-        int critDamageCapPercent)
+        int critDamageCapPercent,
+        int rangedLongDistanceFieldPercent,
+        int rangedLongDistancePenaltyPercent,
+        int rangedObstaclePenaltyPercent,
+        int rangedMeleePenaltyPercent,
+        int attackMovementCost)
     {
         FieldWidth = RequireAtLeast(fieldWidth, 1, nameof(fieldWidth));
         FieldHeight = RequireAtLeast(fieldHeight, 1, nameof(fieldHeight));
@@ -64,6 +74,27 @@ public sealed class BattleRules
             nameof(attackDefenseModifierMax));
         CritChanceCapPercent = RequireRange(critChanceCapPercent, 0, 100, nameof(critChanceCapPercent));
         CritDamageCapPercent = RequireAtLeast(critDamageCapPercent, 100, nameof(critDamageCapPercent));
+        RangedLongDistanceFieldPercent = RequireRange(
+            rangedLongDistanceFieldPercent,
+            1,
+            100,
+            nameof(rangedLongDistanceFieldPercent));
+        RangedLongDistancePenaltyPercent = RequireRange(
+            rangedLongDistancePenaltyPercent,
+            0,
+            100,
+            nameof(rangedLongDistancePenaltyPercent));
+        RangedObstaclePenaltyPercent = RequireRange(
+            rangedObstaclePenaltyPercent,
+            0,
+            100,
+            nameof(rangedObstaclePenaltyPercent));
+        RangedMeleePenaltyPercent = RequireRange(
+            rangedMeleePenaltyPercent,
+            0,
+            100,
+            nameof(rangedMeleePenaltyPercent));
+        AttackMovementCost = RequireAtLeast(attackMovementCost, 0, nameof(attackMovementCost));
     }
 
     /// <summary>Ширина поля боя, гексов.</summary>
@@ -110,6 +141,27 @@ public sealed class BattleRules
 
     /// <summary>Кап критического урона, %.</summary>
     public int CritDamageCapPercent { get; }
+
+    /// <summary>Доля длины поля, с которой начинается большая дистанция, %.</summary>
+    public int RangedLongDistanceFieldPercent { get; }
+
+    /// <summary>Штраф урона дальней атаки на большой дистанции, %.</summary>
+    public int RangedLongDistancePenaltyPercent { get; }
+
+    /// <summary>Штраф урона дальней атаки при препятствии на линии огня, %.</summary>
+    public int RangedObstaclePenaltyPercent { get; }
+
+    /// <summary>Штраф урона стрелка в ближнем бою (удар вплотную и контратака), %.</summary>
+    public int RangedMeleePenaltyPercent { get; }
+
+    /// <summary>Очков движения, требуемых для любой атаки (по умолчанию 1).</summary>
+    public int AttackMovementCost { get; }
+
+    /// <summary>
+    /// Дистанция в гексах, начиная с которой дальняя атака получает штраф большой дистанции:
+    /// <c>ceil(fieldWidth × процент / 100)</c> (10 гексов при 80 % → 8; 15 → 12; 13 → 11).
+    /// </summary>
+    public int LongDistanceThreshold => (FieldWidth * RangedLongDistanceFieldPercent + 99) / 100;
 
     private static int RequireAtLeast(int value, int minimum, string parameterName)
     {

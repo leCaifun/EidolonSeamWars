@@ -562,7 +562,7 @@ game/content/core/
 `waitMovesToEndOfRound`, `waitAffectsNextRound`,
 `attackDefenseModifierPerPoint` (50), `attackDefenseModifierMin` (300),
 `attackDefenseModifierMax` (4000), `critChanceCapPercent` (75),
-`critDamageCapPercent` (300), `damageTypes` (пять типов).
+`critDamageCapPercent` (300), `rangedLongDistanceFieldPercent` (80; доля длины поля, с которой начинается большая дистанция), `rangedLongDistancePenaltyPercent` (25), `rangedObstaclePenaltyPercent` (25), `rangedMeleePenaltyPercent` (75; штраф урона стрелка в ближнем бою), `attackMovementCost` (1; очков движения для любой атаки), `damageTypes` (пять типов).
 
 ### 7.2. `rules/morale.json`
 
@@ -584,7 +584,7 @@ game/content/core/
 `enemyLogisticsMultiplier` (2), `minChancePercent` (20),
 `maxChancePercent` (90), `artifactsLostMin` (1), `artifactsLostMax` (3),
 `captivityDays` (5), `armyLostOnEscape` (true),
-`defenderCanEscape` (false), `herolessArmyLossPercent` (40).
+`defenderCanEscape` (false), `herolessArmyLossPercent` (100; побеждённый отряд без героя перестаёт существовать).
 
 ### 7.5. `rules/ransom.json`
 

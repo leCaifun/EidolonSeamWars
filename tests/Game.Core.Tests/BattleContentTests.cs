@@ -28,6 +28,12 @@ public class BattleContentTests
         Assert.Equal(4000, rules.AttackDefenseModifierMax);
         Assert.Equal(75, rules.CritChanceCapPercent);
         Assert.Equal(300, rules.CritDamageCapPercent);
+        Assert.Equal(80, rules.RangedLongDistanceFieldPercent);
+        Assert.Equal(25, rules.RangedLongDistancePenaltyPercent);
+        Assert.Equal(25, rules.RangedObstaclePenaltyPercent);
+        Assert.Equal(75, rules.RangedMeleePenaltyPercent);
+        Assert.Equal(1, rules.AttackMovementCost);
+        Assert.Equal(11, rules.LongDistanceThreshold);
     }
 
     [Fact]
@@ -59,8 +65,8 @@ public class BattleContentTests
     public void BattleRules_InvalidValues_Throw()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            new BattleRules(0, 9, false, 25, 0, 0, 1, false, true, true, 50, 300, 4000, 75, 300));
+            new BattleRules(0, 9, false, 25, 0, 0, 1, false, true, true, 50, 300, 4000, 75, 300, 80, 25, 25, 75, 1));
         Assert.Throws<ArgumentOutOfRangeException>(() =>
-            new BattleRules(13, 9, false, 25, 0, 0, 1, false, true, true, 50, 300, 200, 75, 300));
+            new BattleRules(13, 9, false, 25, 0, 0, 1, false, true, true, 50, 300, 200, 75, 300, 80, 25, 25, 75, 1));
     }
 }

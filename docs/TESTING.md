@@ -112,7 +112,7 @@ dotnet test tests/Game.Core.Tests/Game.Core.Tests.csproj --filter "FullyQualifie
 | Контент карты (`MapContentTests`) | 8 методов | правила генерации, биомы (местность ≥ 2, дорога 1), загрузка тестовых карт, ошибки layout |
 | Контент | 36 | загрузка реального пака, формы файлов, merge и порядок, last-wins и журнал, седьмой юнит только JSON, валидатор ссылок и диапазонов, локализация и фолбэк |
 
-- `DamageCalculatorTests`, `BattleContentTests`, `MoraleSystemTests` (этапы 05a–05b): формула урона, клампы, пять резистов, крит и капы, контракт бросков, детерминизм, адаптер контента. Не запускались (нет `dotnet`).
+- `DamageCalculatorTests`, `BattleContentTests`, `MoraleSystemTests`, `BattleFieldTests`, `BattleUnitTests`, `TurnQueueTests`, `BattleStateTests` (этапы 05a–05e2; движение, атака, контратака, стрелки), `BattleReplayTests` (05f1: кодек, журнал, детерминизм, реплей), `BattleResultTests` (05f2: итог, перенос в армии, побег/выкуп/уничтожение), `BattleAbilityTests` (05g: способности, заклинания, герой, пассивки, кулдауны): формула урона, клампы, пять резистов, крит и капы, контракт бросков, детерминизм, адаптер контента. Не запускались (нет `dotnet`).
 
 ## 5. Соглашения
 

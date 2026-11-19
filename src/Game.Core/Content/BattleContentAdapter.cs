@@ -44,7 +44,12 @@ public static class BattleContentAdapter
             dto.AttackDefenseModifierMin,
             dto.AttackDefenseModifierMax,
             dto.CritChanceCapPercent,
-            dto.CritDamageCapPercent);
+            dto.CritDamageCapPercent,
+            dto.RangedLongDistanceFieldPercent,
+            dto.RangedLongDistancePenaltyPercent,
+            dto.RangedObstaclePenaltyPercent,
+            dto.RangedMeleePenaltyPercent,
+            dto.AttackMovementCost);
     }
 
     /// <summary>
@@ -83,6 +88,95 @@ public static class BattleContentAdapter
             dto.Sources.DefendingSettlement,
             dto.Sources.AllyStackDeath,
             dto.Sources.AllyStackDeathDurationRounds);
+    }
+
+    /// <summary>
+    /// Создаёт справочник способностей и заклинаний боя из контента.
+    /// </summary>
+    /// <param name="registry">Слитый реестр контента.</param>
+    /// <exception cref="ArgumentNullException">Реестр не задан.</exception>
+    public static BattleCatalog CreateCatalog(ContentRegistry registry)
+    {
+        ArgumentNullException.ThrowIfNull(registry);
+
+        List<AbilityDef> abilities = registry.Abilities.Values
+            .OrderBy(entry => entry.Value.Id, StringComparer.Ordinal)
+            .Select(entry => CreateAbility(entry.Value))
+            .ToList();
+
+        List<SpellDef> spells = registry.Spells.Values
+            .OrderBy(entry => entry.Value.Id, StringComparer.Ordinal)
+            .Select(entry => CreateSpell(entry.Value))
+            .ToList();
+
+        return new BattleCatalog(abilities, spells);
+    }
+
+    /// <summary>
+    /// Возвращает ID классовой пассивной способности класса героя.
+    /// </summary>
+    /// <param name="registry">Слитый реестр контента.</param>
+    /// <param name="heroClassId">ID класса героя.</param>
+    /// <returns>ID способности или <c>null</c>, если класса нет.</returns>
+    public static string? GetClassPassiveAbilityId(ContentRegistry registry, string heroClassId)
+    {
+        ArgumentNullException.ThrowIfNull(registry);
+
+        return registry.HeroClasses.TryGetValue(heroClassId, out ContentEntry<HeroClassDto>? entry)
+            ? entry.Value.PassiveAbilityId
+            : null;
+    }
+
+    /// <summary>Создаёт определение способности из DTO.</summary>
+    /// <param name="dto">DTO способности.</param>
+    /// <exception cref="ArgumentNullException">DTO не задан.</exception>
+    public static AbilityDef CreateAbility(AbilityDto dto)
+    {
+        ArgumentNullException.ThrowIfNull(dto);
+
+        return new AbilityDef(
+            dto.Id,
+            dto.Kind,
+            dto.Trigger,
+            dto.Target,
+            dto.Range ?? 0,
+            dto.Radius ?? 0,
+            dto.CooldownRounds ?? 0,
+            dto.DurationRounds ?? 0,
+            dto.UsesPerBattle ?? 0,
+            dto.Effects.Select(effect => CreateEffect(effect, dto.Id)).ToList());
+    }
+
+    /// <summary>Создаёт определение заклинания из DTO.</summary>
+    /// <param name="dto">DTO заклинания.</param>
+    /// <exception cref="ArgumentNullException">DTO не задан.</exception>
+    public static SpellDef CreateSpell(SpellDto dto)
+    {
+        ArgumentNullException.ThrowIfNull(dto);
+
+        return new SpellDef(
+            dto.Id,
+            dto.School,
+            dto.ManaCost,
+            dto.Target,
+            dto.DurationRounds ?? 0,
+            dto.Effects.Select(effect => CreateEffect(effect, dto.Id)).ToList());
+    }
+
+    private static EffectDef CreateEffect(AbilityEffectDto dto, string ownerId)
+    {
+        return new EffectDef(
+            dto.Type,
+            dto.Value ?? 0,
+            string.IsNullOrWhiteSpace(dto.DamageType) ? null : ParseDamageType(dto.DamageType, ownerId),
+            dto.Min ?? 0,
+            dto.Max ?? 0,
+            dto.MinHexes ?? 0,
+            dto.MaxTier ?? 0,
+            dto.UnitId,
+            dto.Count ?? 0,
+            dto.MaxCountPerStack ?? 0,
+            dto.DurationRounds ?? 0);
     }
 
     /// <summary>

@@ -104,8 +104,16 @@
 | Решение ИИ | Debug | AI | `actor`, `goal`, `score`, `reason` |
 | Ошибка pathfinding | Warning | Map | `from`, `to`, `reason` |
 | Побег/выкуп/плен | Info | Hero | `heroId`, `roll`, `chance`, `outcome` |
-| Порог ветеранства | Info | Battle | `unitId`, `oldRank`, `newRank`, `kills` |
+| Порог ветеранства | Info | Battle | `unitId`, `oldRank`, `newRank`, `killedStacks` |
 | Расчёт урона удара | Debug | Battle | `unitRoll`, `critRoll`, `baseDamage`, `finalDamage`, `critical` |
+| Начало и конец боя | Info | Battle | `attackerStacks`, `defenderStacks`, `field` / `status`, `round` |
+| Очередь раунда, ожидание, дополнительное действие | Debug | Battle | `round`, `order` / `unitId` |
+| Перемещение, подход к цели, защита | Debug | Battle | `unitId`, `from`, `to`, `steps`, `movementLeft` / `targetId` / `defenseBonusPercent` |
+| Способность, заклинание, командная способность, урон способности | Info | Battle | `unitId`/`side`, `abilityId`/`spellId`, `targetId(s)`, `damage`, `manaLeft`, `cooldown` |
+| Лечение и регенерация | Debug | Battle | `unitId`, `amount`, `round` |
+| Итог боя перенесён в армии | Info | Battle | `status`, `attackerLost`, `defenderLost`, `rounds` |
+| Удар и контратака | Info | Battle | `attackerId`, `targetId`, `melee`, `damage`, `critical`, `unitsKilled`, `targetCount`, `round` |
+| Отклонённая команда боя | Debug | Battle | `command`, `unitId`, `outcome` |
 | Бросок морали | Debug | Battle | `unitId`, `moraleLevel`, `chancePercent`, `roll`, `result` |
 | Применение настроек | Info | Settings | `key`, `oldValue`, `newValue` |
 | Смена языка | Info | Settings | `oldLocale`, `newLocale` |

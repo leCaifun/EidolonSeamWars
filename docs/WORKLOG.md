@@ -19,7 +19,14 @@
 8. [W-0007 · 2026-11-16 · Этап 04: карта, A*, туман, экран карты](#8-w-0007--2026-11-16--этап-04-карта-a-туман-экран-карты)
 9. [W-0008 · 2026-11-17 · Блокировка пути партиями и этап 05a](#9-w-0008--2026-11-17--блокировка-пути-партиями-и-этап-05a)
 10. [W-0009 · 2026-11-17 · Ревизия Void → Seam и этап 05b (мораль)](#10-w-0009--2026-11-17--ревизия-void--seam-и-этап-05b-мораль)
-11. [Связанные документы](#11-связанные-документы)
+11. [W-0010 · 2026-11-17 · Этап 05c (поле боя и дальний бой)](#11-w-0010--2026-11-17--этап-05c-поле-боя-и-дальний-бой)
+12. [W-0011 · 2026-11-17 · Этап 05d (боевой стак и очередь хода)](#12-w-0011--2026-11-17--этап-05d-боевой-стак-и-очередь-хода)
+13. [W-0012 · 2026-11-17 · Этап 05e1 (состояние боя и команды)](#13-w-0012--2026-11-17--этап-05e1-состояние-боя-и-команды)
+14. [W-0013 · 2026-11-17 · Этап 05e2 (пул движения, атака, контратака)](#14-w-0013--2026-11-17--этап-05e2-пул-движения-атака-контратака)
+15. [W-0014 · 2026-11-17 · Этап 05f1 (стоимость атаки, журнал и реплей)](#15-w-0014--2026-11-17--этап-05f1-стоимость-атаки-журнал-и-реплей)
+16. [W-0015 · 2026-11-17 · Этап 05f2 (итог боя и последствия)](#16-w-0015--2026-11-17--этап-05f2-итог-боя-и-последствия)
+17. [W-0016 · 2026-11-17 · Этап 05g (способности, заклинания, герой; завершение промта 05)](#17-w-0016--2026-11-17--этап-05g-способности-заклинания-герой-завершение-промта-05)
+18. [Связанные документы](#18-связанные-документы)
 
 ## 1. Правила ведения
 
@@ -804,7 +811,199 @@ feat(battle): add morale system; make map border biome data-driven
 - docs: seam/PNG fixes, ASSET_LICENSES, CONTENT_SCHEMA
 ```
 
-## 11. Связанные документы
+## 11. W-0010 · 2026-11-17 · Этап 05c (поле боя и дальний бой)
+
+### Сделано
+
+- Данные `battle.json`: `rangedLongDistanceFieldPercent` 80, `rangedLongDistancePenaltyPercent` 25, `rangedObstaclePenaltyPercent` 25; валидатор `CONTENT_BATTLE_RANGED_*`.
+- `BattleRules.LongDistanceThreshold = ceil(width × 80 / 100)`: 13 → 11.
+- `BattleField`: сетка, препятствия, расстояние, `GetLine` (целочисленно), `HasBlockerBetween` (объекты и юниты строго между стрелком и целью).
+- `DamageCalculator.GetRangedModifierPerMille`; штрафы суммируются.
+- Тесты: `BattleFieldTests`, дополнения `DamageCalculatorTests`, `BattleContentTests`.
+
+### Допущение
+
+- Штраф большой дистанции применяется по расстоянию, а не по номеру колонки; при смене размера поля порог пересчитывается.
+
+### Не проверено
+
+- `dotnet build/test` не запускались (KI-019). Самый рискованный тест: `GetLine_AllPairs_AreContiguousWithExactEndpoints` (проверяет алгоритм линии на всех 117² парах).
+
+**Commit-message:**
+
+```
+feat(battle): add battle field geometry and ranged damage penalties
+
+- BattleField: obstacles, distance, integer line of fire
+- battle.json: ranged distance/obstacle penalty rules, validator
+- DamageCalculator: ranged modifier (ADR-037)
+```
+
+## 12. W-0011 · 2026-11-17 · Этап 05d (боевой стак и очередь хода)
+
+### Сделано
+
+- `BattleUnit`: пул здоровья с раненым верхним юнитом, ветеранство (журнал при росте ранга), флаги защиты, ожидания, контратаки и морали.
+- `TurnQueue`: группы A/B, тай-брейк «атакующий первым, затем чередование, слот», ожидание, дополнительные действия, пропуск погибших.
+- ADR-038; тесты `BattleUnitTests`, `TurnQueueTests`.
+
+### Допущение
+
+- Чередование сторон при равной инициативе начинает атакующий (GDD не уточняет) — вынесено в ADR-038.
+
+### Не проверено
+
+- `dotnet build/test` не запускались (KI-019).
+
+**Commit-message:**
+
+```
+feat(battle): add battle unit and turn queue
+
+- BattleUnit: health pool, veterancy, round flags
+- TurnQueue: groups A/B, wait, morale extra actions (ADR-038)
+```
+
+## 13. W-0012 · 2026-11-17 · Этап 05e1 (состояние боя и команды)
+
+### Сделано
+
+- `BattleState`: расстановка слотов, `Start`, `Apply` (перемещение, ожидание, защита), достижимость, мораль на старте хода (пропуск и дополнительное действие), уровень морали стороны и штраф за гибель союзников, статус боя.
+- Команды и результаты: `BattleCommand`, `BattleCommandKind`, `BattleCommandOutcome`, `BattleCommandResult`; `BattleSideSetup`, `BattleStatus`.
+- `TurnQueue.CompleteTurn` больше не отбрасывает мёртвые записи перед снятием хода (иначе гибель активного стака при контратаке съела бы чужой ход).
+- ADR-039; тесты `BattleStateTests`.
+
+### Допущения
+
+- Перемещение — одно действие и завершает ход; ближняя атака с подходом (скорость) — в 05e2.
+- Штраф за гибель союзника считается с раунда гибели (ADR-039).
+
+### Не проверено
+
+- `dotnet build/test` не запускались (KI-019).
+
+**Commit-message:**
+
+```
+feat(battle): add battle state with deployment, movement, wait, defend
+
+- BattleState, commands, morale at turn start (ADR-039)
+- TurnQueue: complete current entry even if the stack died
+```
+
+## 14. W-0013 · 2026-11-17 · Этап 05e2 (пул движения, атака, контратака)
+
+### Сделано
+
+- Правила хода King's Bounty (ADR-040): пул очков движения, перемещение не завершает ход, атака завершает; ожидание запрещено после перемещения.
+- `BattleCommand.Attack`: ручной подход и комбинированный (ПКМ), дальняя атака стрелков, автоматическая контратака (1 за раунд), штраф 75 % для стрелков в ближнем бою (`rangedMeleePenaltyPercent` в `battle.json`).
+- Урон: мораль, «Защита», ветеранство, резисты; ветеранство за уничтоженный стак; штраф морали за гибель союзника.
+- Тесты: `BattleStateTests` (подход, ручной и комбинированный, дальняя атака с штрафами, стрелок в упор и при контратаке, один ответ за раунд, защита, убийство, гибель от контратаки), `BattleUnitTests`, `DamageCalculatorTests`, `BattleContentTests`.
+
+### Допущения (ADR-040)
+
+- Уточнено заказчиком: любая атака требует `attackMovementCost` (1) очков движения и всегда завершает ход (данные `battle.json`, исход `NotEnoughMovement`).
+- Штраф стрелка 75 % — минус 75 % урона (множитель 250) — применяется и к удару по соседу, и к контратаке.
+- Ожидание после перемещения запрещено.
+
+### Не проверено
+
+- `dotnet build/test` не запускались (KI-019).
+
+**Commit-message:**
+
+```
+feat(battle): movement pool, attack, retaliation, shooter penalties
+
+- BattleUnit.MovementPointsRemaining; movement no longer ends the turn
+- BattleCommand.Attack (manual and combined approach), ranged attack
+- automatic retaliation, rangedMeleePenaltyPercent (ADR-040)
+```
+
+## 15. W-0014 · 2026-11-17 · Этап 05f1 (стоимость атаки, журнал и реплей)
+
+### Сделано
+
+- Уточнение заказчика: любая атака требует `attackMovementCost` (1) очков движения (данные `battle.json`), исход `NotEnoughMovement`; стрелок без очков не стреляет.
+- `BattleCommandCodec`, `BattleCommandJournal`, `BattleState.CreateSnapshot`; ADR-041.
+- Тесты `BattleReplayTests`: бой до конца по детерминированной политике, реплей по журналу и через JSON, кодек, отказы, снимок.
+
+### Не проверено
+
+- `dotnet build/test` не запускались (KI-019). Тест полного боя (`Battle_PlaysToCompletion`) зависит от политики подхода: при зависании бой не завершится за 3000 команд.
+
+### Осталось по промту 05
+
+- 05f2: завершение боя и перенос результата в армии (потери, ветеранство, возврат на карту; побег/выкуп/плен — из этапа 02).
+- 05f3: герой вне поля (пассивные бонусы, заклинание 1/раунд, командная способность 1/бой), способности юнитов.
+
+**Commit-message:**
+
+```
+feat(battle): attack movement cost, command journal and replay
+
+- battle.json: attackMovementCost; NotEnoughMovement outcome
+- BattleCommandCodec/Journal, BattleState snapshot (ADR-041)
+```
+
+## 16. W-0015 · 2026-11-17 · Этап 05f2 (итог боя и последствия)
+
+### Сделано
+
+- `BattleResult`/`BattleStackResult`, `CreateResult`, `CommitResult` (потери и ветеранство в исходные стаки, удаление пустых стаков из армий, защита от повторного применения и подмены), `InitialCount`/`InitialKilledStacks` у `BattleUnit`.
+- `BattleAftermathResolver`: победа, разгром отряда без героя, побег/плен героя по `EscapeRules`, запрет для защитника осады, ничья.
+- ADR-042; тесты `BattleResultTests`.
+
+### Допущения (приняты по умолчанию, ответа не было)
+
+- Ранения не сохраняются, опыт и добыча в 05f2 не трогаются, формулы побега не дублируются.
+- Трактовка «потеря 40 % стаков» (стаки или юниты) оставлена слою кампании.
+
+### Не проверено
+
+- `dotnet build/test` не запускались (KI-019).
+
+### Осталось по промту 05 (05f3)
+
+- Герой вне поля: пассивные бонусы армии, заклинание 1/раунд (мана 10 + Знание×5), командная способность 1/бой; способности юнитов (кулдауны, заряды).
+
+**Commit-message:**
+
+```
+feat(battle): battle result, army commit and defeat aftermath
+
+- BattleResult, CreateResult/CommitResult
+- BattleAftermathResolver on stage-02 escape formulas (ADR-042)
+```
+
+## 17. W-0016 · 2026-11-17 · Этап 05g (способности, заклинания, герой; завершение промта 05)
+
+### Сделано
+
+- Решение заказчика: побеждённая армия без героя или героя, не откупившегося и не сбежавшего, перестаёт существовать (`escape.json` 40 → 100, GDD §7.7, ADR-042, `BattleAftermathResolver`: `ArmyDestroyed`, `HeroRansomed`).
+- Движок способностей (ADR-043): справочник из контента, активные способности с кулдауном, заклинания героя (мана, 1/раунд), командная способность (заглушка), пассивные эффекты класса и юнитов, бонусы героя к армии, регенерация, укоренение, аура знамени, поднятая нежить в `BattleResult`.
+- Тесты `BattleAbilityTests`, дополнения `BattleUnitTests`, `BattleReplayTests`, `BattleResultTests`.
+
+### Состояние промта 05
+
+- Реализовано: поле 13×9, очередь A/B, команды (перемещение, атака, способность, ожидание, защита, заклинание, командная способность), урон, резисты, мораль, ветеранство, контратака, герой вне поля, журнал и реплей, итог и последствия боя.
+- Заглушки/ограничения: KI-021, KI-022. Интеграция с картой и UI — этапы 06–07.
+
+### Не проверено
+
+- `dotnet build/test` не запускались (KI-019, теперь Major): весь этап 05 написан без компиляции — первый прогон, вероятно, покажет опечатки и расхождения ожидаемых чисел в тестах.
+
+**Commit-message:**
+
+```
+feat(battle): abilities, spells and off-field hero; defeated armies cease to exist
+
+- BattleCatalog, effects, cooldowns, mana, class passives (ADR-043)
+- UseAbility/CastSpell/UseCommandAbility commands, codec support
+- aftermath: destroyed armies, ransom option (ADR-042)
+```
+
+## 18. Связанные документы
 
 - [AGENTS.md](../AGENTS.md) — правила проекта
 - [docs/CHANGELOG.md](CHANGELOG.md) — версии
